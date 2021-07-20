@@ -28,46 +28,93 @@ const getProducts = gql`
         this.state = {
             onceClickedSize: "prodDetails__prodInfo__size clickedSizeBox",  
             onceClickedColor: "prodDetails__prodInfo__color clickedColorBox", 
-            data: replicaOfData.data.category.products,
+            data: [],
             
             shoppingCart: [],
             currentProduct: {}
         }
     }
 
-  
+    getData() {
+        setTimeout(() => {
+            console.log("Data is fetched");
+            this.setState({
+                data: [...this.props.data.category.products]
+            })
+        }, 1000)
+    }
+    
+    componentDidMount() {
+        this.getData()
+    }
+
     //Add products to the shopping cart
          addToCart =()=>{
+            let item = this.state.data.find((each) => each.id === this.props.match.params.id)
              console.log("Adding to cart button")
           let currentProductObj = this.state.currentProduct
+              currentProductObj.id = item.id;
+              currentProductObj.name = item.name;
+              currentProductObj.inStock = item.inStock;
+              currentProductObj.gallery = item.gallery;
+              currentProductObj.category = item.category;
+              currentProductObj.prices = item.prices;
         
-        if(!currentProductObj.hasOwnProperty('attribute')) {
-            currentProductObj.attribute = {size: "L"}
-        }
-        this.setState({
+         this.setState({
             currentProduct: currentProductObj
-        })
+          })
+   
        }
 
 
        /*Choose size or capacity of a product*/
          chooseSize=(event)=>{ 
-        //Setting indicators if size was clicked
-        let onceClickedAttr = this.state.onceClickedSize
-        let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
+            //Setting indicators if size was clicked
+            let onceClickedAttr = this.state.onceClickedSize
+            let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
             allSizes.forEach((size)=> {
-              if(size.getAttribute("class") === onceClickedAttr ) {
-                  size.classList.remove("clickedSizeBox")
-              } else if (size === event.target.parentNode) {
-                  size.classList.add("clickedSizeBox")
-              }
-           })
+                if(size.getAttribute("class") === onceClickedAttr ) {
+                    size.classList.remove("clickedSizeBox")
+                } else if (size === event.target.parentNode) {
+                    size.classList.add("clickedSizeBox")
+                }
+            })
+            // setting the right size in the shopping cart
+            let item = this.state.data.find((each) => each.id === this.props.match.params.id)
+            let displayValue = event.target.textContent;
+            let currentProductObj = this.state.currentProduct;
+            if(!currentProductObj.hasOwnProperty("attributes") && item.category === "tech") {
+                currentProductObj.attributes = [];
+                currentProductObj.attributes.push({name: "Capacity", items: [{displayValue: displayValue, value: displayValue}]})
+                console.log("new array attributes created and object inserted")
+            } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length > 0) {
+                currentProductObj.attributes.map((each)=> {
+                    let index = currentProductObj.attributes.indexOf(each);
+                if(each.name === "Capacity" && each.items[0].displayValue === displayValue)  {
+                    currentProductObj.attributes.splice(index, 1);
+                    console.log("Capacity exists, the clicked button is the same, we remove the object")
+                } else if(each.name === "Capacity" && each.items[0].displayValue !== displayValue) {
+                    currentProductObj.attributes.splice(index, 1);
+                    currentProductObj.attributes.push({name: "Capacity", items: [{displayValue: displayValue, value: displayValue}]})
+                    console.log("capacity exists, new box clicked")
+                } 
+                })         
+
+            } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.every(item => !item.name === "Capacity"))  {
+                
+                    currentProductObj.attributes.push({name: "Capacity", items: [{displayValue: displayValue, value: displayValue}]})
+                    console.log("last option")
+            }
+            this.setState({
+                currentProduct: currentProductObj
+            }) 
+
         }
      
     
-            rgbToHex=(r, g, b)=> {
-            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-          }
+           
+
+
 
     /*The functions  controls the boxes colors*/
       chooseColor=(event)=>{
@@ -81,19 +128,66 @@ const getProducts = gql`
                 box.classList.add("clickedColorBox")
             }
         })   
-       
-        console.log( typeof(clickedColor.toString()))
+        //Setting the chosen color for the shopping cart
+        let currentProductObj = this.state.currentProduct;
+        if(!currentProductObj.hasOwnProperty("attributes")) {
+            currentProductObj.attributes = [];
+            currentProductObj.attributes.push({name: "Color", items: [{displayValue: "", value: clickedColor}]})
+        } else if (currentProductObj.hasOwnProperty("attributes")) {
+            currentProductObj.attributes.map((each)=> {   
+               if(each.name === "Color")  {
+                let index = currentProductObj.attributes.indexOf(each);
+                currentProductObj.attributes.splice(index, 1);
+                currentProductObj.attributes.push({name: "Color", items: [{displayValue: "", value: clickedColor}]})
+               console.log(index)
+               }
+            })         
+
+        }
+        /*
+        //new method
+        let item = this.state.data.find((each) => each.id === this.props.match.params.id)
+        
+        let currentProductObj = this.state.currentProduct;
+     if(!currentProductObj.hasOwnProperty("attributes") && item.category === "clothes") {
+         currentProductObj.attributes = [];
+         currentProductObj.attributes.push({name: "Color", items: [{displayValue: "", value: clickedColor}]})
+         console.log("new array attributes created and object inserted")
+     } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length > 0) {
+         currentProductObj.attributes.map((each)=> {
+             let index = currentProductObj.attributes.indexOf(each);
+            if(each.name === "Color" && clickedColor === )  {
+             currentProductObj.attributes.splice(index, 1);
+             console.log("Capacity exists, the clicked button is the same, we remove the object")
+          } else if(each.name === "Capacity" && each.items[0].displayValue !== displayValue) {
+             currentProductObj.attributes.splice(index, 1);
+             currentProductObj.attributes.push({name: "Capacity", items: [{displayValue: displayValue, value: displayValue}]})
+             console.log("capacity exists, new box clicked")
+          } 
+         })         
+
+       } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.every(item => !item.name === "Capacity"))  {
+         
+             currentProductObj.attributes.push({name: "Capacity", items: [{displayValue: displayValue, value: displayValue}]})
+             console.log("last option")
+      }
+        //end of new method*/
+        this.setState({
+            currentProduct: currentProductObj
+        })   
      }
     
+
+
     //Setting attributes and attribute names of the product
      setAttribute=(attributeName)=> {
           let output = null;
           let item = this.state.data.find((each) => each.id === this.props.match.params.id)
         
-          console.log("setAttribute function is called")
-          let attrArray = item.attributes;
-          let found = attrArray.find((item)=> item.name === attributeName)
-
+          
+          let attrArray = item.attributes; //Getting an arry of objects with attributes 
+          let found = attrArray.find((each)=> each.name === attributeName)
+         
          if(attributeName === "Capacity") {
               output = found.items.map((each) => 
               <div className = "prodDetails__prodInfo__size" onClick={this.chooseSize}><h4>{each.value}</h4></div>)    
@@ -101,7 +195,7 @@ const getProducts = gql`
           }
           if (attributeName === "Color") { 
               output = found.items.map((each) => 
-              <div className = "prodDetails__prodInfo__color"  onClick={this.chooseColor} style={{backgroundColor: each.value}}></div>)    
+              <div className = "prodDetails__prodInfo__color"  onClick={this.chooseColor} style={{backgroundColor: each.value}}><p>{each.displayValue}</p></div>)    
                return [<h4>{attributeName}</h4>, output]        
           } 
           if (attributeName === "Size" ) {  
@@ -114,6 +208,7 @@ const getProducts = gql`
      
    
     render() {
+        console.log(this.state.currentProduct)
         let item = this.state.data.find((each) => each.id === this.props.match.params.id)
        
                     
@@ -173,3 +268,7 @@ const getProducts = gql`
 export default graphql(getProducts)(ProductDetails);
 
 
+
+/** rgbToHex=(r, g, b)=> {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+          } */

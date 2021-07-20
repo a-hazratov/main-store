@@ -242,6 +242,11 @@ a:hover {
   margin-bottom: 0;
 }
 
+.prodDetails__prodInfo__color p {
+  font-size: 0.3rem;
+  opacity: 0;
+}
+
 .prodDetails__prodInfo__color:hover {
   cursor: pointer;
 }
