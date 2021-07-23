@@ -1,0 +1,142 @@
+.header {
+  width: 100%;
+  position: fixed;
+  background-color: white;
+}
+.header nav {
+  border: 1px black solid;
+  height: 80px;
+  width: 100%;
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__navbar__category {
+  width: 33%;
+  display: flex;
+  justify-content: space-around;
+  padding-right: 3.125em;
+  padding-left: 3.125em;
+}
+
+.header__navbar__category__item {
+  width: 100px;
+  text-align: center;
+}
+
+.header__navbar__category__item:nth-of-type(3) {
+  padding-right: 25px;
+}
+
+.header__navbar__category a {
+  font-weight: 600;
+  color: black;
+}
+
+.header__navbar__category a:focus,
+.header__navbar__category a:active {
+  color: #5ece7b;
+  border-bottom: 2px solid #5ece7b;
+  padding-bottom: 28px;
+}
+
+.header__navbar__bag {
+  width: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.header__navbar__links {
+  width: 33%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/*For screens smaller than 1024px wide*/
+@media (max-width: 64em) {
+  .header nav {
+    padding: 22px 5px 22px 5px;
+    justify-content: space-around;
+  }
+  .header__navbar__bag {
+    display: none;
+  }
+  .header__navbar__category {
+    width: 70%;
+    font-weight: 300;
+    padding-right: 0.125em;
+    padding-left: 0.125em;
+  }
+  .header__navbar__links {
+    width: auto;
+    margin-right: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .header__navbar__links a {
+    margin-right: 0.875em;
+    text-align: center;
+  }
+}
+
+/*Styles  for shopping cart icon related stuff*/
+.cart-small {
+  position: absolute;
+  min-width: 100%;
+  width: 100vw;
+  min-height: 100%;
+  height: 100vh;
+  background-color: rgba(139, 138, 138, 0.5);
+  display: block;
+  top: 80px;
+  display: none;
+  margin-right: -20px;
+}
+
+.cart-content {
+  background-color: white;
+  width: 20.3125em;
+  height: 27em;
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+
+.header__navbar__links img:hover {
+  cursor: pointer;
+}
+
+.header__navbar__links__currency img {
+  width: 25px;
+  height: 25px;
+}
+.header__navbar__links__cartLogo img {
+  width: 25px;
+  height: 25px;
+}
+
+.header__navbar__links__currency {
+  margin-right: 25px;
+}
+
+.header__navbar__links__cartLogo {
+  position: relative;
+  width: 45px;
+  margin-right: 15px;
+}
+
+.header__navbar__links__cartLogo span {
+  position: absolute;
+  top: -2px;
+  display: inline-block;
+  height: 17px;
+  width: 17px;
+  text-align: center;
+  background-color: grey;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.8rem;
+}

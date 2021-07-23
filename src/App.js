@@ -4,6 +4,7 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 import MainLayout from './Layouts/MainLayout';
 import ProductDetails from './Components/ProductDetails';
+
 import Clothes from './Layouts/Clothes';
 import Tech from './Layouts/Tech';
 import ApolloClient from 'apollo-boost';
@@ -39,6 +40,7 @@ export default class App extends Component {
           <Route path = '/product/:id' component = {withRouter(ProductDetails)}/>
           <Route path = '/clothes/product/:id' component = {ProductDetails}/>
           <Route path = '/tech/product/:id' component = {ProductDetails}/>
+         
          
         </main>
         <Footer/>
