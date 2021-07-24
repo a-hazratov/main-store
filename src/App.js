@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Route, withRouter} from 'react-router-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import MainLayout from './Layouts/MainLayout';
@@ -19,12 +19,20 @@ const client = new ApolloClient({
 export default class App extends Component {
   constructor(props) {
     super(props);
-
+     
      this.state = {
-        
+        name: "Artur"
      }
   }
-
+ 
+  //Function that updates number of items in cart, to be called in ProductDetail and Header components
+  numberOfItems=(cartToUse) => {
+    let number = 0
+    let counter = document.querySelector(".counter")
+    let smallCartCounter = document.querySelector(".smallCartCounter")
+    cartToUse.map((eact)=>number += eact.quantity)
+    return [counter.textContent= number, smallCartCounter.textContent = number+" items"]
+}
   
     
 
@@ -32,14 +40,14 @@ export default class App extends Component {
     return (
       <ApolloProvider client={client}>
        <Router>
-        <Header/>
+        <Header name = {this.state.name}/>
         <main className = "mainSection">
           <Route path = '/' component = {MainLayout} exact/>
           <Route path = '/clothes' component = {Clothes}/>
           <Route path = '/tech' component = {Tech}/>
-          <Route path = '/product/:id' component = {withRouter(ProductDetails)}/>
-          <Route path = '/clothes/product/:id' component = {ProductDetails}/>
-          <Route path = '/tech/product/:id' component = {ProductDetails}/>
+          <Route path = '/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems}/>)}/>
+           <Route path = '/clothes/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems}/>)} />
+          <Route path = '/tech/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems}/>)} />
          
          
         </main>
@@ -50,5 +58,6 @@ export default class App extends Component {
   }
 }
 
+/**component = {withRouter(ProductDetails)} */
 
 

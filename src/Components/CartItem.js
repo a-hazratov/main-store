@@ -1,20 +1,52 @@
 import React, { Component } from 'react'
+import { gql } from "apollo-boost";
+import {graphql} from 'react-apollo';
 import './CartItemStyle.css'
 import Plus from './SVG/plus-square.svg'
 import Minus from './SVG/minus-square.svg'
 
- export default class CartItem extends Component {
-    constructor(props) {
-        super(props);
-       
-        this.state = {
-         
+const getProducts = gql`
+{
+    category {
+        products {
+            id
+            name
+            inStock
+            gallery   
+            category  
+            description
+            attributes{
+                name
+                items{
+                    displayValue
+                    value
+                }
+            } 
+            prices  {
+                currency
+                amount
+            }    
         }
     }
+}
+`
 
-
-    render() {
+ class CartItem extends Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+         products: this.props.products
+         
+        }
        
+    }
+
+    
+        
+    render() {
+            console.log("Products in CartItem ", this.state.products)
+            console.log("This is a product from Header to CartItem ", this.props.product )
         return (
             
             <div className = "cartItem">
@@ -22,8 +54,8 @@ import Minus from './SVG/minus-square.svg'
                     
                       <div className="col1">
                           <h5>{this.props.item.name}</h5>
-                          <h6>Very good shirt</h6>
-                           <p>$50</p>
+                          
+                           <p className = "cartItem__price">${this.props.product.prices[0].amount}</p>
                            <ul>
                                <li>L</li>
                                <li>XL</li>
@@ -35,7 +67,7 @@ import Minus from './SVG/minus-square.svg'
                            <span><img src = {Minus} alt="decrement"></img></span>
                       </div>
                       <div className="col3">
-                         Photo here
+                         <img src = {this.props.product.gallery[0]} alt= "sale item"></img>
                       </div>
                     
                   </div>
@@ -48,3 +80,4 @@ import Minus from './SVG/minus-square.svg'
     }
 }
 
+export default graphql(getProducts)(CartItem);

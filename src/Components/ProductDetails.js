@@ -35,7 +35,7 @@ const getProducts = gql`
 class ProductDetails extends Component {
     constructor (props) {
         super(props);
-        this.name = "Arthur"
+        
         this.chooseCapacity = this.chooseCapacity.bind(this);
         
         this.cartStorage = 'cart';
@@ -114,8 +114,9 @@ class ProductDetails extends Component {
         //End of adding products to cartArray or increment quantity
 
         //Check if the product has attributes and they have been selected ???
-       
+        
          localStorage[this.cartStorage] = JSON.stringify(cartArray)
+        this.props.numberOfItems(cartArray)
          cartArray = []
          this.removeStyles()
         this.setState({
@@ -304,7 +305,7 @@ class ProductDetails extends Component {
      
    
     render() {
-        console.log(this.state.currentProduct)
+        console.log(this.props.name)
         let item = this.state.data.find((each) => each.id === this.props.match.params.id)
        
         if(!item){
