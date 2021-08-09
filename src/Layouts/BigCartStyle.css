@@ -1,0 +1,49 @@
+.main-cart-container {
+  min-height: 100vh;
+  height: 100%;
+}
+.bigCart-content__button {
+  width: 100%;
+}
+
+.bigCheckOut {
+  border: none !important;
+  background-color: #5ece7b !important;
+  width: 8.75em;
+  height: 2.6875em;
+  cursor: pointer;
+}
+
+.bigCheckOut:active {
+  box-shadow: 0px 4px 4px #a1a5a3;
+}
+
+.bigCart-content__button {
+  width: 1098px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bigCartTotal {
+  width: 1098px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.bigCartTotal p {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.3rem;
+}
+
+.main-cart__name {
+  width: 1098px;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.main-cart__name p {
+  text-transform: uppercase;
+}

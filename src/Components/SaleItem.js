@@ -11,7 +11,23 @@ export default class SaleItem extends Component {
         }
     }
 
+
+    // Display the price in the product card
+    displayPrice=()=> {
+        let currentCurrency = this.props.currency;
+        let currentCart = this.props.item;
+        let price = currentCart.prices.map((each) => {
+            if(each.currency === currentCurrency) {
+                return each.amount
+            }
+        })
+        
+         return [currentCurrency, price]
+    }
+
     render() {
+
+        console.log(this.props.item.prices)
 
          //Start of styling for product card
          const productCardStyle={
@@ -44,7 +60,7 @@ export default class SaleItem extends Component {
 
                     <div className = "productCard__bottom" style = {productDesc}>
                         <p>{this.props.item.name}</p>
-                        <p>${this.props.item.inStock}</p>
+                        <p style = {{fontFamily: "Times New Roman"}}>{this.displayPrice()}</p>
                     </div>
                 </Link>
             </div>

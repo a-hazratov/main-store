@@ -4,24 +4,27 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 import MainLayout from './Layouts/MainLayout';
 import ProductDetails from './Components/ProductDetails';
+import BigCart from './Layouts/BigCart';
 
 import Clothes from './Layouts/Clothes';
 import Tech from './Layouts/Tech';
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import {ApolloProvider} from 'react-apollo';
 
 
 const client = new ApolloClient({
-  uri:'http://localhost:4000'
-})
+  uri:'http://localhost:4000',
+  cache: new InMemoryCache()
+});
 
 
 export default class App extends Component {
   constructor(props) {
-    super(props);
-     
+    super(props)
+   
      this.state = {
-        name: "Artur"
+      key: new Date(),
+      
      }
   }
  
@@ -37,10 +40,11 @@ export default class App extends Component {
     
 
   render() {
+    let key = this.state.key.getTime()+1
     return (
       <ApolloProvider client={client}>
        <Router>
-        <Header name = {this.state.name}/>
+        <Header key = {key}  numberOfItems = {this.numberOfItems}/>
         <main className = "mainSection">
           <Route path = '/' component = {MainLayout} exact/>
           <Route path = '/clothes' component = {Clothes}/>
@@ -48,7 +52,7 @@ export default class App extends Component {
           <Route path = '/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems}/>)}/>
            <Route path = '/clothes/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems}/>)} />
           <Route path = '/tech/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems}/>)} />
-         
+          <Route path = '/shopping-cart' component = {BigCart}/>
          
         </main>
         <Footer/>

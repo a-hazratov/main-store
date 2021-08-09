@@ -45,7 +45,8 @@ class ProductDetails extends Component {
             onceClickedColor: "prodDetails__prodInfo__color clickedColorBox", 
             data: [],
             storageName : 'productStorage',
-            currentProduct: {}
+            currentProduct: {},
+            currency: "USD"
         
         }
 
@@ -82,6 +83,8 @@ class ProductDetails extends Component {
             currentProductObj.id = product.id;
             currentProductObj.name =   product.name; 
             currentProductObj.quantity = 1;  
+            currentProductObj.gallery = product.gallery;
+            currentProductObj.prices = product.prices;
         //Generate s unique key based on attributes selected    
         let uKey = null;
         let keyAttritutes = [];
@@ -237,7 +240,8 @@ class ProductDetails extends Component {
     /*Choose color of products*/
     chooseColor=(event)=>{
         let onceClickedAttr = this.state.onceClickedColor
-        let clickedColor = event.target.textContent;
+        let clickedColor = event.target.style.backgroundColor;
+       
         
         let allBoxes = document.querySelectorAll('.prodDetails__prodInfo__color')
              allBoxes.forEach((box)=> {
@@ -265,7 +269,7 @@ class ProductDetails extends Component {
                     }
                 })
             }
-        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length == 0) {
+        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
             currentProductObj.attributes.push({name: "Color", value: clickedColor})
         }    
        
@@ -302,10 +306,11 @@ class ProductDetails extends Component {
           }
       }
       
+      
      
    
     render() {
-        console.log(this.props.name)
+        
         let item = this.state.data.find((each) => each.id === this.props.match.params.id)
        
         if(!item){
@@ -314,6 +319,21 @@ class ProductDetails extends Component {
                 <div className = "prodDetails"></div>
             )
         }
+
+        
+      // Display the price in the product card
+      let currency = this.state.currency
+       function displayPrice() {
+        let currentCurrency = currency;
+        let currentCart = item;
+        let price = currentCart.prices.map((each) => {
+            if(each.currency === currentCurrency) {
+                return each.amount
+            }
+        })
+        
+         return [currentCurrency, price]
+    }
 
         //Inserts images acording to the number of images available (max 5-6)
         let image = null;
@@ -355,7 +375,7 @@ class ProductDetails extends Component {
                     </div>
                     <div className = "prodDetails__prodInfo__price">
                         <h4>Price: </h4>
-                        <h4>{item.prices[0].currency}   {item.prices[0].amount}</h4>
+                        <h4>{displayPrice()}</h4>
                     </div>
                     <div className = "prodDetails__prodInfo__button">
                         <button type="button" onClick={this.addToCart}>ADD TO CART</button>
@@ -373,9 +393,3 @@ export default graphql(getProducts)(ProductDetails);
 
 
 
-/** rgbToHex=(r, g, b)=> {
-            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-          } */
-
-          /**localStorage[this.cartStorage] = JSON.stringify(cartArray)
-             cartArray = [] */

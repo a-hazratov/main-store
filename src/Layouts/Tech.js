@@ -11,7 +11,11 @@ const getProducts = gql`
             name
             inStock
             gallery   
-            category        
+            category
+            prices  {
+                currency
+                amount
+            }                 
         }
     }
 }
@@ -21,7 +25,8 @@ class Tech extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            productList: []
+            productList: [],
+            currency: "USD"
         }
     }
     
@@ -38,7 +43,7 @@ class Tech extends Component {
         this.getData() 
     }
     render() {
-        
+        let currency = this.state.currency;
         //Styles for the heading
         const styleTitle = {
         width: '100%',
@@ -51,7 +56,7 @@ class Tech extends Component {
                     {this.state.productList.map(function(item) {
                         if(item.category === "tech") {
                          return (<div className = "mainLayout__items">
-                            <SaleItem item = {item}/>
+                            <SaleItem item = {item} currency = {currency}/>
                         </div>)
                         }
                     } 

@@ -45,7 +45,6 @@ a:hover {
 
 /*Start of styles for footer*/
 .footer {
-  position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
@@ -168,6 +167,7 @@ a:hover {
 
 .prodDetails__prodInfo__price h4 {
   line-height: 0.8rem;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .prodDetails__prodInfo__button button {

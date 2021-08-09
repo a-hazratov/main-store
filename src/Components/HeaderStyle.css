@@ -2,6 +2,7 @@
   width: 100%;
   position: fixed;
   background-color: white;
+  z-index: 1;
 }
 .header nav {
   border: 1px black solid;
@@ -170,14 +171,19 @@
   box-shadow: 0px 4px 4px #a1a5a3;
 }
 
-.cart-content__button button:last-child {
-  border: none;
-  background-color: #5ece7b;
+.checkOut {
+  border: none !important;
+  background-color: #5ece7b !important;
 }
 
 .cart-content__button button:first-child {
   border: 0.7px black solid;
   background-color: white;
+}
+
+.cart-content__button button {
+  display: inline-block;
+  margin-left: 5px;
 }
 
 .cart-content__close img {
@@ -195,4 +201,15 @@
   display: block;
   align-self: flex-end;
   margin-top: -30px;
+}
+
+.total {
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.total span {
+  float: right;
+  margin-right: 10px;
 }
