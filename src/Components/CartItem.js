@@ -1,36 +1,9 @@
 import React, { Component } from 'react'
-import { gql } from "apollo-boost";
-import {graphql} from 'react-apollo';
 import './CartItemStyle.css'
 import Plus from './SVG/plus-square.svg'
 import Minus from './SVG/minus-square.svg'
 
 
-const getProducts = gql`
-{
-    category {
-        products {
-            id
-            name
-            inStock
-            gallery   
-            category  
-            description
-            attributes{
-                name
-                items{
-                    displayValue
-                    value
-                }
-            } 
-            prices  {
-                currency
-                amount
-            }    
-        }
-    }
-}
-`
 
  class CartItem extends Component {
     constructor(props) {
@@ -38,17 +11,16 @@ const getProducts = gql`
         this.cart = 'cart'
         this.state = {
              cart: []
-        }
-       
+        }  
     }
   //Set the price and the currency in the small cart
-    setThePrice=()=> {
-      let prices = this.props.item.prices;
-      return prices.map(each => {
-          if(each.currency === this.props.currency) {
+     setThePrice=()=> {
+        let prices = this.props.item.prices;
+        return prices.map(each => {
+           if(each.currency === this.props.currency) {
               return [each.currency, each.amount]
-          }
-      })
+           }
+        })
     } 
 
     //Set the attributes if there are any
@@ -66,54 +38,47 @@ const getProducts = gql`
             this.setState({
                 cart: JSON.parse(localStorage.getItem(this.cart))
             })
-        }
-       
+        }  
      }
     
 
     //Increment number of items when plus sign is clicked
- incrementItem=()=>{
-    console.log("Plus click occured", "id is " + this.props.id)
-    this.getDataFromStorage()
-    let cart;
-    
-    setTimeout(()=> {
-      cart = this.state.cart
-      cart.map((each)=> {
-        if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
-            each.quantity += 1;
-        }
-      })
-       
-      localStorage[this.cart] = JSON.stringify(cart)
-      this.props.getData()
-      console.log(cart)
-      
-    }, 0)
-   }
+    incrementItem=()=>{
+       this.getDataFromStorage()
+       let cart;
+       setTimeout(()=> {
+          cart = this.state.cart
+          cart.map((each)=> {
+             if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
+               each.quantity += 1;
+             }
+          })
+       localStorage[this.cart] = JSON.stringify(cart)
+       this.props.getData()
+       this.props.numOfItems(cart)  
+       }, 0)
+    }
   
-   // Decrement number of items when minus sign is clicked
-   decrementItem=()=>{
-    console.log("Minus click occured", "id is " + this.props.id)
-    this.getDataFromStorage()
-    let cart;
+    // Decrement number of items when minus sign is clicked
+    decrementItem=()=>{
+       this.getDataFromStorage()
+       let cart;
     
-    setTimeout(()=> {
-      cart = this.state.cart
-      cart.map((each)=> {
-        if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
-          if(each.quantity !== 0) {
-            each.quantity -= 1;
-          }
-        }
-      })
+       setTimeout(()=> {
+          cart = this.state.cart
+          cart.map((each)=> {
+             if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
+                if(each.quantity !== 0) {
+                  each.quantity -= 1;
+                }
+             }
+          })
        
-      localStorage[this.cart] = JSON.stringify(cart)
-      this.props.getData()
-      console.log(cart)
-      
-    }, 0)
-  }
+         localStorage[this.cart] = JSON.stringify(cart)
+         this.props.getData()
+         this.props.numOfItems(cart)
+       }, 0)
+    }
         
     render() {
          
@@ -122,7 +87,6 @@ const getProducts = gql`
             
             <div className = "cartItem">
                 <div className = "cartItem__name">
-                    
                         <div className="col1">
                           <h5>{this.props.item.name}</h5>
                           <p className = "cartItem__price">{this.setThePrice()}</p>                      
@@ -139,13 +103,11 @@ const getProducts = gql`
                         <div className="col3">
                           <img src = {this.props.item.gallery[0]} alt = "product"></img>
                         </div>
-                    
                   </div>
-
              </div>
         )
     }
 }
 
-export default graphql(getProducts)(CartItem);
+export default CartItem;
 

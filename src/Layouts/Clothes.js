@@ -28,13 +28,11 @@ const getProducts = gql`
         super(props);
         this.state = {
             productList: [],
-            currency: "USD"
         }
     }
     
     getData() {
         setTimeout(() => {
-            console.log("Data is fetched");
             this.setState({
                 productList: this.props.data.category.products
             })         
@@ -47,17 +45,18 @@ const getProducts = gql`
     
     render() {
      
-        let currency = this.state.currency;
+        let currency = this.props.currency
         //Styles for the heading
         const styleTitle = {
         width: '100%',
         paddingLeft: '50px', 
+        textTransform: 'uppercase',
+        fontFamily: "Raleway"
         }
         return (
-            <div>
-                 
+            <div>   
                 <div className = "mainLayout">
-                <h1 style = {styleTitle}>CLOTHES</h1>
+                 <h1 style = {styleTitle}>Clothes</h1>
                     {this.state.productList.map(function (item) {
                         if(item.category === "clothes") {
                            return (<div className = "mainLayout__items">

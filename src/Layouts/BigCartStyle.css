@@ -37,6 +37,10 @@
   font-size: 1.3rem;
 }
 
+.bigCartTotal p span {
+  margin-left: 10px;
+}
+
 .main-cart__name {
   width: 1098px;
   display: block;
@@ -46,4 +50,10 @@
 
 .main-cart__name p {
   text-transform: uppercase;
+}
+
+@media (max-width: 64em) {
+  .main-cart-container {
+    width: 100vw;
+  }
 }

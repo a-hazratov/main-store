@@ -26,13 +26,12 @@ class Tech extends Component {
         super(props);
         this.state = {
             productList: [],
-            currency: "USD"
+           
         }
     }
     
     getData() {
         setTimeout(() => {
-            console.log("Data is fetched");
             this.setState({
                 productList: this.props.data.category.products
             })       
@@ -42,8 +41,9 @@ class Tech extends Component {
     componentDidMount() {
         this.getData() 
     }
+
     render() {
-        let currency = this.state.currency;
+        let currency = this.props.currency
         //Styles for the heading
         const styleTitle = {
         width: '100%',
@@ -52,7 +52,7 @@ class Tech extends Component {
         return (
             <div>
                 <div className = "mainLayout">
-                <h1 style = {styleTitle}>TECH STUFF</h1>
+                    <h1 style = {styleTitle}>TECH STUFF</h1>
                     {this.state.productList.map(function(item) {
                         if(item.category === "tech") {
                          return (<div className = "mainLayout__items">
@@ -62,7 +62,6 @@ class Tech extends Component {
                     } 
                     )}
                 </div>     
-                 
             </div>
         )
     }

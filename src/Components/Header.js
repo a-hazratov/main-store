@@ -4,8 +4,6 @@ import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
 import './HeaderStyle.css'
 import CartItem from './CartItem'
-import Dollar from './SVG/dollar-sign.svg'
-import DownArrow from './SVG/down-arrow.svg'
 import Cart from './SVG/cart.svg'
 import Close from './SVG/close-sign.svg'
 
@@ -39,38 +37,34 @@ const getProducts = gql`
    constructor(props) {
        super(props)
        
-       
+       this.currency = this.props.currency;
        this.cart = 'cart';
        this.state = {
            isOpen: false,
            cart: JSON.parse(localStorage.getItem(this.cart)),
-           currency: "USD",
            products: [],
-           key: new Date(),
-           
+           key: new Date()   
        }
    }
 
 
  
 
-componentDidMount() {
-     try {
-        console.log("Header Mounted with componentDidMount");
+   componentDidMount() {
+        try {
          setTimeout(() => {
-        console.log("Data for Header is fetched", this.props.data.category.products);
-        this.setState({
-            products: [...this.props.data.category.products]
-        })
-        this.getDataFromStorage()
+            this.setState({
+               products: [...this.props.data.category.products]
+            })
+             this.getDataFromStorage()
         
-    }, 1000)
-     }
-     catch(error) {
-         console.log("This is error "+ error)
-     }
+        }, 1000)
+        }
+        catch(error) {
+          console.log("This is error "+ error)
+       }
     
-}
+    }
 
 
 
@@ -89,7 +83,6 @@ componentDidMount() {
             })
         }
         this.getDataFromStorage()  
-       
     }
 
     
@@ -99,16 +92,9 @@ componentDidMount() {
             this.setState({
                 cart: JSON.parse(localStorage.getItem(this.cart))
             })
-        }
-       
+        } 
     }
  
-   
-    
-    getItemFromApi=(id)=> {
-        let product = this.state.products.find(each => each.id === id)
-        return product
-    }
    // Remove shopping items from local storage when checkout button is clicked
     removeFromStorage=()=> {
         localStorage.removeItem(this.cart)
@@ -119,10 +105,19 @@ componentDidMount() {
         smallCartCounter.textContent = "";
     }
 
-    // Display total price in the small shopping cart
-    displayTotal=()=> {
-        let currentCurrency = this.state.currency;
-        let currentCart = this.state.cart;
+
+    render() {
+      let getData = this.getDataFromStorage;
+      let numOfItems = this.props.numberOfItems
+      let products = this.state.products;
+      let key = this.state.key.getTime();
+      let currency = this.props.currency;
+      let cart = this.state.cart;
+
+      // Display total price in the small shopping cart
+      function displayTotal() {
+        let currentCurrency = currency;
+        let currentCart = cart;
         let total = 0;
         if(currentCart) {
          for(let i = 0; i < currentCart.length; i++) {
@@ -133,23 +128,14 @@ componentDidMount() {
            }
          }
         }
-         return [currentCurrency, total.toFixed(2)]
-    }
+         return [currentCurrency,"   ", total.toFixed(2)]
+       }
 
-    render() {
-      let getData = this.getDataFromStorage;
-      console.log("The total amount of money", this.displayTotal())
-      let products = this.state.products;
-      let key = this.state.key.getTime();
-      let currency = this.state.currency;
       if(!products) {
-          return (
-              <div className = "header"></div>        
-          )
-         
+          return ( <div className = "header"></div>)
       }
        
-          return (
+      return (
            
             <div>
                 <div className="header">
@@ -161,10 +147,9 @@ componentDidMount() {
                            <div className="header__navbar__category__item">
                                <Link to="/clothes">CLOTHES</Link>
                             </div>
-                           <div className="header__navbar__category__item">
+                            <div className="header__navbar__category__item">
                                 <Link to="/tech">TECH</Link>
-                            </div>                         
-                           
+                            </div>                          
                         </div>
 
                          <div className = "header__navbar__bag">
@@ -173,44 +158,46 @@ componentDidMount() {
 
                          <div className = "header__navbar__links">
                                 <div className="header__navbar__links__currency">
-                                    <img src= {Dollar} alt="dollar sign"/>
-                                    <img src= {DownArrow}  alt="Dropdown arrow"/>
-                                </div>
+                                  <select name="currency" id="currency" onChange={this.props.setCurrency}>
+                                     <option value="USD">USD</option>
+                                     <option value="GBP">GBP</option>
+                                     <option value="AUD">AUD</option>
+                                     <option value="JPY">JPY</option>
+                                     <option value="RUB">RUB</option>
+                                   </select>   
+                               </div>
 
                             
                                 <div className ="header__navbar__links__cartLogo">
-                                <img src= {Cart} alt="Shopping cart" onClick={this.toggleCart}></img>
-                                <span className="counter">0</span>
+                                    <img src= {Cart} alt="Shopping cart" onClick={this.toggleCart}></img>
+                                    <span className="counter">0</span>
                                 </div>
                                 <div className = "cart-small" >
                                 
                                         <div className = "cart-content">
-                                      <h3>My Bag <span className="smallCartCounter"></span></h3>
-                                      <span className = "cart-content__close" onClick = {this.toggleCart}><img src = {Close} alt="close icon"></img></span>
-                                       {this.state.cart && this.state.cart.map(function(item) { 
-                                           return <CartItem key={key} item={item} id = {item.id} currency = {currency} getData = {getData}/>
-                                         })} {!this.state.cart && (<p>Your cart is empty</p>) }
+                                           <h3>My Bag <span className="smallCartCounter"></span></h3>
+                                           <span className = "cart-content__close" onClick = {this.toggleCart}><img src = {Close} alt="close icon"></img></span>
+                                           {this.state.cart && this.state.cart.map(function(item) { 
+                                              return <CartItem key={key} item={item} id = {item.id} currency = {currency} getData = {getData} numOfItems = {numOfItems}/>
+                                           })} {!this.state.cart && (<p>Your cart is empty</p>) }
                                             
-                                            <p className = "total">Total  <span>{this.displayTotal()}</span></p>
+                                            <p className = "total">Total  <span>{displayTotal()}</span></p>
 
                                             <div className = "cart-content__button">
-                                             <Link to = '/shopping-cart'>
-                                             <button type="button" onClick = {this.toggleCart}>VIEW BAG</button>
-                                             </Link>
-                                             <Link to = '/'>
-                                             <button type="button" className= "checkOut" onClick={this.removeFromStorage}>CHECK OUT</button>
-                                             </Link>
+                                               <Link to = '/shopping-cart'>
+                                               <button type="button" onClick = {this.toggleCart}>VIEW BAG</button>
+                                               </Link>
+                                               <Link to = '/'>
+                                               <button type="button" className= "checkOut" onClick={this.removeFromStorage}>CHECK OUT</button>
+                                               </Link>
                                             </div>
-                                        </div>
-                                 
-                                                  
-                             </div>                      
+                                        </div>    
+                                </div>                      
                          </div>
                     </nav>
                 </div>
             </div>
         )
-      
        
     }
 }

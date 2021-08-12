@@ -26,18 +26,17 @@ class MainLayout extends Component {
         super(props);
         this.state = {
             productList: [],
-            currency: 'USD'
+            
         }
     }
     
      getData() {
         setTimeout(() => {
-            console.log("Data is fetched");
             this.setState({
                 productList: [...this.props.data.category.products]
             })
         }, 1000)
-    }
+     }
 
     componentDidMount() {
        this.getData()
@@ -45,7 +44,7 @@ class MainLayout extends Component {
         
     
     render() {
-        let currency = this.state.currency
+        let currency = this.props.currency
     
         //Styles for the heading
         const styleTitle = {
@@ -59,7 +58,7 @@ class MainLayout extends Component {
             <div>
                
                 <div className = "mainLayout">
-                <h1 style = {styleTitle}>ALL ITEMS</h1>
+                    <h1 style = {styleTitle}>ALL ITEMS</h1>
                     {this.state.productList.length > 0 && (this.state.productList.map(item => (
                         <div className = "mainLayout__items">
                             <SaleItem item = {item} currency = {currency}/>

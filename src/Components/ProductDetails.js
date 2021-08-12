@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-//import {Link, withRouter} from 'react-router-dom'
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
-import replicaOfData from './replicaOfData.json'
+
 
 const getProducts = gql`
 {
@@ -37,7 +36,6 @@ class ProductDetails extends Component {
         super(props);
         
         this.chooseCapacity = this.chooseCapacity.bind(this);
-        
         this.cartStorage = 'cart';
         
         this.state = {
@@ -45,20 +43,14 @@ class ProductDetails extends Component {
             onceClickedColor: "prodDetails__prodInfo__color clickedColorBox", 
             data: [],
             storageName : 'productStorage',
-            currentProduct: {},
-            currency: "USD"
-        
+            currentProduct: {}
         }
-
-        this.product = this.state.data.find((each) => each.id === this.props.match.params.id)
     }
 
      
     
     componentDidMount() {
-        console.log("Mounted");
         setTimeout(() => {
-            console.log("Data is fetched", this.props.data.category.products);
             this.setState({
                 data: [...this.props.data.category.products]
             })
@@ -72,7 +64,6 @@ class ProductDetails extends Component {
     //Add products to localStorage and the shopping cart
     addToCart =()=>{
         let product = this.state.data.find((each) => each.id === this.props.match.params.id)
-        console.log("Adding to cart button")
         if(!localStorage[this.cartStorage]) {
             localStorage[this.cartStorage] = JSON.stringify([]);          
         }
@@ -85,7 +76,7 @@ class ProductDetails extends Component {
             currentProductObj.quantity = 1;  
             currentProductObj.gallery = product.gallery;
             currentProductObj.prices = product.prices;
-        //Generate s unique key based on attributes selected    
+        //Generate a unique key based on attributes selected    
         let uKey = null;
         let keyAttritutes = [];
         if(currentProductObj.attributes) {
@@ -106,7 +97,6 @@ class ProductDetails extends Component {
               if(!cartArray.find(item => item.uKey === uKey)) {
                   cartArray.push(currentProductObj)
               } else if (cartArray.find(item => item.uKey === uKey)) {
-                 console.log("the same attribute chosen")
                  cartArray.map((item) => {
                      if(item.uKey === uKey) {
                          item.quantity += 1
@@ -116,21 +106,55 @@ class ProductDetails extends Component {
         }
         //End of adding products to cartArray or increment quantity
 
-        //Check if the product has attributes and they have been selected ???
-        
-         localStorage[this.cartStorage] = JSON.stringify(cartArray)
-        this.props.numberOfItems(cartArray)
-         cartArray = []
-         this.removeStyles()
-        this.setState({
-             currentProduct: {}
-        })
-        
-        //Removing styles from the page after the addToCart button is clicked
-        
-        
-         
-    }
+        //Check if the product has attributes and they have been selected
+            if(product.attributes.length !== 0) {
+                let prodAttributes = [];
+                let currCartAttributes = [];
+                for(let i = 0; i < product.attributes.length; i++) {
+                    if(product.attributes[i].name === "Color" || product.attributes[i].name === "Capacity" || product.attributes[i].name === "Size") {
+                    prodAttributes.push(product.attributes[i].name)
+                    }
+                }
+                if(!currentProductObj.attributes || currentProductObj.attributes.length === 0) {
+                    alert("Please, select the attributes of the product")
+                    return
+                } else if (currentProductObj.attributes || currentProductObj.attributes.length !== 0) {
+                    for(let j = 0; j < currentProductObj.attributes.length; j++) {
+                        currCartAttributes.push(currentProductObj.attributes[j].name)
+                    } 
+                    
+                    if(this.checkForAttributes(currCartAttributes, prodAttributes)) {
+                        localStorage[this.cartStorage] = JSON.stringify(cartArray)
+                        this.props.numberOfItems(cartArray)
+                        cartArray = []
+                        this.setState({
+                        currentProduct: {}
+                        })
+                        alert("Your item has been added to the cart")
+                        this.removeStyles()
+                    } else {
+                        alert("Please, select all the attributes")
+                    }
+                } 
+                            
+             } else {
+                 //Adding to the cart if there are no attributes to choose
+                 localStorage[this.cartStorage] = JSON.stringify(cartArray)
+                 this.props.numberOfItems(cartArray)
+                 cartArray = []
+                 this.setState({
+                 currentProduct: {}
+                 })
+                 alert("Your item has been added to the cart")
+                 this.removeStyles()
+             }
+        }  
+
+     
+         /**Function that checks if all attributes have been selected , to be used inside addToCart function */
+         checkForAttributes=(attr, target)=> {
+             return target.every(item=> attr.includes(item))
+         }
 
         /**Remove styles from clicked attributes on product page */
          removeStyles=()=> {
@@ -138,78 +162,69 @@ class ProductDetails extends Component {
             let colorStyleToRemove = document.querySelector(".clickedColorBox");
             if(capacitySizeStyleRemove) {
                 capacitySizeStyleRemove.classList.remove("clickedSizeBox");
-            } else if (colorStyleToRemove) {
+            }
+            if (colorStyleToRemove) {
                 colorStyleToRemove.classList.remove("clickedColorBox")
             }  
          }
 
        /*Choose capacity of a product*/
-    chooseCapacity(event){ 
-        //Setting indicators if size was clicked
-        let onceClickedAttr = this.state.onceClickedSize
-        let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
-        allSizes.forEach((size)=> {
-            if(size.getAttribute("class") === onceClickedAttr ) {
-                size.classList.remove("clickedSizeBox")
-            } else if (size === event.target.parentNode) {
+        chooseCapacity(event){ 
+           //Setting indicators if size was clicked
+           let onceClickedAttr = this.state.onceClickedSize
+           let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
+           allSizes.forEach((size)=> {
+              if(size.getAttribute("class") === onceClickedAttr ) {
+                  size.classList.remove("clickedSizeBox")
+              } else if (size === event.target.parentNode) {
                 size.classList.add("clickedSizeBox")
-            }
-        })
-        // setting the right size in the shopping cart
-        //let item = this.state.data.find((each) => each.id === this.props.match.params.id)
-        let displayValue = event.target.textContent;
-        let currentProductObj = this.state.currentProduct;
-        // currentProductObj.id = this.product.id;
-         console.log(event.target)
-        if(!currentProductObj.hasOwnProperty("attributes")) {
-            currentProductObj.attributes = [];
-            currentProductObj.attributes.push({name: "Capacity", value: displayValue})
-            console.log("new array attributes created and object inserted")
-        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length !== 0) {
-            if(!currentProductObj.attributes.find((item) => item.name === "Capacity" )) {
-                currentProductObj.attributes.push({name: "Capacity", value: displayValue})
-            } else if (currentProductObj.attributes.find((item) => item.name === "Capacity")) {
-                currentProductObj.attributes.map((each) => {
+              }
+           })
+            // setting the right size in the shopping cart
+           let displayValue = event.target.textContent;
+           let currentProductObj = this.state.currentProduct;
+         
+           if(!currentProductObj.hasOwnProperty("attributes")) {
+               currentProductObj.attributes = [];
+               currentProductObj.attributes.push({name: "Capacity", value: displayValue})
+           } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length !== 0) {
+                if(!currentProductObj.attributes.find((item) => item.name === "Capacity" )) {
+                    currentProductObj.attributes.push({name: "Capacity", value: displayValue})
+                } else if (currentProductObj.attributes.find((item) => item.name === "Capacity")) {
+                     currentProductObj.attributes.map((each) => {
                     if(each.name === "Capacity" && each.value !== displayValue) {
                         each.value = displayValue
                     } else if (each.name === "Capacity" && each.value === displayValue) {
                        each.value = ""
                     }
-                })
-            }
-        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
+                    })
+                }
+            } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
             currentProductObj.attributes.push({name: "Capacity", value: displayValue})
+            }
+            this.setState({
+                currentProduct: currentProductObj
+            }) 
         }
-
-
-        this.setState({
-            currentProduct: currentProductObj
-        }) 
-
-    }
      
     /** Choose size of the product */
     chooseSize=(event)=>{ 
         //Setting indicators if size was clicked
         let onceClickedAttr = this.state.onceClickedSize
         let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
-        allSizes.forEach((size)=> {
+         allSizes.forEach((size)=> {
             if(size.getAttribute("class") === onceClickedAttr ) {
                 size.classList.remove("clickedSizeBox")
             } else if (size === event.target.parentNode) {
                 size.classList.add("clickedSizeBox")
             }
-        })
+         })
         // setting the right size in the shopping cart
-        //let item = this.state.data.find((each) => each.id === this.props.match.params.id)
         let displayValue = event.target.textContent;
         let currentProductObj = this.state.currentProduct;
-        // currentProductObj.id = this.product.id;
-         console.log(event.target)
         if(!currentProductObj.hasOwnProperty("attributes")) {
             currentProductObj.attributes = [];
             currentProductObj.attributes.push({name: "Size", value: displayValue})
-            console.log("new array attributes created and object inserted")
         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length > 0) {
             currentProductObj.attributes.map((each)=> {
             let index = currentProductObj.attributes.indexOf(each);
@@ -221,16 +236,13 @@ class ProductDetails extends Component {
                 currentProductObj.attributes.push({name: "Size",value: displayValue})
                 console.log("Size exists, new box clicked")
             } 
-        })         
-        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.every(item => !item.name === "Size"))  {
-                
+            })         
+        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.every(item => !item.name === "Size"))  {    
             currentProductObj.attributes.push({name: "Size",   value: displayValue})
-            console.log("last option")
         }
         this.setState({
             currentProduct: currentProductObj
         }) 
-
     }
      
            
@@ -238,11 +250,9 @@ class ProductDetails extends Component {
 
 
     /*Choose color of products*/
-    chooseColor=(event)=>{
+     chooseColor=(event)=>{
         let onceClickedAttr = this.state.onceClickedColor
         let clickedColor = event.target.style.backgroundColor;
-       
-        
         let allBoxes = document.querySelectorAll('.prodDetails__prodInfo__color')
              allBoxes.forEach((box)=> {
             if(box.getAttribute("class") === onceClickedAttr) {
@@ -250,13 +260,12 @@ class ProductDetails extends Component {
             } else if (box === event.target) {
                 box.classList.add("clickedColorBox")
             }
-        })   
-        //Setting the chosen color for the shopping cart
-        let currentProductObj = this.state.currentProduct;
+             })   
+         //Setting the chosen color for the shopping cart
+         let currentProductObj = this.state.currentProduct;
         if(!currentProductObj.hasOwnProperty("attributes")) {
             currentProductObj.attributes = [];
             currentProductObj.attributes.push({name: "Color", value: clickedColor})
-            console.log("Attributes did not exist, created and added color attr")
         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length !== 0) {
             if(!currentProductObj.attributes.find((item) => item.name === "Color" )) {
                 currentProductObj.attributes.push({name: "Color", value: clickedColor})
@@ -270,26 +279,24 @@ class ProductDetails extends Component {
                 })
             }
         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
-            currentProductObj.attributes.push({name: "Color", value: clickedColor})
+             currentProductObj.attributes.push({name: "Color", value: clickedColor})
         }    
-       
         this.setState({
             currentProduct: currentProductObj
         })   
-    }
+     }
     
 
 
-    //Setting attributes and attribute names of the product
+    //Setting attributes and attribute names of the product 
      setAttribute=(attributeName)=> {
           let output = null;
           let item = this.state.data.find((each) => each.id === this.props.match.params.id)
         
-          
           let attrArray = item.attributes; //Getting an arry of objects with attributes 
           let found = attrArray.find((each)=> each.name === attributeName)
          
-         if(attributeName === "Capacity") {
+          if(attributeName === "Capacity") {
               output = found.items.map((each) => 
               <div className = "prodDetails__prodInfo__size" onClick={this.chooseCapacity}><h4>{each.value}</h4></div>)    
               return [<h4>{attributeName}</h4>, output]          
@@ -312,28 +319,24 @@ class ProductDetails extends Component {
     render() {
         
         let item = this.state.data.find((each) => each.id === this.props.match.params.id)
-       
+        
         if(!item){
-            return (
-            
-                <div className = "prodDetails"></div>
-            )
+            return (<div className = "prodDetails"></div>)
         }
 
         
       // Display the price in the product card
-      let currency = this.state.currency
+       let currency = this.props.currency
        function displayPrice() {
-        let currentCurrency = currency;
-        let currentCart = item;
-        let price = currentCart.prices.map((each) => {
-            if(each.currency === currentCurrency) {
-                return each.amount
-            }
+          let currentCurrency = currency;
+          let currentCart = item;
+          let price = currentCart.prices.map((each) => {
+              if(each.currency === currentCurrency) {
+                  return each.amount
+              }
         })
-        
          return [currentCurrency, price]
-    }
+       }
 
         //Inserts images acording to the number of images available (max 5-6)
         let image = null;
@@ -351,9 +354,8 @@ class ProductDetails extends Component {
           function changeImg (e) {
                 let clickedImg = e.target.src
                 let newPlace = document.querySelector(".prodDetails__bigImg img")
-                console.log(clickedImg, newPlace.src)
                 newPlace.src = clickedImg
-          }
+        }
     
           
         return (
@@ -366,12 +368,10 @@ class ProductDetails extends Component {
                 </div>
                 <div className = "prodDetails__prodInfo">
                     <div className = "prodDetails__prodInfo__title">
-                           <h2>{item.name}</h2>
+                        <h2>{item.name}</h2>
                     </div>
-                    <div>
-                            
-                             {item.attributes.map((each)=> this.setAttribute(each.name) )}
-                        
+                    <div> 
+                       {item.attributes.map((each)=> this.setAttribute(each.name) )}   
                     </div>
                     <div className = "prodDetails__prodInfo__price">
                         <h4>Price: </h4>
@@ -380,10 +380,8 @@ class ProductDetails extends Component {
                     <div className = "prodDetails__prodInfo__button">
                         <button type="button" onClick={this.addToCart}>ADD TO CART</button>
                         <p>{item.description}</p>
-
                     </div>
-                </div>
-                
+                </div> 
             </div>
         )
     }
