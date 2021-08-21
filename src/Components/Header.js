@@ -2,10 +2,17 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
-import './HeaderStyle.css'
+import './ComStyles/HeaderStyle.css'
 import CartItem from './CartItem'
 import Cart from './SVG/cart.svg'
 import Close from './SVG/close-sign.svg'
+import Dollar from './SVG/dollar-sign.svg'
+import AusDollar from './SVG/dollar-sign.svg'
+import Pound from './SVG/pound-sign.svg';
+import Yen from './SVG/yen-sign.svg'
+import Ruble from './SVG/ruble-sign.svg'
+import DownArrow from './SVG/down-arrow.svg'
+import UpArrow from './SVG/up-arrow.svg'
 
 
 const getProducts = gql`
@@ -36,53 +43,92 @@ const getProducts = gql`
  class Header extends Component {
    constructor(props) {
        super(props)
-       
-       this.currency = this.props.currency;
-       this.cart = 'cart';
+       this.cartSmall = React.createRef();
+       this.cartSmallInner = React.createRef();
+       this.cartIcon = React.createRef();
+       this.headerMain = React.createRef();
+       this.currencyButton = React.createRef();
+       this.currencySelect = React.createRef();
+       this.arrow = React.createRef();
+       this.currencyBox = React.createRef()
+        this.cart = 'cart';
        this.state = {
            isOpen: false,
            cart: JSON.parse(localStorage.getItem(this.cart)),
-           products: [],
-           key: new Date()   
+           products: [],  
+           arrowImg: DownArrow,
+           moneyBoxOpen : true,
+           moneySign: Dollar,
+           currencySign: {
+               USD : Dollar,
+               RUB : Ruble,
+               JPY : Yen,
+               GBP : Pound,
+               AUD : AusDollar
+           }
        }
    }
 
-
- 
+  
 
    componentDidMount() {
+      document.addEventListener('mousedown', this.currencyBoxOutside)
+
         try {
-         setTimeout(() => {
+           setTimeout(() => {
             this.setState({
                products: [...this.props.data.category.products]
             })
-             this.getDataFromStorage()
+             this.getDataFromStorage()    
+            }, 1000)
         
-        }, 1000)
         }
         catch(error) {
           console.log("This is error "+ error)
        }
-    
+       
     }
 
-
-
-    toggleCart=()=> {
-        let cart = document.querySelector('.cart-small');
-        if(this.state.isOpen === false) {
-            cart.style.display = "block";
-            this.setState({
-                isOpen: true,
-                cart: []
-            })
-        } else if (this.state.isOpen === true) {
-            cart.style.display = "none";
-            this.setState({
-                isOpen: false
-            })
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.currencyBoxOutside)
+    }
+    
+    //Handle the click outside of currency dropdown
+    currencyBoxOutside=(event)=>{
+        if(this.currencyBox.current && !this.currencyBox.current.contains(event.target) && !this.state.moneyBoxOpen === true) {
+               this.toggleCurrency()
+        
         }
-        this.getDataFromStorage()  
+    }
+
+    // Close the small cart overlay when the click occures outside the cart 
+    handleClickOutside=()=>{
+       this.headerMain.current.addEventListener('click', (event)=> {
+           if(this.state.isOpen && !this.cartSmallInner.current.contains(event.target)) {
+               this.toggleCart()
+           }
+       })
+       
+    }
+  
+    
+    toggleCart=()=> {
+            if(this.state.isOpen === false) {
+                this.cartSmall.current.style.display = "block";
+                this.setState({
+                    isOpen: true,
+                    cart: []
+                })
+    
+    
+            } else if (this.state.isOpen === true) {
+                this.cartSmall.current.style.display = "none";
+                this.setState({
+                    isOpen: false
+                })
+            }
+            this.getDataFromStorage()  
+           
     }
 
     
@@ -105,14 +151,69 @@ const getProducts = gql`
         smallCartCounter.textContent = "";
     }
 
+    
+    //Toggle currency button
+    toggleCurrency=()=>{
+       let select = this.currencySelect.current;
+       //select.classList.toggle('hiddenCurrency');
+       if(this.state.moneyBoxOpen === false) {
+           select.classList.add("hiddenCurrency")
+           this.setState({
+               arrowImg: DownArrow,
+               moneyBoxOpen: true
+           })
+       }else if(this.state.moneyBoxOpen === true) {
+           select.classList.remove('hiddenCurrency')
+           this.setState({
+            arrowImg: UpArrow,
+            moneyBoxOpen: false
+        })
+       }
+
+      /* if(this.state.arrowImg === DownArrow) {
+           this.setState({
+               arrowImg: UpArrow
+           })} else if(this.state.arrowImg === UpArrow){
+            this.setState({
+                arrowImg: DownArrow
+            })
+       }*/
+    }
+
+    //Select currency from the dropdown
+    selectCurrency=()=>{
+        let currencyBox = this.currencySelect.current;
+        let currencyItems = this.state.currencySign;
+        
+        currencyBox.addEventListener('click', (event)=>{
+            
+            if(event.target.tagName === "INPUT" || "LABEL" ) {
+
+                for(let symbol in currencyItems) {
+                    if(symbol === event.target.value) {
+                        this.setState({
+                            moneySign: currencyItems[symbol]
+                        })
+                    }
+                }
+
+               this.props.setCurrency(event.target.value)
+               this.toggleCurrency()
+            }
+        })
+      
+    }
+
 
     render() {
+      let arrowSrc = this.state.arrowImg;
+      let moneySign = this.state.moneySign;
       let getData = this.getDataFromStorage;
       let numOfItems = this.props.numberOfItems
       let products = this.state.products;
-      let key = this.state.key.getTime();
-      let currency = this.props.currency;
       let cart = this.state.cart;
+      let currency = this.props.currency;
+      
 
       // Display total price in the small shopping cart
       function displayTotal() {
@@ -138,8 +239,8 @@ const getProducts = gql`
       return (
            
             <div>
-                <div className="header">
-                    <nav className = "header__navbar">
+                <div className="header" >
+                    <nav className = "header__navbar" ref={this.headerMain} onClick = {this.handleClickOutside}>
                        <div className="header__navbar__category">
                            <div className="header__navbar__category__item">
                                <Link to="/">ALL ITEMS</Link>
@@ -157,28 +258,42 @@ const getProducts = gql`
                          </div>
 
                          <div className = "header__navbar__links">
-                                <div className="header__navbar__links__currency">
-                                  <select name="currency" id="currency" onChange={this.props.setCurrency}>
-                                     <option value="USD">USD</option>
-                                     <option value="GBP">GBP</option>
-                                     <option value="AUD">AUD</option>
-                                     <option value="JPY">JPY</option>
-                                     <option value="RUB">RUB</option>
-                                   </select>   
+                                <div className="header__navbar__links__currency" ref={this.currencyBox} >
+                                    <button className = "currency-button" id = "currency-button" ref={this.currencyButton} onClick={this.toggleCurrency}>
+                                        <img src = {moneySign} alt="USD"></img> 
+                                        <img className = "arrow" src = {arrowSrc} alt="downArrow"></img>
+                                    </button>
+                                   <div className = "select hiddenCurrency" ref = {this.currencySelect} onClick = {this.selectCurrency}>
+                                       <label className = "select-option" for="USD">&#36; USD</label>
+                                       <input className = "select-item" id="USD" type="radio" name="currency" value="USD"/>
+
+                                       <label className = "select-option" for="GBP">&#163; GBP</label>
+                                       <input className = "select-item" id="GBP" type="radio" name="currency" value="GBP"/>
+
+                                       <label className = "select-option" for="AUD">&#36; AUD</label>
+                                       <input className = "select-item" id="AUD" type="radio" name="currency" value="AUD"/>
+
+                                       <label className = "select-option" for="JPY">&#165;  JPY</label>
+                                       <input className = "select-item" id="JPY" type="radio" name="currency" value="JPY"/>
+
+                                       <label className = "select-option" for="RUB">&#8381; RUB</label>
+                                       <input className = "select-item" id="RUB" type="radio" name="currency" value="RUB"/>
+
+                                   </div>
                                </div>
 
                             
                                 <div className ="header__navbar__links__cartLogo">
-                                    <img src= {Cart} alt="Shopping cart" onClick={this.toggleCart}></img>
+                                    <img src= {Cart} alt="Shopping cart" onClick={this.toggleCart} ref={this.cartIcon}></img>
                                     <span className="counter">0</span>
                                 </div>
-                                <div className = "cart-small" >
+                                <div className = "cart-small" ref={this.cartSmall}>
                                 
-                                        <div className = "cart-content">
+                                        <div className = "cart-content" ref = {this.cartSmallInner}>
                                            <h3>My Bag <span className="smallCartCounter"></span></h3>
                                            <span className = "cart-content__close" onClick = {this.toggleCart}><img src = {Close} alt="close icon"></img></span>
                                            {this.state.cart && this.state.cart.map(function(item) { 
-                                              return <CartItem key={key} item={item} id = {item.id} currency = {currency} getData = {getData} numOfItems = {numOfItems}/>
+                                              return <CartItem key={item.id+item.uKey} item={item} id = {item.id} currency = {currency} getData = {getData} numOfItems = {numOfItems}/>
                                            })} {!this.state.cart && (<p>Your cart is empty</p>) }
                                             
                                             <p className = "total">Total  <span>{displayTotal()}</span></p>
@@ -204,3 +319,11 @@ const getProducts = gql`
 
 export default graphql(getProducts)(Header);
 
+
+/**<ul name="currency" id="currency" ref = {this.props.select} onChange={this.props.setCurrency}>
+                                     <li className = "selectItem" value="USD">USD</li>
+                                     <li className = "selectItem"  value="GBP">GBP</li>
+                                     <li className = "selectItem" value="AUD">AUD</li>
+                                     <li className = "selectItem" value="JPY">JPY</li>
+                                     <li className = "selectItem" value="RUB">RUB</li>
+                                   </ul>    */

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
-import './BigCartStyle.css';
+import './LayoutStyles/BigCartStyle.css';
 import BigCartItem from '../Components/BigCartItem';
 
  class BigCart extends Component {

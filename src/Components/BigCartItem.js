@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './BigCartItemStyle.css';
+import './ComStyles/BigCartItemStyle.css';
 import Plus from './SVG/plus-square.svg'
 import Minus from './SVG/minus-square.svg' 
 import Close from './SVG/close-sign.svg'
@@ -71,7 +71,7 @@ import Close from './SVG/close-sign.svg'
         cart = this.state.cart
         cart.map((each)=> {
            if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
-              if(each.quantity !== 0) {
+              if(each.quantity !== 1) {
                   each.quantity -= 1;
                }
            }

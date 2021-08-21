@@ -19,6 +19,7 @@ body {
   color: black;
   line-height: 1.3;
   font-weight: 300;
+  font-family: "Raleway", sans-serif;
 }
 
 a,
@@ -160,7 +161,7 @@ a:hover {
 
 .prodDetails__prodInfo__price h4 {
   line-height: 0.8rem;
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Raleway", sans-serif;
 }
 
 .prodDetails__prodInfo__button button {

@@ -20,6 +20,7 @@ const client = new ApolloClient({
 export default class App extends Component {
   constructor(props) {
         super(props)
+      
    
       this.state = {
            key: new Date(),
@@ -38,25 +39,27 @@ export default class App extends Component {
    }
 
   //Setting currency for the whole app
-   setCurrency=()=>{
-      let elem = document.querySelector("select")
+   setCurrency=(money)=>{
+      let elem = money;
+      console.log("SetCurrency function is running")
       setTimeout(() => {
          this.setState({
-              currency: elem.value
+              currency: elem
         })
       }, 0)
    }
-  
+   
     
 
   render() {
     let key = this.state.key.getTime()+1;
-    let currency = this.state.currency
+    let currency = this.state.currency;
+    
     return (
       <ApolloProvider client={client}>
        <Router>
-        <Header key = {key}  numberOfItems = {this.numberOfItems} currency = {currency} setCurrency = {this.setCurrency}/>
-        <main className = "mainSection">
+        <Header key = {key} numberOfItems = {this.numberOfItems} currency = {currency} setCurrency = {this.setCurrency}/>
+        <main className = "mainSection" ref={this.appMain}>
            <Route path = '/' render={(props)=> (<MainLayout {...props} currency = {currency}/>)} exact/>
            <Route path = '/clothes' render={(props)=> (<Clothes {...props} currency = {currency}/>)}/>
            <Route path = '/tech' render={(props)=> (<Tech {...props} currency = {currency}/>)}/>

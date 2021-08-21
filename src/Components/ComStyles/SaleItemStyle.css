@@ -1,0 +1,19 @@
+.productCard {
+  width: 386px;
+  height: 444px;
+  padding: 16px;
+  margin-top: 5px;
+}
+
+.productCard img {
+  width: 354px;
+  height: 330px;
+  object-fit: contain;
+}
+
+.productCard__bottom {
+  width: 354px;
+  height: 58px;
+  color: #1d1f22;
+  line-height: 0.7rem;
+}
