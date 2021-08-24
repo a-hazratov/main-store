@@ -18,7 +18,7 @@ import Minus from './SVG/minus-square.svg'
         let prices = this.props.item.prices;
         return prices.map(each => {
            if(each.currency === this.props.currency) {
-              return [each.currency, each.amount]
+              return [each.amount]
            }
         })
     } 
@@ -27,9 +27,11 @@ import Minus from './SVG/minus-square.svg'
     setTheAttributes=()=>{
         let attributes = this.props.item.attributes;
         if(attributes) {
-        return attributes.map(each => each.name === "Size" ? <li>{each.value}</li> :
-                                      each.name === "Capacity" ? each.value :
-                                      each.name === "Color" ? <li style = {{backgroundColor: each.value}}></li>: "")
+        return attributes.map(each => each.name === "Size" ? <li className="liSize">{each.value}</li> :
+                                      each.name === "Capacity" ? <li className="liCapacity">{each.value}</li> :
+                                      each.name === "Color" ? <li className="liColor" style = {{backgroundColor: each.value}}></li>:
+                                      each.name === "With USB 3 ports" ? <li className="liUSB">USB 3 ports:  {each.value}</li> :
+                                      each.name === "Touch ID in keyboard" ? <li className="liTouch">Touch ID: {each.value}</li>: "")
         }
     }
 
@@ -89,9 +91,9 @@ import Minus from './SVG/minus-square.svg'
                 <div className = "cartItem__name">
                         <div className="col1">
                           <h5>{this.props.item.name}</h5>
-                          <p className = "cartItem__price">{this.setThePrice()}</p>                      
+                          <p className = "cartItem__price"><img src = {this.props.moneySign} alt="money"></img>{this.setThePrice()}</p>                      
                            
-                           <ul>
+                           <ul className="attrList">
                             {this.setTheAttributes()}
                            </ul>
                         </div>

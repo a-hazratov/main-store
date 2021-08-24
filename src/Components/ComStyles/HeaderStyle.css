@@ -164,6 +164,8 @@
   right: 20px;
   padding-left: 3px;
   padding-right: 3px;
+  font-size: 1rem;
+  z-index: 2;
 }
 
 .cart-content::-webkit-scrollbar {
@@ -182,6 +184,7 @@
   margin-left: 20px;
   display: inline-block;
   width: 150px;
+  font-size: 1rem;
 }
 
 .header__navbar__links img:hover {
@@ -223,10 +226,10 @@
 .cart-content__button button {
   width: 8.75em;
   height: 2.6875em;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 5px;
+  margin-bottom: 12px;
   margin-left: 7px;
 }
 
@@ -241,6 +244,7 @@
 .checkOut {
   border: none !important;
   background-color: #5ece7b !important;
+  color: #ffffff;
 }
 
 .cart-content__button button:first-child {
@@ -250,7 +254,7 @@
 
 .cart-content__button button {
   display: inline-block;
-  margin-left: 5px;
+  margin-left: 22px;
 }
 
 .cart-content__close img {
@@ -271,14 +275,22 @@
 }
 
 .total {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   font-family: "Raleway", sans-serif;
+  margin-left: 20px;
+}
+
+.total img {
+  width: 16px;
+  height: 16px;
+  margin-bottom: -3px;
 }
 
 .total span {
   float: right;
-  margin-right: 10px;
+  margin-right: 24px;
+  font-size: 16px;
 }
 
 @media (max-width: 64em) {
@@ -293,5 +305,10 @@
     background-color: rgba(139, 138, 138, 0.5);
     display: block;
     display: none;
+  }
+
+  .cart-content__button a {
+    display: inline-block;
+    width: 8.75em;
   }
 }

@@ -169,15 +169,6 @@ const getProducts = gql`
             moneyBoxOpen: false
         })
        }
-
-      /* if(this.state.arrowImg === DownArrow) {
-           this.setState({
-               arrowImg: UpArrow
-           })} else if(this.state.arrowImg === UpArrow){
-            this.setState({
-                arrowImg: DownArrow
-            })
-       }*/
     }
 
     //Select currency from the dropdown
@@ -229,7 +220,7 @@ const getProducts = gql`
            }
          }
         }
-         return [currentCurrency,"   ", total.toFixed(2)]
+         return [total.toFixed(2)]
        }
 
       if(!products) {
@@ -293,10 +284,12 @@ const getProducts = gql`
                                            <h3>My Bag <span className="smallCartCounter"></span></h3>
                                            <span className = "cart-content__close" onClick = {this.toggleCart}><img src = {Close} alt="close icon"></img></span>
                                            {this.state.cart && this.state.cart.map(function(item) { 
-                                              return <CartItem key={item.id+item.uKey} item={item} id = {item.id} currency = {currency} getData = {getData} numOfItems = {numOfItems}/>
+                                              return <CartItem key={item.id+item.uKey} item={item} id = {item.id} 
+                                                        currency = {currency} getData = {getData}
+                                                         numOfItems = {numOfItems} moneySign = {moneySign}/>
                                            })} {!this.state.cart && (<p>Your cart is empty</p>) }
                                             
-                                            <p className = "total">Total  <span>{displayTotal()}</span></p>
+                                            <p className = "total">Total  <span><img src = {moneySign} alt="money"></img>{displayTotal()}</span></p>
 
                                             <div className = "cart-content__button">
                                                <Link to = '/shopping-cart'>

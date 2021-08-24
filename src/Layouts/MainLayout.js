@@ -61,7 +61,7 @@ class MainLayout extends Component {
                     <h1 style = {styleTitle}>ALL ITEMS</h1>
                     {this.state.productList.length > 0 && (this.state.productList.map(item => (
                         <div className = "mainLayout__items">
-                            <SaleItem item = {item} currency = {currency}/>
+                            <SaleItem item = {item} inStock={item.inStock} currency = {currency}/>
                         </div>
                     )))}
                 </div>            

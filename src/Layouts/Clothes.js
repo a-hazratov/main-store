@@ -60,7 +60,7 @@ const getProducts = gql`
                     {this.state.productList.map(function (item) {
                         if(item.category === "clothes") {
                            return (<div className = "mainLayout__items">
-                                    <SaleItem item = {item} currency = {currency}/>
+                                    <SaleItem item = {item} inStock = {item.inStock} currency = {currency}/>
                                  </div>)
                         }
                     }

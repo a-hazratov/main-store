@@ -35,12 +35,12 @@ class ProductDetails extends Component {
     constructor (props) {
         super(props);
         
-        this.chooseCapacity = this.chooseCapacity.bind(this);
         this.cartStorage = 'cart';
-        
+        this.onceClickedUsb = "prodDetails__prodInfo__usb clickedUsbBox";
+        this.onceClickedTouch = "prodDetails__prodInfo__touch clickedTouchBox";
+        this.onceClickedSize = "prodDetails__prodInfo__size clickedSizeBox";  
+        this.onceClickedColor = "prodDetails__prodInfo__color clickedColorBox";
         this.state = {
-            onceClickedSize: "prodDetails__prodInfo__size clickedSizeBox",  
-            onceClickedColor: "prodDetails__prodInfo__color clickedColorBox", 
             data: [],
             storageName : 'productStorage',
             currentProduct: {}
@@ -160,18 +160,26 @@ class ProductDetails extends Component {
          removeStyles=()=> {
             let capacitySizeStyleRemove = document.querySelector(".clickedSizeBox");
             let colorStyleToRemove = document.querySelector(".clickedColorBox");
+            let usbStyleToRemove = document.querySelector(".clickedUsbBox");
+            let touchStyleToRemove = document.querySelector(".clickedTouchBox");
             if(capacitySizeStyleRemove) {
                 capacitySizeStyleRemove.classList.remove("clickedSizeBox");
             }
             if (colorStyleToRemove) {
                 colorStyleToRemove.classList.remove("clickedColorBox")
             }  
+            if (usbStyleToRemove) {
+                usbStyleToRemove.classList.remove("clickedUsbBox")
+            }  
+            if (touchStyleToRemove) {
+                touchStyleToRemove.classList.remove("clickedTouchBox")
+            }  
          }
 
        /*Choose capacity of a product*/
-        chooseCapacity(event){ 
+        chooseCapacity=(event)=>{ 
            //Setting indicators if size was clicked
-           let onceClickedAttr = this.state.onceClickedSize
+           let onceClickedAttr = this.onceClickedSize
            let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
            allSizes.forEach((size)=> {
               if(size.getAttribute("class") === onceClickedAttr ) {
@@ -206,11 +214,90 @@ class ProductDetails extends Component {
                 currentProduct: currentProductObj
             }) 
         }
-     
-    /** Choose size of the product */
-    chooseSize=(event)=>{ 
+
+    /**Choose With USB 3 ports attribute */    
+    chooseUSB=(event)=>{ 
         //Setting indicators if size was clicked
-        let onceClickedAttr = this.state.onceClickedSize
+        let onceClickedAttr = this.onceClickedUsb;
+        let allUsb = document.querySelectorAll(".prodDetails__prodInfo__usb")
+        allUsb.forEach((size)=> {
+           if(size.getAttribute("class") === onceClickedAttr ) {
+               size.classList.remove("clickedUsbBox")
+           } else if (size === event.target.parentNode) {
+             size.classList.add("clickedUsbBox")
+           }
+        })
+         // setting the right size in the shopping cart
+        let displayValue = event.target.textContent;
+        let currentProductObj = this.state.currentProduct;
+      
+        if(!currentProductObj.hasOwnProperty("attributes")) {
+            currentProductObj.attributes = [];
+            currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
+        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length !== 0) {
+             if(!currentProductObj.attributes.find((item) => item.name === "With USB 3 ports" )) {
+                 currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
+             } else if (currentProductObj.attributes.find((item) => item.name === "With USB 3 ports")) {
+                  currentProductObj.attributes.map((each) => {
+                 if(each.name === "With USB 3 ports" && each.value !== displayValue) {
+                     each.value = displayValue
+                 } else if (each.name === "With USB 3 ports" && each.value === displayValue) {
+                    each.value = ""
+                 }
+                 })
+             }
+         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
+         currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
+         }
+         this.setState({
+             currentProduct: currentProductObj
+         }) 
+     } 
+
+     /**Choose Touch ID in keyboard */
+     chooseTouchId=(event)=>{ 
+        //Setting indicators if size was clicked
+        let onceClickedAttr = this.onceClickedTouch;
+        let allTouch = document.querySelectorAll(".prodDetails__prodInfo__touch")
+        allTouch.forEach((size)=> {
+           if(size.getAttribute("class") === onceClickedAttr ) {
+               size.classList.remove("clickedTouchBox")
+           } else if (size === event.target.parentNode) {
+             size.classList.add("clickedTouchBox")
+           }
+        })
+         // setting the right size in the shopping cart
+        let displayValue = event.target.textContent;
+        let currentProductObj = this.state.currentProduct;
+      
+        if(!currentProductObj.hasOwnProperty("attributes")) {
+            currentProductObj.attributes = [];
+            currentProductObj.attributes.push({name: "Touch ID in keyboard", value: displayValue})
+        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length !== 0) {
+             if(!currentProductObj.attributes.find((item) => item.name === "Touch ID in keyboard" )) {
+                 currentProductObj.attributes.push({name: "Touch ID in keyboard", value: displayValue})
+             } else if (currentProductObj.attributes.find((item) => item.name === "Touch ID in keyboard")) {
+                  currentProductObj.attributes.map((each) => {
+                 if(each.name === "Touch ID in keyboard" && each.value !== displayValue) {
+                     each.value = displayValue
+                 } else if (each.name === "Touch ID in keyboard" && each.value === displayValue) {
+                    each.value = ""
+                 }
+                 })
+             }
+         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
+         currentProductObj.attributes.push({name: "Touch ID in keyboard", value: displayValue})
+         }
+         this.setState({
+             currentProduct: currentProductObj
+         }) 
+     } 
+
+
+    /** Choose size of the product */
+       chooseSize=(event)=>{ 
+        //Setting indicators if size was clicked
+        let onceClickedAttr = this.onceClickedSize
         let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
          allSizes.forEach((size)=> {
             if(size.getAttribute("class") === onceClickedAttr ) {
@@ -243,7 +330,7 @@ class ProductDetails extends Component {
         this.setState({
             currentProduct: currentProductObj
         }) 
-    }
+      }
      
            
 
@@ -251,7 +338,7 @@ class ProductDetails extends Component {
 
     /*Choose color of products*/
      chooseColor=(event)=>{
-        let onceClickedAttr = this.state.onceClickedColor
+        let onceClickedAttr = this.onceClickedColor
         let clickedColor = event.target.style.backgroundColor;
         let allBoxes = document.querySelectorAll('.prodDetails__prodInfo__color')
              allBoxes.forEach((box)=> {
@@ -311,6 +398,16 @@ class ProductDetails extends Component {
               <div className = "prodDetails__prodInfo__size" onClick={this.chooseSize}><h4>{each.value}</h4></div>)    
                return [<h4>{attributeName}</h4>, output]       
           }
+          if (attributeName === "With USB 3 ports" ) {  
+            output = found.items.map((each) => 
+            <div className = "prodDetails__prodInfo__usb" onClick={this.chooseUSB}><h4>{each.value}</h4></div>)    
+             return [<h4>{attributeName}</h4>, output]       
+        }
+        if (attributeName === "Touch ID in keyboard" ) {  
+            output = found.items.map((each) => 
+            <div className = "prodDetails__prodInfo__touch" onClick={this.chooseTouchId}><h4>{each.value}</h4></div>)    
+             return [<h4>{attributeName}</h4>, output]       
+        }
       }
       
       
@@ -370,7 +467,7 @@ class ProductDetails extends Component {
                     <div className = "prodDetails__prodInfo__title">
                         <h2>{item.name}</h2>
                     </div>
-                    <div> 
+                    <div className = "prodDetails__prodInfo__attr"> 
                        {item.attributes.map((each)=> this.setAttribute(each.name) )}   
                     </div>
                     <div className = "prodDetails__prodInfo__price">
@@ -379,7 +476,7 @@ class ProductDetails extends Component {
                     </div>
                     <div className = "prodDetails__prodInfo__button">
                         <button type="button" onClick={this.addToCart}>ADD TO CART</button>
-                        <p>{item.description}</p>
+                        <div className="desc   " dangerouslySetInnerHTML={{__html: item.description}}></div>
                     </div>
                 </div> 
             </div>
@@ -390,4 +487,4 @@ class ProductDetails extends Component {
 export default graphql(getProducts)(ProductDetails);
 
 
-
+//{item.description}

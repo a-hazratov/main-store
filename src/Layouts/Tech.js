@@ -56,7 +56,7 @@ class Tech extends Component {
                     {this.state.productList.map(function(item) {
                         if(item.category === "tech") {
                          return (<div className = "mainLayout__items">
-                            <SaleItem item = {item} currency = {currency}/>
+                            <SaleItem item = {item} inStock = {item.inStock} currency = {currency}/>
                         </div>)
                         }
                     } 

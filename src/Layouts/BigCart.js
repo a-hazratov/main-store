@@ -2,13 +2,25 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom'
 import './LayoutStyles/BigCartStyle.css';
 import BigCartItem from '../Components/BigCartItem';
+import Dollar from '../Components/SVG/dollar-sign.svg';
+import AusDollar from '../Components/SVG/dollar-sign.svg';
+import Pound from '../Components/SVG/pound-sign.svg';
+import Yen from '../Components/SVG/yen-sign.svg';
+import Ruble from '../Components/SVG/ruble-sign.svg';
 
  class BigCart extends Component {
       constructor(props) {
           super(props);
           this.cart = "cart";
+          this.currencySign= {
+            USD : Dollar,
+            RUB : Ruble,
+            JPY : Yen,
+            GBP : Pound,
+            AUD : AusDollar
+          }
           this.state = {
-              cart: [],
+              cart: []
           }
       }
 
@@ -33,14 +45,23 @@ import BigCartItem from '../Components/BigCartItem';
         smallCartCounter.textContent = "";
     }
 
-   
+   // Set the currency sign
+    setCurrencySign=(currentVal)=>{
+       let currencyItems = this.currencySign;
+          for(let symbol in currencyItems) {
+              if(symbol === currentVal) {
+                 return currencyItems[symbol]
+              }
+          }
+    }
 
 
     render() {
         let cart = this.state.cart;
-        let getData = this.getDataFromStorage
+        let getData = this.getDataFromStorage;
         let currency = this.props.currency;
-        let numOfItems = this.props.numberOfItems
+        let numOfItems = this.props.numberOfItems;
+        let moneySymbol = this.setCurrencySign;
        
 
          // Display total price in the small shopping cart
@@ -57,7 +78,8 @@ import BigCartItem from '../Components/BigCartItem';
                  }
                }
             }
-           return [currentCurrency, "   ", total.toFixed(2)]
+           //return [currentCurrency, "   ", total.toFixed(2)]
+           return (<span><img src = {moneySymbol(currentCurrency)} alt="money"></img>{total.toFixed(2)}</span>)
         }
         
         return (
@@ -67,11 +89,13 @@ import BigCartItem from '../Components/BigCartItem';
                    <h2>Cart</h2>
                 </div>
                 {cart && cart.map(function(item) { 
-                   return <BigCartItem item={item} id={item.id} currency = {currency} getData = {getData} numOfItems = {numOfItems}/>
+                   return <BigCartItem item={item} id={item.id} 
+                    currency = {currency}
+                    getData = {getData} numOfItems = {numOfItems}/>
                 })}
                   
                   <div className = "bigCartTotal">
-                     <p>Total:    <span>{displayTotal()}</span></p>
+                     <p>Total:  {displayTotal()}  </p>
                   </div>
                  <div className = "bigCart-content__button">
                    <Link to = '/'>
@@ -87,3 +111,4 @@ import BigCartItem from '../Components/BigCartItem';
 
 export default BigCart
 
+//<span>{displayTotal()}</span>
