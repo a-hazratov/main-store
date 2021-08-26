@@ -7,11 +7,13 @@ import Cart from './SVG/emptyCart.png';
 export default class SaleItem extends Component {
     constructor (props) {
         super(props);
+        this.cartStorage = 'cart';
         this.productCard = React.createRef()
         this.cartGreen = React.createRef()
         this.layer = React.createRef()
         this.state = {
-           hovered: false
+           hovered: false,
+           currentProduct: {}
         }
        
     }
@@ -38,7 +40,42 @@ export default class SaleItem extends Component {
     //add to cart when the round green cart is clicked
       addItemToCart=(e)=>{
           e.preventDefault()
-          console.log("The green cart is clicked" + e.target)
+          console.log("The green cart is clicked " + this.props.item.name)
+          if(!localStorage[this.cartStorage]) {
+            localStorage[this.cartStorage] = JSON.stringify([]);          
+          }
+
+          let cartArray = JSON.parse(localStorage[this.cartStorage]);
+
+          let currentProductObj = this.state.currentProduct;
+          currentProductObj.id = this.props.item.id;
+          currentProductObj.name = this.props.item.name; 
+          currentProductObj.quantity = 1;  
+          currentProductObj.attributes = this.props.item.attributes;
+          currentProductObj.gallery = this.props.item.gallery;
+          currentProductObj.prices = this.props.item.prices;
+
+          //Cannot generate a unique key (there are no attributes yet)
+          let name = this.props.item.name;
+         
+        console.log("The current item added - " + currentProductObj.attributes)
+         //  Adding products to cartArray or increment quantity
+          if(cartArray.length === 0) {
+              cartArray.push(currentProductObj)
+          } else if(cartArray.length !== 0) {
+              if(!cartArray.find(item => item.name === name)) {
+                    cartArray.push(currentProductObj)
+              } else if (cartArray.find(item => item.name === name)) {
+               cartArray.map((item) => {
+                   if(item.name === name) {
+                       item.quantity += 1
+                   }
+               })
+              } 
+          }
+          //End of adding products to cartArray or increment quantity
+          localStorage[this.cartStorage] = JSON.stringify(cartArray)
+          this.props.numberOfItems(cartArray)
       }
 
 

@@ -46,6 +46,7 @@ const getProducts = gql`
     render() {
      
         let currency = this.props.currency
+        let numberOfItems = this.props.numberOfItems
         //Styles for the heading
         const styleTitle = {
         width: '100%',
@@ -60,7 +61,8 @@ const getProducts = gql`
                     {this.state.productList.map(function (item) {
                         if(item.category === "clothes") {
                            return (<div className = "mainLayout__items">
-                                    <SaleItem item = {item} inStock = {item.inStock} currency = {currency}/>
+                                    <SaleItem item = {item} inStock = {item.inStock} 
+                                    currency = {currency} numberOfItems = {numberOfItems}/>
                                  </div>)
                         }
                     }

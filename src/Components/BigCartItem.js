@@ -43,14 +43,18 @@ import Ruble from './SVG/ruble-sign.svg';
 
   //Set the attributes if there are any
    setTheAttributes=()=>{
-     let attributes = this.props.item.attributes;
-     if(attributes) {
-         return attributes.map(each => each.name === "Size" ? <li className="liSizeCart">{each.value}</li> :
-                                      each.name === "Capacity" ? <li className="liCapacityCart">{each.value}</li> :
-                                      each.name === "Color" ? <li className="liColorCart" style = {{backgroundColor: each.value}}></li>:
-                                      each.name === "With USB 3 ports" ? <li className="liUSBCart">USB 3 ports:  {each.value}</li> :
-                                      each.name === "Touch ID in keyboard" ? <li className="liTouchCart">Touch ID: {each.value}</li>: "")
-     }
+      if(this.props.item.hasOwnProperty('uKey')) {
+         let attributes = this.props.item.attributes;
+         if(attributes) {
+              return attributes.map(each => each.name === "Size" ? <li className="liSizeCart">{each.value}</li> :
+                                            each.name === "Capacity" ? <li className="liCapacityCart">{each.value}</li> :
+                                            each.name === "Color" ? <li className="liColorCart" style = {{backgroundColor: each.value}}></li>:
+                                            each.name === "With USB 3 ports" ? <li className="liUSBCart">USB 3 ports:  {each.value}</li> :
+                                            each.name === "Touch ID in keyboard" ? <li className="liTouchCart">Touch ID: {each.value}</li>: "")
+         }
+      } else {
+         return (<li className="liUSBCart">Must include attributes</li>)
+      }
    }
 
 

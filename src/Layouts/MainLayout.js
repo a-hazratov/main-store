@@ -45,7 +45,7 @@ class MainLayout extends Component {
     
     render() {
         let currency = this.props.currency
-    
+       console.log("The main layout item added " + this.props.numberOfItems)
         //Styles for the heading
         const styleTitle = {
         width: '100%',
@@ -54,18 +54,21 @@ class MainLayout extends Component {
          
      
         return (
-            
-            <div>
-               
-                <div className = "mainLayout">
+           
+             <div>
+                  <div className = "mainLayout">
                     <h1 style = {styleTitle}>ALL ITEMS</h1>
+
                     {this.state.productList.length > 0 && (this.state.productList.map(item => (
                         <div className = "mainLayout__items">
-                            <SaleItem item = {item} inStock={item.inStock} currency = {currency}/>
+                            <SaleItem item = {item} inStock={item.inStock} 
+                            currency = {currency} numberOfItems = {this.props.numberOfItems}/>
                         </div>
                     )))}
+
                 </div>            
             </div>
+        
         )
     }
   }

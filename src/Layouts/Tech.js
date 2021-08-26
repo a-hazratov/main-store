@@ -44,6 +44,7 @@ class Tech extends Component {
 
     render() {
         let currency = this.props.currency
+        let numberOfItems = this.props.numberOfItems;
         //Styles for the heading
         const styleTitle = {
         width: '100%',
@@ -53,10 +54,11 @@ class Tech extends Component {
             <div>
                 <div className = "mainLayout">
                     <h1 style = {styleTitle}>TECH STUFF</h1>
-                    {this.state.productList.map(function(item) {
+                    {this.state.productList.map((item)=> {
                         if(item.category === "tech") {
                          return (<div className = "mainLayout__items">
-                            <SaleItem item = {item} inStock = {item.inStock} currency = {currency}/>
+                            <SaleItem item = {item} inStock = {item.inStock} 
+                            currency = {currency} numberOfItems = {numberOfItems}/>
                         </div>)
                         }
                     } 

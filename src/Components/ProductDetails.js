@@ -42,7 +42,7 @@ class ProductDetails extends Component {
         this.onceClickedColor = "prodDetails__prodInfo__color clickedColorBox";
         this.state = {
             data: [],
-            storageName : 'productStorage',
+           // storageName : 'productStorage',
             currentProduct: {}
         }
     }
@@ -80,9 +80,11 @@ class ProductDetails extends Component {
         let uKey = null;
         let keyAttritutes = [];
         if(currentProductObj.attributes) {
-            for (let i = 0; i < currentProductObj.attributes.length; i++) {
+            currentProductObj.attributes.map(each => 
+                keyAttritutes.push("_"+ each.name +"-"+ each.value))
+            /*for (let i = 0; i < currentProductObj.attributes.length; i++) {
                 keyAttritutes.push("_"+currentProductObj.attributes[i].name+"-"+currentProductObj.attributes[i].value)
-            }
+            }*/
             uKey= currentProductObj.id+"_"+keyAttritutes.join('');
         } else {
                uKey = currentProductObj.id;
