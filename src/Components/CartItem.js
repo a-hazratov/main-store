@@ -20,19 +20,27 @@ import Minus from './SVG/minus-square.svg'
            if(each.currency === this.props.currency) {
               return [each.amount]
            }
+           return null
         })
     } 
 
     //Set the attributes if there are any
     setTheAttributes=()=>{
         let attributes = this.props.item.attributes;
-        if(attributes) {
-        return attributes.map(each => each.name === "Size" ? <li className="liSize">{each.value}</li> :
-                                      each.name === "Capacity" ? <li className="liCapacity">{each.value}</li> :
-                                      each.name === "Color" ? <li className="liColor" style = {{backgroundColor: each.value}}></li>:
-                                      each.name === "With USB 3 ports" ? <li className="liUSB">USB 3 ports:  {each.value}</li> :
-                                      each.name === "Touch ID in keyboard" ? <li className="liTouch">Touch ID: {each.value}</li>: "")
-        }
+        if(this.props.item.hasOwnProperty('uKey')) {
+            if(attributes) {
+               return attributes.map(each => each.name === "Size" ? <li className="liSize">{each.value}</li> :
+                                             each.name === "Capacity" ? <li className="liCapacity">{each.value}</li> :
+                                             each.name === "Color" ? <li className="liColor" style = {{backgroundColor: each.value}}></li>:
+                                             each.name === "With USB 3 ports" ? <li className="liUSB">USB 3 ports:  {each.value}</li> :
+                                             each.name === "Touch ID in keyboard" ? <li className="liTouch">Touch ID: {each.value}</li>: "")
+            }
+        } else if(!this.props.item.hasOwnProperty('uKey')){
+          let itemInCart = this.props.item;
+          if(itemInCart.attributes) {
+          return (<li className="liUSBCart"></li>)
+          }
+      }
     }
 
     getDataFromStorage=()=> {  
@@ -50,7 +58,7 @@ import Minus from './SVG/minus-square.svg'
        let cart;
        setTimeout(()=> {
           cart = this.state.cart
-          cart.map((each)=> {
+          cart.forEach((each)=> {
              if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
                each.quantity += 1;
              }
@@ -68,7 +76,7 @@ import Minus from './SVG/minus-square.svg'
     
        setTimeout(()=> {
           cart = this.state.cart
-          cart.map((each)=> {
+          cart.forEach((each)=> {
              if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
                 if(each.quantity !== 1) {
                   each.quantity -= 1;
@@ -90,6 +98,7 @@ import Minus from './SVG/minus-square.svg'
             <div className = "cartItem">
                 <div className = "cartItem__name">
                         <div className="col1">
+                          <h4>{this.props.item.brand}</h4>
                           <h5>{this.props.item.name}</h5>
                           <p className = "cartItem__price"><img src = {this.props.moneySign} alt="money"></img>{this.setThePrice()}</p>                      
                            

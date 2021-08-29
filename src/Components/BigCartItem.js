@@ -23,10 +23,9 @@ import Ruble from './SVG/ruble-sign.svg';
       JPY : Yen,
       GBP : Pound,
       AUD : AusDollar
-}
+     }
      this.state = {
        cart: [],
-      
      }
    }
 
@@ -52,19 +51,61 @@ import Ruble from './SVG/ruble-sign.svg';
                                             each.name === "With USB 3 ports" ? <li className="liUSBCart">USB 3 ports:  {each.value}</li> :
                                             each.name === "Touch ID in keyboard" ? <li className="liTouchCart">Touch ID: {each.value}</li>: "")
          }
-      } else {
-         return (<li className="liUSBCart">Must include attributes</li>)
+      } 
+         
+   }
+
+   // Set the attributes to products in the Big Cart, after adding products from the PLP
+    setNewAttributes=(attributeName)=>{
+      let output = null;
+      let item = this.props.item;
+      let attrArray = item.attributesToPick; //Getting an array of objects with attributes
+      let found = attrArray.find((each)=> each.name === attributeName)
+      if(attributeName === "Capacity") {
+         output = found.items.map((each) => 
+         <li className = "liCapacityCart__new" onClick={this.chooseCapacity}><p>{each.value}</p></li>)    
+         return [output]          
+     }
+
+      if(attributeName === "Color") {
+         output = found.items.map((each) => 
+         <li className = "liColorCart__new" onClick={this.chooseColor} style={{backgroundColor: each.value}}><p>{each.displayValue}</p></li>)    
+          return [output]          
+      }
+      if(attributeName === "Size") {
+         output = found.items.map((each) => 
+         <li className = "liSizeCart__new" onClick={this.chooseSize}><p>{each.value}</p></li>)    
+         return [ output]          
+     }
+     if (attributeName === "With USB 3 ports" ) {  
+      output = found.items.map((each) => 
+      <li className = "liUSBCart__new" onClick={this.chooseUSB}><p>{each.value}</p></li>)    
+       return [<h5>USB 3 ports:</h5>, output]       
+     }
+     if (attributeName === "Touch ID in keyboard" ) {  
+      output = found.items.map((each) => 
+      <li className = "liTouchCart__new" onClick={this.chooseTouchId}><p>{each.value}</p></li>)    
+       return [<h5>Touch ID:</h5>, output]       
+     }
+    }
+
+ //display attributes inside render
+   displayAttributes=()=>{
+      if(!this.props.item.attributes && !this.props.item.attributesToPick) {
+         return ""
+      } else if(this.props.item.attributes || this.props.item.attributesToPick){
+           return  (this.props.item.attributes ? 
+                     this.setTheAttributes()  :  
+                     this.props.item.attributesToPick.map((each)=>
+                      this.setNewAttributes(each.name) ))
       }
    }
 
-
-
-//Set the price and the currency in the small cart
+//Set the price and the currency in the big cart
    setThePrice=()=> {
       let currencyItems = this.currencySign;
-         
       let prices = this.props.item.prices;
-      return prices.map((each) => {
+       return prices.map((each)=> {    
          if(each.currency === this.props.currency) {
             for(let symbol in currencyItems) {
                if(symbol === this.props.currency) {
@@ -72,10 +113,11 @@ import Ruble from './SVG/ruble-sign.svg';
                           <img src = {currencyItems[symbol]} alt="money"></img>
                            {each.amount}</p>)
                }
-           }
+            }
            
          }
-      })  
+        return null
+       })
    }
 
 //Increment number of items when plus sign is clicked
@@ -84,10 +126,11 @@ import Ruble from './SVG/ruble-sign.svg';
        let cart; 
        setTimeout(()=> {
           cart = this.state.cart
-          cart.map((each)=> {
+          cart.map((each)=>{
               if(this.props.id === each.id && each.uKey === this.props.item.uKey) {
-                  each.quantity += 1;
+                  return each.quantity += 1;
               }
+              return null
           })
      
       localStorage[this.cart] = JSON.stringify(cart)
@@ -109,7 +152,8 @@ import Ruble from './SVG/ruble-sign.svg';
                   each.quantity -= 1;
                }
            }
-        })
+           return null
+         })
      
      localStorage[this.cart] = JSON.stringify(cart)
      this.props.getData()
@@ -131,9 +175,9 @@ import Ruble from './SVG/ruble-sign.svg';
 
        setTimeout(()=> {
           cart = this.state.cart
-          cart.map((each)=> {
+          cart.forEach((each, index)=> {
             if(each.uKey === itemToRemoveId) {
-              indexOfItem = cart.indexOf(each)  
+              indexOfItem =  index;  
             }
           })
           cart.splice(indexOfItem, 1)
@@ -177,17 +221,17 @@ import Ruble from './SVG/ruble-sign.svg';
    }
     
     render() {
-      
         return (
             <div className = "big-cart">
                 <div className = "bigCartItem__name">
                     
                       <div className="bigCol1">
-                        <h3>{this.props.item.name}</h3>
-                            {this.setThePrice()}                 
+                         <h3>{this.props.item.brand}</h3>
+                         <h4>{this.props.item.name}</h4>
+                             {this.setThePrice()}                 
                          
                          <ul> 
-                         {this.setTheAttributes()}     
+                           {this.displayAttributes()} 
                          </ul>
                       </div>
                       <div className="bigCol2">
@@ -213,3 +257,21 @@ import Ruble from './SVG/ruble-sign.svg';
 }
 
 export default BigCartItem
+
+/**{this.setTheAttributes()}
+ * 
+ *                            {this.props.item.attributes ? 
+                             this.props.item.attributes.map((each)=>
+                              this.setTheAttributes(each.name) ) :  
+                              this.props.item.attributesToPick.map((each)=>
+                              this.setTheAttributes(each.name) )} 
+                              
+                              
+                              if(!this.props.item.hasOwnProperty('uKey')) {
+         let itemInCart = this.props.item;
+         if(itemInCart.attributesToPick) {
+           return this.setNewAttributes(attrName)
+         }
+         
+      }
+  */

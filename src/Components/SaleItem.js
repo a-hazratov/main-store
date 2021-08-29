@@ -12,8 +12,7 @@ export default class SaleItem extends Component {
         this.cartGreen = React.createRef()
         this.layer = React.createRef()
         this.state = {
-           hovered: false,
-           currentProduct: {}
+           hovered: false 
         }
        
     }
@@ -32,6 +31,7 @@ export default class SaleItem extends Component {
             if(each.currency === currentCurrency) {
                 return each.amount
             }
+            return null
         })
         
          return [currentCurrency, price]
@@ -47,32 +47,37 @@ export default class SaleItem extends Component {
 
           let cartArray = JSON.parse(localStorage[this.cartStorage]);
 
-          let currentProductObj = this.state.currentProduct;
+          let currentProductObj = {};
           currentProductObj.id = this.props.item.id;
           currentProductObj.name = this.props.item.name; 
+          currentProductObj.brand = this.props.item.brand;
+          currentProductObj.uKey = this.props.item.name;
           currentProductObj.quantity = 1;  
-          currentProductObj.attributes = this.props.item.attributes;
+          currentProductObj.attributesToPick = this.props.item.attributes;
           currentProductObj.gallery = this.props.item.gallery;
           currentProductObj.prices = this.props.item.prices;
 
           //Cannot generate a unique key (there are no attributes yet)
           let name = this.props.item.name;
-         
-        console.log("The current item added - " + currentProductObj.attributes)
+          
          //  Adding products to cartArray or increment quantity
           if(cartArray.length === 0) {
               cartArray.push(currentProductObj)
           } else if(cartArray.length !== 0) {
               if(!cartArray.find(item => item.name === name)) {
                     cartArray.push(currentProductObj)
-              } else if (cartArray.find(item => item.name === name)) {
-               cartArray.map((item) => {
-                   if(item.name === name) {
-                       item.quantity += 1
-                   }
-               })
-              } 
-          }
+              }else if(cartArray.find(item => item.name === name)) (     
+                  cartArray.forEach((each)=> {
+                     if(each.name === name && each.uKey === name) {
+                          each.quantity += 1   
+                      } else if (each.name === name && each.uKey !== name) {
+                        cartArray.push(currentProductObj)
+                      }
+                  })
+              )
+            }
+            
+          
           //End of adding products to cartArray or increment quantity
           localStorage[this.cartStorage] = JSON.stringify(cartArray)
           this.props.numberOfItems(cartArray)
@@ -101,7 +106,8 @@ export default class SaleItem extends Component {
                     </div>
 
                     <div className = "productCard__bottom">
-                        <p>{this.props.item.name}</p>
+                        
+                        <p><span>{this.props.item.brand}</span> {this.props.item.name}</p>
                         <p style = {{fontFamily: "Raleway"}}>{this.displayPrice()}</p>
                     </div>
                 </Link>
@@ -111,7 +117,3 @@ export default class SaleItem extends Component {
     }
 }
 
-/**<div className = "roundCart" style={{display: `${this.state.hovered ? "block" : "none"}`}}
-                             ref={this.cartGreen} >
-                            <img src = {Cart} alt = "small cart" />
-                         </div> */

@@ -6,20 +6,28 @@ import {graphql} from 'react-apollo';
 const getProducts = gql`
 {
     category {
-        products {
-            id
-            name
-            inStock
-            gallery   
-            category
-            prices  {
-                currency
-                amount
-            }                 
-        }
-    }
-}
-`
+          products  {
+              id 
+              name
+              inStock
+              gallery   
+              category 
+              brand
+              attributes{
+                  name
+                  items{
+                      displayValue
+                      value
+                  }
+              } 
+              prices  {
+                  currency
+                  amount
+              }           
+          }
+      }
+  }
+  `
 
 class Tech extends Component {
     constructor(props) {
@@ -54,15 +62,15 @@ class Tech extends Component {
             <div>
                 <div className = "mainLayout">
                     <h1 style = {styleTitle}>TECH STUFF</h1>
-                    {this.state.productList.map((item)=> {
+                    {this.state.productList.forEach((item)=> {
                         if(item.category === "tech") {
                          return (<div className = "mainLayout__items">
                             <SaleItem item = {item} inStock = {item.inStock} 
                             currency = {currency} numberOfItems = {numberOfItems}/>
                         </div>)
-                        }
-                    } 
-                    )}
+                        } 
+                      })
+                    }
                 </div>     
             </div>
         )

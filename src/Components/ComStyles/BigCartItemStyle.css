@@ -1,8 +1,6 @@
 .big-cart {
   width: 1098px;
-  /* box-shadow: 0px 4px 4px #a1a5a3;*/
   border-top: 1px solid #e5e5e5;
-
   margin-right: auto;
   margin-left: auto;
   margin-bottom: 10px;
@@ -11,6 +9,13 @@
 .bigCartItem__name {
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.bigCartItem__price {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: "Raleway", sans-serif;
+  margin-bottom: 0;
 }
 
 .bigCartItem__price img {
@@ -44,36 +49,63 @@
   position: relative;
 }
 
+.bigCol1 h3 {
+  font-size: 30px;
+  font-weight: 600;
+  color: #1d1f22;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.bigCol1 h4 {
+  font-size: 30px;
+  font-weight: normal;
+  color: #1d1f22;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .bigCol1 ul {
   padding-left: 0;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   position: absolute;
   bottom: 0;
-  font-size: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.bigCol1 ul h5 {
+  display: block;
+  font-size: 16px;
+  width: 50px;
+  margin-bottom: -10px;
+  margin-left: 15px;
+  margin-right: -5px;
+  padding-right: 0;
+  text-align: right;
+}
+
+.bigCol1 ul li {
+  margin-bottom: -10px;
 }
 
 .liSizeCart {
+  width: 3.9375em;
+  height: 2.8125em;
+  border: 1px solid black;
   display: inline-block;
-  margin-right: 5px;
-  margin-left: 5px;
-  margin-top: 2px;
-  width: 24px;
-  height: 24px;
-  border: 0.7px black solid;
   text-align: center;
-
-  margin-bottom: 2px;
-  font-family: "Raleway", sans-serif;
-  background-color: black;
+  margin-bottom: -10px;
+  padding: 10px;
+  background-color: #1d1f22;
   color: white;
-  padding: 1px 0;
 }
 
 .liCapacityCart {
-  display: inline-block;
+  display: block;
   margin-right: 5px;
-  margin-left: 5px;
-  margin-top: 3px;
+  margin-left: 10px;
   height: 24px;
   padding-top: 3px;
   font-family: "Raleway", sans-serif;
@@ -83,10 +115,10 @@
 .liColorCart {
   display: inline-block;
   margin-right: 5px;
-  margin-left: 5px;
+  margin-left: 10px;
   margin-top: 3px;
-  width: 24px;
-  height: 24px;
+  width: 63px;
+  height: 45px;
   border: 0.7px black solid;
   padding-top: 3px;
   text-align: left;
@@ -94,23 +126,154 @@
 }
 
 .liUSBCart {
+  display: block;
   font-family: "Raleway", sans-serif;
   list-style: none;
-  margin-left: 5px;
+  margin-left: 10px;
   padding: 3px 0;
 }
 
 .liTouchCart {
   font-family: "Raleway", sans-serif;
   list-style: none;
-  margin-left: 5px;
-  padding: 3px 0;
+  margin-left: 10px;
 }
 
-.bigCartItem__price {
-  font-family: "Raleway", sans-serif;
-  font-size: 1.2rem;
+/* New attributes */
+.liSizeCart__new {
+  width: 3.9375em;
+  height: 2.8125em;
+  border: 1px solid black;
+  display: inline-block;
+  text-align: center;
+  color: black;
+  margin-bottom: -10px;
 }
+.liSizeCart__new:hover {
+  cursor: pointer;
+}
+
+.liSizeCart__new p {
+  margin: 12px;
+  font-size: 16px;
+}
+
+.liSizeCart__new:not(:first-of-type) {
+  margin-left: 10px;
+}
+
+.liSizeCart__new__clicked {
+  background-color: #1d1f22;
+  color: white;
+}
+
+.liCapacityCart__new {
+  display: inline-block;
+  width: 2.9375em;
+  height: 2.8125em;
+  border: 1px solid black;
+  font-family: "Raleway", sans-serif;
+  text-align: center;
+  margin-bottom: 0;
+}
+.liCapacityCart__new:hover {
+  cursor: pointer;
+}
+
+.liCapacityCart__new:not(:first-of-type) {
+  margin-left: 10px;
+}
+.liCapacityCart__new p {
+  font-size: 14px;
+}
+
+.liCapacityCart__new__clicked {
+  background-color: #1d1f22;
+  color: white;
+}
+
+.liColorCart__new {
+  width: 2.9375em;
+  height: 2.9375em;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid black;
+  margin-bottom: -10px;
+}
+.liColorCart__new:hover {
+  cursor: pointer;
+}
+
+.liColorCart__new p {
+  font-size: 0.3rem;
+  opacity: 0;
+}
+.liColorCart__new:not(:first-of-type) {
+  margin-left: 10px;
+}
+
+.liColorCart__new__clicked {
+  border: 2px solid red;
+}
+
+.liUSBCart__new {
+  display: inline-block;
+  font-family: "Raleway", sans-serif;
+  list-style: none;
+  width: 2.9375em;
+  height: 2.9375em;
+  border: 1px solid black;
+  margin-left: 10px;
+  text-align: center;
+}
+.liUSBCart__new:hover {
+  cursor: pointer;
+}
+
+.liUSBCart__new p {
+  font-size: 16px;
+}
+
+.liUSBCart__new h5 {
+  font-size: 16px;
+}
+
+.liUSBCart__new__clicked {
+  background-color: #1d1f22;
+  color: white;
+}
+
+.liTouchCart__new {
+  font-family: "Raleway", sans-serif;
+  list-style: none;
+  display: inline-block;
+  font-family: "Raleway", sans-serif;
+  list-style: none;
+  width: 2.9375em;
+  height: 2.9375em;
+  border: 1px solid black;
+  margin-left: 10px;
+  text-align: center;
+  margin: 11px;
+}
+.liTouchCart__new:hover {
+  cursor: pointer;
+}
+
+.liTouchCart__new p {
+  font-size: 16px;
+}
+
+.liTouchCart__new h5 {
+  font-size: 16px;
+}
+
+.liTouchCart__new__clicked {
+  background-color: #1d1f22;
+  color: white;
+}
+
+/* */
 
 .bigCol2 {
   height: 185px;

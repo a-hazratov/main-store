@@ -6,20 +6,29 @@ import {graphql} from 'react-apollo';
 const getProducts = gql`
 {
     category {
-        products {
-            id
-            name
-            inStock
-            gallery
-            category 
-            prices  {
-                currency
-                amount
-            }                     
-        }
-    }
-}
-`
+          products  {
+              id 
+              name
+              inStock
+              gallery   
+              category 
+              brand
+              attributes{
+                  name
+                  items{
+                      displayValue
+                      value
+                  }
+              } 
+              prices  {
+                  currency
+                  amount
+              }           
+          }
+      }
+  }
+  `
+
 
 
 

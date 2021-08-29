@@ -106,6 +106,18 @@ a:hover {
 
 .prodDetails__prodInfo__title h2 {
   margin-top: 5px;
+  font-size: 30px;
+  color: #1d1f22;
+  font-family: "Raleway";
+  font-weight: 600;
+}
+
+.prodDetails__prodInfo__title h3 {
+  margin-top: -10px;
+  font-size: 30px;
+  color: #1d1f22;
+  font-family: "Raleway";
+  font-weight: normal;
 }
 
 .prodDetails__prodInfo__attr {

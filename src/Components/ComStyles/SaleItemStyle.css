@@ -68,3 +68,9 @@
 .productCard:hover {
   box-shadow: 0px 4px 11px rgba(29, 31, 34, 0.3);
 }
+
+p {
+  font-size: 18px;
+  font-weight: normal;
+  color: #1d1f22;
+}

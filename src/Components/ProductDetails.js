@@ -3,16 +3,18 @@ import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
 
 
-const getProducts = gql`
-{
-    category {
-        products {
+
+
+const getOneItem = gql`
+   query get_One_Item($id: String!)  {
+        product(id: $id) {
             id
             name
             inStock
             gallery   
             category  
             description
+            brand
             attributes{
                 name
                 items{
@@ -25,24 +27,24 @@ const getProducts = gql`
                 amount
             }    
         }
-    }
-}
-`
+    }`
+
+
+
+
 
 
 
 class ProductDetails extends Component {
     constructor (props) {
         super(props);
-        
         this.cartStorage = 'cart';
         this.onceClickedUsb = "prodDetails__prodInfo__usb clickedUsbBox";
         this.onceClickedTouch = "prodDetails__prodInfo__touch clickedTouchBox";
         this.onceClickedSize = "prodDetails__prodInfo__size clickedSizeBox";  
         this.onceClickedColor = "prodDetails__prodInfo__color clickedColorBox";
         this.state = {
-            data: [],
-           // storageName : 'productStorage',
+            data: null,
             currentProduct: {}
         }
     }
@@ -51,19 +53,19 @@ class ProductDetails extends Component {
     
     componentDidMount() {
         setTimeout(() => {
-            this.setState({
-                data: [...this.props.data.category.products]
+            this.setState({   
+                 data: this.props.data.product  
             })
+             
         }, 1000)
     }
 
-   
-    
-    
+  
 
     //Add products to localStorage and the shopping cart
     addToCart =()=>{
-        let product = this.state.data.find((each) => each.id === this.props.match.params.id)
+      // let product = this.state.data.find((each) => each.id === this.props.match.params.id)
+         let product = this.state.data
         if(!localStorage[this.cartStorage]) {
             localStorage[this.cartStorage] = JSON.stringify([]);          
         }
@@ -73,6 +75,7 @@ class ProductDetails extends Component {
         let currentProductObj = this.state.currentProduct;
             currentProductObj.id = product.id;
             currentProductObj.name =   product.name; 
+            currentProductObj.brand = product.brand;
             currentProductObj.quantity = 1;  
             currentProductObj.gallery = product.gallery;
             currentProductObj.prices = product.prices;
@@ -218,25 +221,25 @@ class ProductDetails extends Component {
         }
 
     /**Choose With USB 3 ports attribute */    
-    chooseUSB=(event)=>{ 
-        //Setting indicators if size was clicked
-        let onceClickedAttr = this.onceClickedUsb;
-        let allUsb = document.querySelectorAll(".prodDetails__prodInfo__usb")
-        allUsb.forEach((size)=> {
-           if(size.getAttribute("class") === onceClickedAttr ) {
-               size.classList.remove("clickedUsbBox")
-           } else if (size === event.target.parentNode) {
-             size.classList.add("clickedUsbBox")
-           }
-        })
+        chooseUSB=(event)=>{ 
+          //Setting indicators if size was clicked
+          let onceClickedAttr = this.onceClickedUsb;
+          let allUsb = document.querySelectorAll(".prodDetails__prodInfo__usb")
+              allUsb.forEach((size)=> {
+                 if(size.getAttribute("class") === onceClickedAttr ) {
+                    size.classList.remove("clickedUsbBox")
+                 } else if (size === event.target.parentNode) {
+                    size.classList.add("clickedUsbBox")
+                 }
+              })
          // setting the right size in the shopping cart
-        let displayValue = event.target.textContent;
-        let currentProductObj = this.state.currentProduct;
+         let displayValue = event.target.textContent;
+         let currentProductObj = this.state.currentProduct;
       
-        if(!currentProductObj.hasOwnProperty("attributes")) {
+         if(!currentProductObj.hasOwnProperty("attributes")) {
             currentProductObj.attributes = [];
             currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
-        } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length !== 0) {
+         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length !== 0) {
              if(!currentProductObj.attributes.find((item) => item.name === "With USB 3 ports" )) {
                  currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
              } else if (currentProductObj.attributes.find((item) => item.name === "With USB 3 ports")) {
@@ -249,12 +252,12 @@ class ProductDetails extends Component {
                  })
              }
          } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
-         currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
+           currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
          }
          this.setState({
              currentProduct: currentProductObj
          }) 
-     } 
+       } 
 
      /**Choose Touch ID in keyboard */
      chooseTouchId=(event)=>{ 
@@ -376,11 +379,13 @@ class ProductDetails extends Component {
      }
     
 
-
+    
     //Setting attributes and attribute names of the product 
      setAttribute=(attributeName)=> {
-          let output = null;
-          let item = this.state.data.find((each) => each.id === this.props.match.params.id)
+        let output = null;
+        //let item = this.state.data.find((each) => each.id === this.props.match.params.id)
+           let item = this.state.data
+    
         
           let attrArray = item.attributes; //Getting an arry of objects with attributes 
           let found = attrArray.find((each)=> each.name === attributeName)
@@ -416,12 +421,12 @@ class ProductDetails extends Component {
      
    
     render() {
+      let item = this.state.data
+   
         
-        let item = this.state.data.find((each) => each.id === this.props.match.params.id)
-        
-        if(!item){
-            return (<div className = "prodDetails"></div>)
-        }
+      if(!item){
+        return (<div className = "prodDetails"></div>)
+      }
 
         
       // Display the price in the product card
@@ -467,7 +472,8 @@ class ProductDetails extends Component {
                 </div>
                 <div className = "prodDetails__prodInfo">
                     <div className = "prodDetails__prodInfo__title">
-                        <h2>{item.name}</h2>
+                        <h2>{item.brand}</h2>
+                        <h3>{item.name}</h3>
                     </div>
                     <div className = "prodDetails__prodInfo__attr"> 
                        {item.attributes.map((each)=> this.setAttribute(each.name) )}   
@@ -478,6 +484,7 @@ class ProductDetails extends Component {
                     </div>
                     <div className = "prodDetails__prodInfo__button">
                         <button type="button" onClick={this.addToCart}>ADD TO CART</button>
+                        
                         <div className="desc   " dangerouslySetInnerHTML={{__html: item.description}}></div>
                     </div>
                 </div> 
@@ -486,7 +493,15 @@ class ProductDetails extends Component {
     }
 }
 
-export default graphql(getProducts)(ProductDetails);
+export default graphql(getOneItem, {
+    options:(props)=>{
+        return {
+            variables: {
+                id: props.match.params.id
+            }
+        }
+    }
+})(ProductDetails);
 
 
-//{item.description}
+

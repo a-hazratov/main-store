@@ -5,13 +5,21 @@ import { graphql} from 'react-apollo';
 
 const getProducts = gql`
 {
-    category {
-        products {
-            id
+  category {
+        products  {
+            id 
             name
             inStock
             gallery   
             category 
+            brand
+            attributes{
+                name
+                items{
+                    displayValue
+                    value
+                }
+            } 
             prices  {
                 currency
                 amount
@@ -45,7 +53,7 @@ class MainLayout extends Component {
     
     render() {
         let currency = this.props.currency
-       console.log("The main layout item added " + this.props.numberOfItems)
+        console.log("The query  " + this.props.data)
         //Styles for the heading
         const styleTitle = {
         width: '100%',

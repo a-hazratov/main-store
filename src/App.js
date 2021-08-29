@@ -28,7 +28,9 @@ export default class App extends Component {
       
       }
   } 
- 
+  
+  
+
   //Function that updates number of items in the cart, to be called in ProductDetails.js and Header.js components
    numberOfItems=(cartToUse) => {
     let number = 0
@@ -63,10 +65,13 @@ export default class App extends Component {
            <Route path = '/' render={(props)=> (<MainLayout {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)} exact/>
            <Route path = '/clothes' render={(props)=> (<Clothes {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
            <Route path = '/tech' render={(props)=> (<Tech {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
-           <Route path = '/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems} currency = {currency}/>)}/>
-           <Route path = '/clothes/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)} />
-           <Route path = '/tech/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)} />
-          <Route path = '/shopping-cart' render={(props)=> (<BigCart {...props} currency = {currency}  numberOfItems = {this.numberOfItems}/>)}/>
+           <Route path = '/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems} 
+                                                            currency = {currency} />)}/>
+           <Route path = '/clothes/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency} 
+                                                                   numberOfItems = {this.numberOfItems}/>)} />
+           <Route path = '/tech/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency}
+                                                                   numberOfItems = {this.numberOfItems}/>)} />
+          <Route path = '/shopping-cart' render={(props)=> (<BigCart {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
          
         </main>
         <Footer/>
