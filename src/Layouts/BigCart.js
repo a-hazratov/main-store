@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom'
 import './LayoutStyles/BigCartStyle.css';
 import BigCartItem from '../Components/BigCartItem';
@@ -8,7 +8,7 @@ import Pound from '../Components/SVG/pound-sign.svg';
 import Yen from '../Components/SVG/yen-sign.svg';
 import Ruble from '../Components/SVG/ruble-sign.svg';
 
- class BigCart extends Component {
+ class BigCart extends PureComponent {
       constructor(props) {
           super(props);
           this.cart = "cart";

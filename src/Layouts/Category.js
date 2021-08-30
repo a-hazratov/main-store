@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import SaleItem from '../Components/SaleItem';
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
@@ -32,7 +32,7 @@ const getProducts = gql`
 
 
 
- class Clothes extends Component {
+ class Clothes extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -66,14 +66,14 @@ const getProducts = gql`
         return (
             <div>   
                 <div className = "mainLayout">
-                 <h1 style = {styleTitle}>Clothes</h1>
-                    {this.state.productList.map(function (item) {
-                        if(item.category === "clothes") {
+                 <h1 style = {styleTitle}>{this.props.clickedCategory}</h1>
+                    {this.state.productList.map((item) =>{
+                        if(item.category === this.props.clickedCategory) {
                            return (<div className = "mainLayout__items">
                                     <SaleItem item = {item} inStock = {item.inStock} 
                                     currency = {currency} numberOfItems = {numberOfItems}/>
                                  </div>)
-                        }
+                        } return null
                     }
                     )}
                 </div>            

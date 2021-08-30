@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import './ComStyles/CartItemStyle.css'
 import Plus from './SVG/plus-square.svg'
 import Minus from './SVG/minus-square.svg'
 
 
 
- class CartItem extends Component {
+ class CartItem extends PureComponent {
     constructor(props) {
         super(props);
         this.cart = 'cart'

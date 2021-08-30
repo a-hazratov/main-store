@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
 
@@ -35,7 +35,7 @@ const getOneItem = gql`
 
 
 
-class ProductDetails extends Component {
+class ProductDetails extends PureComponent {
     constructor (props) {
         super(props);
         this.cartStorage = 'cart';
@@ -102,7 +102,7 @@ class ProductDetails extends Component {
               if(!cartArray.find(item => item.uKey === uKey)) {
                   cartArray.push(currentProductObj)
               } else if (cartArray.find(item => item.uKey === uKey)) {
-                 cartArray.map((item) => {
+                 cartArray.forEach((item) => {
                      if(item.uKey === uKey) {
                          item.quantity += 1
                      }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {Link} from 'react-router-dom'
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
@@ -40,7 +40,7 @@ const getProducts = gql`
     }
 }
 `
- class Header extends Component {
+ class Header extends PureComponent {
    constructor(props) {
        super(props)
        this.cartSmall = React.createRef();
@@ -236,12 +236,13 @@ const getProducts = gql`
                            <div className="header__navbar__category__item">
                                <Link to="/">ALL ITEMS</Link>
                            </div>
-                           <div className="header__navbar__category__item">
-                               <Link to="/clothes">CLOTHES</Link>
-                            </div>
-                            <div className="header__navbar__category__item">
-                                <Link to="/tech">TECH</Link>
-                            </div>                          
+                            {this.props.categories.map((each)=>(
+                                 <div className="header__navbar__category__item" id={each.name}>
+                                    <Link to= {`/${each.name}`}  onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
+                                 </div>
+                            ))}
+
+                                                
                         </div>
 
                          <div className = "header__navbar__bag">
@@ -320,3 +321,10 @@ export default graphql(getProducts)(Header);
                                      <li className = "selectItem" value="JPY">JPY</li>
                                      <li className = "selectItem" value="RUB">RUB</li>
                                    </ul>    */
+
+/**<div className="header__navbar__category__item">
+                               <Link to="/clothes">CLOTHES</Link>
+                            </div>
+                            <div className="header__navbar__category__item">
+                                <Link to="/tech">TECH</Link>
+                            </div>      */

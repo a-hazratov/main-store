@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom';
 import './ComStyles/SaleItemStyle.css';
 import Cart from './SVG/emptyCart.png';
 
 
-export default class SaleItem extends Component {
+export default class SaleItem extends PureComponent {
     constructor (props) {
         super(props);
         this.cartStorage = 'cart';

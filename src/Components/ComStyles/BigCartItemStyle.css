@@ -106,6 +106,7 @@
   display: block;
   margin-right: 5px;
   margin-left: 10px;
+  margin-bottom: 0;
   height: 24px;
   padding-top: 3px;
   font-family: "Raleway", sans-serif;
@@ -130,7 +131,6 @@
   font-family: "Raleway", sans-serif;
   list-style: none;
   margin-left: 10px;
-  padding: 3px 0;
 }
 
 .liTouchCart {

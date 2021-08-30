@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import SaleItem from '../Components/SaleItem';
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
@@ -29,7 +29,7 @@ const getProducts = gql`
   }
   `
 
-class Tech extends Component {
+class Tech extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
