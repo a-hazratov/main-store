@@ -11,7 +11,6 @@
   z-index: 1;
 }
 .header nav {
-  border: 1px grey dotted;
   height: 80px;
   width: 100%;
   padding: 22px;
@@ -310,5 +309,27 @@
   .cart-content__button a {
     display: inline-block;
     width: 8.75em;
+  }
+}
+
+@media (max-width: 600px) {
+  .header__navbar__category__item a {
+    font-weight: 300;
+  }
+  .header__navbar__category {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
+  .header__navbar__links {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  .header__navbar__links__cartLogo {
+    margin-right: 0;
+  }
+  .header__navbar__links__currency {
+    margin-right: 5px;
   }
 }

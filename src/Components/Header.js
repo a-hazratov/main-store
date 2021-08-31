@@ -73,7 +73,6 @@ const getProducts = gql`
 
    componentDidMount() {
       document.addEventListener('mousedown', this.currencyBoxOutside)
-
         try {
            setTimeout(() => {
             this.setState({
@@ -90,7 +89,7 @@ const getProducts = gql`
     }
 
     componentWillUnmount() {
-        document.removeEventListener('mousedown', this.currencyBoxOutside)
+        document.removeEventListener('mousedown', this.currencyBoxOutside);
     }
     
     //Handle the click outside of currency dropdown
@@ -106,9 +105,9 @@ const getProducts = gql`
        this.headerMain.current.addEventListener('click', (event)=> {
            if(this.state.isOpen && !this.cartSmallInner.current.contains(event.target)) {
                this.toggleCart()
-           }
+           } 
        })
-       
+    
     }
   
     
@@ -191,25 +190,13 @@ const getProducts = gql`
                this.props.setCurrency(event.target.value)
                this.toggleCurrency()
             }
-        })
-      
+        }) 
     }
 
-
-    render() {
-      let arrowSrc = this.state.arrowImg;
-      let moneySign = this.state.moneySign;
-      let getData = this.getDataFromStorage;
-      let numOfItems = this.props.numberOfItems
-      let products = this.state.products;
-      let cart = this.state.cart;
-      let currency = this.props.currency;
-      
-
-      // Display total price in the small shopping cart
-      function displayTotal() {
-        let currentCurrency = currency;
-        let currentCart = cart;
+    // Display total price in the small shopping cart
+    displayTotal=()=> {
+        let currentCurrency = this.props.currency;
+        let currentCart = this.state.cart;
         let total = 0;
         if(currentCart) {
          for(let i = 0; i < currentCart.length; i++) {
@@ -223,6 +210,17 @@ const getProducts = gql`
          return [total.toFixed(2)]
        }
 
+
+    render() {
+      let arrowSrc = this.state.arrowImg;
+      let moneySign = this.state.moneySign;
+      let getData = this.getDataFromStorage;
+      let numOfItems = this.props.numberOfItems
+      let products = this.state.products;
+      let currency = this.props.currency;
+      
+
+
       if(!products) {
           return ( <div className = "header"></div>)
       }
@@ -231,13 +229,13 @@ const getProducts = gql`
            
             <div>
                 <div className="header" >
-                    <nav className = "header__navbar" ref={this.headerMain} onClick = {this.handleClickOutside}>
+                    <nav className = "header__navbar" ref={this.headerMain} onClick={this.handleClickOutside}>
                        <div className="header__navbar__category">
                            <div className="header__navbar__category__item">
                                <Link to="/">ALL ITEMS</Link>
                            </div>
                             {this.props.categories.map((each)=>(
-                                 <div className="header__navbar__category__item" id={each.name}>
+                                 <div className="header__navbar__category__item" key={each.name} id={each.name}>
                                     <Link to= {`/${each.name}`}  onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
                                  </div>
                             ))}
@@ -256,19 +254,19 @@ const getProducts = gql`
                                         <img className = "arrow" src = {arrowSrc} alt="downArrow"></img>
                                     </button>
                                    <div className = "select hiddenCurrency" ref = {this.currencySelect} onClick = {this.selectCurrency}>
-                                       <label className = "select-option" for="USD">&#36; USD</label>
+                                       <label className = "select-option" htmlFor="USD">&#36; USD</label>
                                        <input className = "select-item" id="USD" type="radio" name="currency" value="USD"/>
 
-                                       <label className = "select-option" for="GBP">&#163; GBP</label>
+                                       <label className = "select-option" htmlFor="GBP">&#163; GBP</label>
                                        <input className = "select-item" id="GBP" type="radio" name="currency" value="GBP"/>
 
-                                       <label className = "select-option" for="AUD">&#36; AUD</label>
+                                       <label className = "select-option" htmlFor="AUD">&#36; AUD</label>
                                        <input className = "select-item" id="AUD" type="radio" name="currency" value="AUD"/>
 
-                                       <label className = "select-option" for="JPY">&#165;  JPY</label>
+                                       <label className = "select-option" htmlFor="JPY">&#165;  JPY</label>
                                        <input className = "select-item" id="JPY" type="radio" name="currency" value="JPY"/>
 
-                                       <label className = "select-option" for="RUB">&#8381; RUB</label>
+                                       <label className = "select-option" htmlFor="RUB">&#8381; RUB</label>
                                        <input className = "select-item" id="RUB" type="radio" name="currency" value="RUB"/>
 
                                    </div>
@@ -290,7 +288,7 @@ const getProducts = gql`
                                                          numOfItems = {numOfItems} moneySign = {moneySign}/>
                                            })} {!this.state.cart && (<p>Your cart is empty</p>) }
                                             
-                                            <p className = "total">Total  <span><img src = {moneySign} alt="money"></img>{displayTotal()}</span></p>
+                                            <p className = "total">Total  <span><img src = {moneySign} alt="money"></img>{this.displayTotal()}</span></p>
 
                                             <div className = "cart-content__button">
                                                <Link to = '/shopping-cart'>

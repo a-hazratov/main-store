@@ -29,11 +29,12 @@ import Minus from './SVG/minus-square.svg'
         let attributes = this.props.item.attributes;
         if(this.props.item.hasOwnProperty('uKey')) {
             if(attributes) {
-               return attributes.map(each => each.name === "Size" ? <li className="liSize">{each.value}</li> :
-                                             each.name === "Capacity" ? <li className="liCapacity">{each.value}</li> :
-                                             each.name === "Color" ? <li className="liColor" style = {{backgroundColor: each.value}}></li>:
-                                             each.name === "With USB 3 ports" ? <li className="liUSB">USB 3 ports:  {each.value}</li> :
-                                             each.name === "Touch ID in keyboard" ? <li className="liTouch">Touch ID: {each.value}</li>: "")
+               return attributes.map(each => each.name === "Size" ? <li className="liSize" key={each.value}>{each.value}</li> :
+                                             each.name === "Capacity" ? <li className="liCapacity" key={each.value}>{each.value}</li> :
+                                             each.name === "Color" ? <li className="liColor" style = {{backgroundColor: each.value}}
+                                                                       key={each.value}></li>:
+                                             each.name === "With USB 3 ports" ? <li className="liUSB" key={each.value}>USB 3 ports:  {each.value}</li> :
+                                             each.name === "Touch ID in keyboard" ? <li className="liTouch" key={each.value}>Touch ID: {each.value}</li>: "")
             }
         } else if(!this.props.item.hasOwnProperty('uKey')){
           let itemInCart = this.props.item;
@@ -90,9 +91,7 @@ import Minus from './SVG/minus-square.svg'
        }, 0)
     }
         
-    render() {
-         
-                  
+    render() {            
         return (
             
             <div className = "cartItem">

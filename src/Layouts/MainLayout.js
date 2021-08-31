@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import SaleItem from '../Components/SaleItem';
 import { gql } from "apollo-boost";
 import { graphql} from 'react-apollo';
@@ -29,7 +29,7 @@ const getProducts = gql`
 }
 `
 
-class MainLayout extends Component {
+class MainLayout extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,24 +52,17 @@ class MainLayout extends Component {
         
     
     render() {
-        let currency = this.props.currency
-        console.log("The query  " + this.props.data)
-        //Styles for the heading
-        const styleTitle = {
-        width: '100%',
-        paddingLeft: '50px', 
-        }
+        let currency = this.props.currency;
          
-     
         return (
            
              <div>
                   <div className = "mainLayout">
-                    <h1 style = {styleTitle}>ALL ITEMS</h1>
+                    <h1>ALL ITEMS</h1>
 
                     {this.state.productList.length > 0 && (this.state.productList.map(item => (
                         <div className = "mainLayout__items">
-                            <SaleItem item = {item} inStock={item.inStock} 
+                            <SaleItem item = {item} key = {item.id} inStock={item.inStock} 
                             currency = {currency} numberOfItems = {this.props.numberOfItems}/>
                         </div>
                     )))}

@@ -55,32 +55,31 @@ import Ruble from '../Components/SVG/ruble-sign.svg';
           }
     }
 
+     // Display total price in the small shopping cart
+    displayTotal=()=> {
+      let currentCurrency = this.props.currency;
+      let currentCart = this.state.cart ;
+      let moneySymbol = this.setCurrencySign;
+      let total = 0;
+      if(currentCart) {
+         for(let i = 0; i < currentCart.length; i++) {
+            for(let j =0; j < currentCart[i].prices.length; j++) {
+                if(currentCurrency === currentCart[i].prices[j].currency) {
+                    total = total + (currentCart[i].prices[j].amount * currentCart[i].quantity )
+                }
+            }
+          }
+       }
+      return (<span><img src = {moneySymbol(currentCurrency)} alt="money"></img>{total.toFixed(2)}</span>)
+   }
+
 
     render() {
         let cart = this.state.cart;
         let getData = this.getDataFromStorage;
         let currency = this.props.currency;
         let numOfItems = this.props.numberOfItems;
-        let moneySymbol = this.setCurrencySign;
-       
-
-         // Display total price in the small shopping cart
-        function displayTotal() {
-           let currentCurrency = currency;
-           let currentCart = cart ;
-           let total = 0;
-           if(currentCart) {
-              for(let i = 0; i < currentCart.length; i++) {
-                 for(let j =0; j < currentCart[i].prices.length; j++) {
-                     if(currentCurrency === currentCart[i].prices[j].currency) {
-                         total = total + (currentCart[i].prices[j].amount * currentCart[i].quantity )
-                     }
-                 }
-               }
-            }
-           //return [currentCurrency, "   ", total.toFixed(2)]
-           return (<span><img src = {moneySymbol(currentCurrency)} alt="money"></img>{total.toFixed(2)}</span>)
-        }
+                
         
         return (
           <div className = "main-cart-container"> 
@@ -89,13 +88,13 @@ import Ruble from '../Components/SVG/ruble-sign.svg';
                    <h2>Cart</h2>
                 </div>
                 {cart && cart.map(function(item) { 
-                   return <BigCartItem item={item} id={item.id} 
+                   return <BigCartItem item={item} key = {item.uKey} id={item.id} 
                     currency = {currency}
                     getData = {getData} numOfItems = {numOfItems}/>
                 })}
                   
                   <div className = "bigCartTotal">
-                     <p>Total:  {displayTotal()}  </p>
+                     <p>Total:  {this.displayTotal()}  </p>
                   </div>
                  <div className = "bigCart-content__button">
                    <Link to = '/'>
@@ -110,5 +109,3 @@ import Ruble from '../Components/SVG/ruble-sign.svg';
 }
 
 export default BigCart
-
-//<span>{displayTotal()}</span>

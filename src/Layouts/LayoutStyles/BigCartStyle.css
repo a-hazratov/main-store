@@ -12,6 +12,8 @@
   width: 8.75em;
   height: 2.6875em;
   cursor: pointer;
+  color: white;
+  font-weight: 600;
 }
 
 .bigCheckOut:active {
@@ -33,7 +35,7 @@
 }
 
 .bigCartTotal p {
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Raleway", Times, serif;
   font-size: 1.3rem;
 }
 

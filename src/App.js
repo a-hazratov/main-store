@@ -6,7 +6,6 @@ import MainLayout from './Layouts/MainLayout';
 import ProductDetails from './Components/ProductDetails';
 import BigCart from './Layouts/BigCart';
 import Category from './Layouts/Category';
-//import Tech from './Layouts/Tech';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import {ApolloProvider} from 'react-apollo';
 import { gql } from "apollo-boost";
@@ -72,8 +71,7 @@ const itemCategories = gql`
    //Determine which category was clicked inside Header component
     categoryClick=(e)=>{
       let element =e.target.parentNode;
-      let category = element.getAttribute("id")
-      console.log(category)
+      let category = element.getAttribute("id");
       this.setState({
         clickedCategory: category
       })
@@ -84,7 +82,7 @@ const itemCategories = gql`
     let currency = this.state.currency;
     let categories = this.state.categories;
     let clickedCategory = this.state.clickedCategory;
-    console.log( this.props.data.categories)
+  
     return (
       <ApolloProvider client={client}>
        <Router>
@@ -102,7 +100,7 @@ const itemCategories = gql`
                                                                    numberOfItems = {this.numberOfItems}/>)} />
           <Route path = '/shopping-cart' render={(props)=> (<BigCart {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
            
-          {this.state.categories.map((item)=>(<Route path = {`/${item.name}`} render={(props)=> (<Category {...props} 
+          {this.state.categories.map((item)=>(<Route path = {`/${item.name}`} key={item.name} render={(props)=> (<Category {...props} 
                                                 currency = {currency} numberOfItems = {this.numberOfItems} 
                                                 clickedCategory = {clickedCategory}/>)}/>))}
         </main>
@@ -122,5 +120,3 @@ export default graphql(itemCategories, {
 })(App);
 
 
-/** <Route path = '/clothes' render={(props)=> (<Clothes {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
-    <Route path = '/tech' render={(props)=> (<Tech {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/> */

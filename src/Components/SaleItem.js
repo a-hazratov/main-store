@@ -2,21 +2,34 @@ import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom';
 import './ComStyles/SaleItemStyle.css';
 import Cart from './SVG/emptyCart.png';
+import Dollar from './SVG/dollar-sign.svg';
+import AusDollar from './SVG/dollar-sign.svg';
+import Pound from './SVG/pound-sign.svg';
+import Yen from './SVG/yen-sign.svg';
+import Ruble from './SVG/ruble-sign.svg';
 
 
 export default class SaleItem extends PureComponent {
     constructor (props) {
         super(props);
         this.cartStorage = 'cart';
-        this.productCard = React.createRef()
-        this.cartGreen = React.createRef()
-        this.layer = React.createRef()
+        this.productCard = React.createRef();
+        this.cartGreen = React.createRef();
+        this.layer = React.createRef();
+        this.currencySign= {
+            USD : Dollar,
+            RUB : Ruble,
+            JPY : Yen,
+            GBP : Pound,
+            AUD : AusDollar
+           }
         this.state = {
            hovered: false 
         }
        
     }
    
+    //Places a layer on top of an item that is not in stock
     outOfStock=()=>{
         if(!this.props.inStock) {
             return (<div className = "outOfStockLayer"><p>out of stock</p></div>)
@@ -24,23 +37,28 @@ export default class SaleItem extends PureComponent {
     }
     // Display the price in the product card
     displayPrice=()=> {
-      
         let currentCurrency = this.props.currency;
         let currentCart = this.props.item;
-        let price = currentCart.prices.map((each) => {
+        let currencyItems = this.currencySign;
+        return currentCart.prices.map((each)=> {    
             if(each.currency === currentCurrency) {
-                return each.amount
+               for(let symbol in currencyItems) {
+                  if(symbol === this.props.currency) {
+                     return (<p className = "saleItem__price" key={currentCurrency}>
+                             <img src = {currencyItems[symbol]} alt="money"></img>
+                              {each.amount}</p>)
+                  }
+               }
+              
             }
-            return null
-        })
-        
-         return [currentCurrency, price]
+           return null
+          })
     }
 
-    //add to cart when the round green cart is clicked
+
+    //Add to cart when the round green cart is clicked
       addItemToCart=(e)=>{
           e.preventDefault()
-          console.log("The green cart is clicked " + this.props.item.name)
           if(!localStorage[this.cartStorage]) {
             localStorage[this.cartStorage] = JSON.stringify([]);          
           }
@@ -77,10 +95,10 @@ export default class SaleItem extends PureComponent {
               )
             }
             
-          
           //End of adding products to cartArray or increment quantity
           localStorage[this.cartStorage] = JSON.stringify(cartArray)
           this.props.numberOfItems(cartArray)
+          alert("Your item has been added to the cart");
       }
 
 
@@ -108,7 +126,7 @@ export default class SaleItem extends PureComponent {
                     <div className = "productCard__bottom">
                         
                         <p><span>{this.props.item.brand}</span> {this.props.item.name}</p>
-                        <p style = {{fontFamily: "Raleway"}}>{this.displayPrice()}</p>
+                        {this.displayPrice()}
                     </div>
                 </Link>
                 
@@ -117,3 +135,4 @@ export default class SaleItem extends PureComponent {
     }
 }
 
+/** <p style = {{fontFamily: "Raleway"}}>{this.displayPrice()}</p> */

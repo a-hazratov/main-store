@@ -32,7 +32,7 @@ const getProducts = gql`
 
 
 
- class Clothes extends PureComponent {
+ class Category extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -56,21 +56,15 @@ const getProducts = gql`
      
         let currency = this.props.currency
         let numberOfItems = this.props.numberOfItems
-        //Styles for the heading
-        const styleTitle = {
-        width: '100%',
-        paddingLeft: '50px', 
-        textTransform: 'uppercase',
-        fontFamily: "Raleway"
-        }
+      
         return (
             <div>   
                 <div className = "mainLayout">
-                 <h1 style = {styleTitle}>{this.props.clickedCategory}</h1>
+                 <h1>{this.props.clickedCategory}</h1>
                     {this.state.productList.map((item) =>{
                         if(item.category === this.props.clickedCategory) {
-                           return (<div className = "mainLayout__items">
-                                    <SaleItem item = {item} inStock = {item.inStock} 
+                           return (<div className = "mainLayout__items" key = {item.id}>
+                                    <SaleItem item = {item}  inStock = {item.inStock} 
                                     currency = {currency} numberOfItems = {numberOfItems}/>
                                  </div>)
                         } return null
@@ -82,4 +76,4 @@ const getProducts = gql`
     }
 }
 
-export default graphql(getProducts)(Clothes);
+export default graphql(getProducts)(Category);

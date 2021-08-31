@@ -1,6 +1,11 @@
 import React, { PureComponent } from 'react'
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
+import Dollar from './SVG/dollar-sign.svg';
+import AusDollar from './SVG/dollar-sign.svg';
+import Pound from './SVG/pound-sign.svg';
+import Yen from './SVG/yen-sign.svg';
+import Ruble from './SVG/ruble-sign.svg';
 
 
 
@@ -43,6 +48,13 @@ class ProductDetails extends PureComponent {
         this.onceClickedTouch = "prodDetails__prodInfo__touch clickedTouchBox";
         this.onceClickedSize = "prodDetails__prodInfo__size clickedSizeBox";  
         this.onceClickedColor = "prodDetails__prodInfo__color clickedColorBox";
+        this.currencySign= {
+            USD : Dollar,
+            RUB : Ruble,
+            JPY : Yen,
+            GBP : Pound,
+            AUD : AusDollar
+           }
         this.state = {
             data: null,
             currentProduct: {}
@@ -85,9 +97,6 @@ class ProductDetails extends PureComponent {
         if(currentProductObj.attributes) {
             currentProductObj.attributes.map(each => 
                 keyAttritutes.push("_"+ each.name +"-"+ each.value))
-            /*for (let i = 0; i < currentProductObj.attributes.length; i++) {
-                keyAttritutes.push("_"+currentProductObj.attributes[i].name+"-"+currentProductObj.attributes[i].value)
-            }*/
             uKey= currentProductObj.id+"_"+keyAttritutes.join('');
         } else {
                uKey = currentProductObj.id;
@@ -209,7 +218,7 @@ class ProductDetails extends PureComponent {
                         each.value = displayValue
                     } else if (each.name === "Capacity" && each.value === displayValue) {
                        each.value = ""
-                    }
+                    } return null
                     })
                 }
             } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
@@ -248,7 +257,7 @@ class ProductDetails extends PureComponent {
                      each.value = displayValue
                  } else if (each.name === "With USB 3 ports" && each.value === displayValue) {
                     each.value = ""
-                 }
+                 } return null
                  })
              }
          } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
@@ -287,7 +296,7 @@ class ProductDetails extends PureComponent {
                      each.value = displayValue
                  } else if (each.name === "Touch ID in keyboard" && each.value === displayValue) {
                     each.value = ""
-                 }
+                 } return null
                  })
              }
          } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
@@ -301,6 +310,7 @@ class ProductDetails extends PureComponent {
 
     /** Choose size of the product */
        chooseSize=(event)=>{ 
+
         //Setting indicators if size was clicked
         let onceClickedAttr = this.onceClickedSize
         let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
@@ -327,7 +337,7 @@ class ProductDetails extends PureComponent {
                 currentProductObj.attributes.splice(index, 1);
                 currentProductObj.attributes.push({name: "Size",value: displayValue})
                 console.log("Size exists, new box clicked")
-            } 
+            } return null
             })         
         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.every(item => !item.name === "Size"))  {    
             currentProductObj.attributes.push({name: "Size",   value: displayValue})
@@ -367,7 +377,7 @@ class ProductDetails extends PureComponent {
                         each.value = clickedColor
                     } else if (each.name === "Color" && each.value === clickedColor) {
                         each.value = ""
-                    }
+                    } return null
                 })
             }
         } else if (currentProductObj.hasOwnProperty("attributes") && currentProductObj.attributes.length === 0) {
@@ -382,6 +392,7 @@ class ProductDetails extends PureComponent {
     
     //Setting attributes and attribute names of the product 
      setAttribute=(attributeName)=> {
+         
         let output = null;
         //let item = this.state.data.find((each) => each.id === this.props.match.params.id)
            let item = this.state.data
@@ -392,81 +403,88 @@ class ProductDetails extends PureComponent {
          
           if(attributeName === "Capacity") {
               output = found.items.map((each) => 
-              <div className = "prodDetails__prodInfo__size" onClick={this.chooseCapacity}><h4>{each.value}</h4></div>)    
+              <div className = "prodDetails__prodInfo__size" onClick={this.chooseCapacity} key={each.value}><h4>{each.value}</h4></div>)    
               return [<h4>{attributeName}</h4>, output]          
           }
           if (attributeName === "Color") { 
               output = found.items.map((each) => 
-              <div className = "prodDetails__prodInfo__color"  onClick={this.chooseColor} style={{backgroundColor: each.value}}><p>{each.displayValue}</p></div>)    
+              <div className = "prodDetails__prodInfo__color"  onClick={this.chooseColor} key={each.value} style={{backgroundColor: each.value}}>
+                  <p>{each.displayValue}</p>
+              </div>)    
                return [<h4>{attributeName}</h4>, output]        
           } 
           if (attributeName === "Size" ) {  
               output = found.items.map((each) => 
-              <div className = "prodDetails__prodInfo__size" onClick={this.chooseSize}><h4>{each.value}</h4></div>)    
+              <div className = "prodDetails__prodInfo__size" onClick={this.chooseSize} key={each.value}><h4>{each.value}</h4></div>)    
                return [<h4>{attributeName}</h4>, output]       
           }
           if (attributeName === "With USB 3 ports" ) {  
             output = found.items.map((each) => 
-            <div className = "prodDetails__prodInfo__usb" onClick={this.chooseUSB}><h4>{each.value}</h4></div>)    
+            <div className = "prodDetails__prodInfo__usb" onClick={this.chooseUSB} key={each.value}><h4>{each.value}</h4></div>)    
              return [<h4>{attributeName}</h4>, output]       
         }
         if (attributeName === "Touch ID in keyboard" ) {  
             output = found.items.map((each) => 
-            <div className = "prodDetails__prodInfo__touch" onClick={this.chooseTouchId}><h4>{each.value}</h4></div>)    
+            <div className = "prodDetails__prodInfo__touch" onClick={this.chooseTouchId} key={each.value}><h4>{each.value}</h4></div>)    
              return [<h4>{attributeName}</h4>, output]       
         }
       }
-      
-      
-     
-   
-    render() {
-      let item = this.state.data
-   
-        
-      if(!item){
-        return (<div className = "prodDetails"></div>)
-      }
+  
+    
+    // Display the price in the product card
+     displayPrice=()=> {
+        let currentCurrency = this.props.currency;
+        let currentCart = this.state.data;
+        let currencyItems = this.currencySign;
+        return currentCart.prices.map((each)=> {    
+            if(each.currency === currentCurrency) {
+               for(let symbol in currencyItems) {
+                  if(symbol === this.props.currency) {
+                     return (<p className = "prodInfoPage__price" key={currentCurrency}>
+                             <img src = {currencyItems[symbol]} alt="money"></img>
+                              {each.amount}</p>)
+                  }
+               }
+            }
+           return null
+          })
+     }
+    
 
-        
-      // Display the price in the product card
-       let currency = this.props.currency
-       function displayPrice() {
-          let currentCurrency = currency;
-          let currentCart = item;
-          let price = currentCart.prices.map((each) => {
-              if(each.currency === currentCurrency) {
-                  return each.amount
-              }
-        })
-         return [currentCurrency, price]
-       }
-
-        //Inserts images acording to the number of images available (max 5-6)
-        let image = null;
+     //Setting the images inside the product page
+     setImages=()=>{
+        let item = this.state.data;
         if (item.gallery.length > 0) {    
-            image = (
+            return (
               <div className = "prodDetails__sideImg">
                {item.gallery.map((each)=>{
-                return <img src = {each} alt = "smyh" onClick={changeImg}/>
+                return <img src = {each} key = {each} alt = "smyh" onClick={this.changeImg}/>
                })}
               </div>
             )
           };
-       
-          //Replaces the big img with the clicked side img 
-          function changeImg (e) {
-                let clickedImg = e.target.src
-                let newPlace = document.querySelector(".prodDetails__bigImg img")
-                newPlace.src = clickedImg
-        }
-    
-          
+     }
+
+      //Replaces the big img with the clicked side img 
+     changeImg=(e)=> {
+        let clickedImg = e.target.src
+        let newPlace = document.querySelector(".prodDetails__bigImg img")
+        newPlace.src = clickedImg
+     }
+
+   
+    render() {
+      let item = this.state.data; 
+      if(!item){
+        return (<div className = "prodDetails"></div>)
+      }
+
+                  
         return (
             
             <div className = "prodDetails">
                 
-                {image}
+                {this.setImages()}
                 <div className = "prodDetails__bigImg">
                     <img src = {item.gallery[0]} alt = {item.category}/>
                 </div>
@@ -480,7 +498,7 @@ class ProductDetails extends PureComponent {
                     </div>
                     <div className = "prodDetails__prodInfo__price">
                         <h4>Price: </h4>
-                        <h4>{displayPrice()}</h4>
+                         {this.displayPrice()}
                     </div>
                     <div className = "prodDetails__prodInfo__button">
                         <button type="button" onClick={this.addToCart}>ADD TO CART</button>
@@ -502,6 +520,5 @@ export default graphql(getOneItem, {
         }
     }
 })(ProductDetails);
-
 
 

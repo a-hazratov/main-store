@@ -17,6 +17,12 @@ import Ruble from './SVG/ruble-sign.svg';
      this.cartImage = React.createRef();
      this.rightArrow = React.createRef();
      this.leftArrow = React.createRef();
+     this.allListItems = React.createRef();
+     this.onceClickedSize = "liSizeCart__new liSizeCart__new__clicked";
+     this.onceClickedCapacity = "liCapacityCart__new liCapacityCart__new__clicked";
+     this.onceClickedUsb = "liUSBCart__new liUSBCart__new__clicked";
+     this.onceClickedTouch = "liTouchCart__new liTouchCart__new__clicked";
+     this.onceClickedColor = "liColorCart__new liColorCart__new__clicked"
      this.currencySign= {
       USD : Dollar,
       RUB : Ruble,
@@ -45,11 +51,11 @@ import Ruble from './SVG/ruble-sign.svg';
       if(this.props.item.hasOwnProperty('uKey')) {
          let attributes = this.props.item.attributes;
          if(attributes) {
-              return attributes.map(each => each.name === "Size" ? <li className="liSizeCart">{each.value}</li> :
-                                            each.name === "Capacity" ? <li className="liCapacityCart">{each.value}</li> :
-                                            each.name === "Color" ? <li className="liColorCart" style = {{backgroundColor: each.value}}></li>:
-                                            each.name === "With USB 3 ports" ? <li className="liUSBCart">USB 3 ports:  {each.value}</li> :
-                                            each.name === "Touch ID in keyboard" ? <li className="liTouchCart">Touch ID: {each.value}</li>: "")
+              return attributes.map(each => each.name === "Size" ? <li className="liSizeCart" key={each.value}>{each.value}</li> :
+                                            each.name === "Capacity" ? <li className="liCapacityCart" key={each.value}>{each.value}</li> :
+                                            each.name === "Color" ? <li className="liColorCart" style = {{backgroundColor: each.value}} key={each.value}></li>:
+                                            each.name === "With USB 3 ports" ? <li className="liUSBCart" key={each.value}>USB 3 ports:  {each.value}</li> :
+                                            each.name === "Touch ID in keyboard" ? <li className="liTouchCart" key={each.value}>Touch ID: {each.value}</li>: "")
          }
       } 
          
@@ -63,28 +69,38 @@ import Ruble from './SVG/ruble-sign.svg';
       let found = attrArray.find((each)=> each.name === attributeName)
       if(attributeName === "Capacity") {
          output = found.items.map((each) => 
-         <li className = "liCapacityCart__new" onClick={this.chooseCapacity}><p>{each.value}</p></li>)    
+         <li className = "liCapacityCart__new" onClick={this.pickCapacity} ref = {this.capacity}>
+            <p>{each.value}</p>
+         </li>)    
          return [output]          
      }
 
       if(attributeName === "Color") {
          output = found.items.map((each) => 
-         <li className = "liColorCart__new" onClick={this.chooseColor} style={{backgroundColor: each.value}}><p>{each.displayValue}</p></li>)    
+         <li className = "liColorCart__new" onClick={this.pickColor} style={{backgroundColor: each.value}} key={each.displayValue}>
+            <p>{each.displayValue}</p>
+         </li>)    
           return [output]          
       }
       if(attributeName === "Size") {
          output = found.items.map((each) => 
-         <li className = "liSizeCart__new" onClick={this.chooseSize}><p>{each.value}</p></li>)    
+         <li className = "liSizeCart__new" onClick={this.pickSize} key={each.value}>
+            <p>{each.value}</p>
+         </li>)    
          return [ output]          
      }
      if (attributeName === "With USB 3 ports" ) {  
       output = found.items.map((each) => 
-      <li className = "liUSBCart__new" onClick={this.chooseUSB}><p>{each.value}</p></li>)    
+      <li className = "liUSBCart__new" onClick={this.pickUsb} key={each.value}>
+         <p>{each.value}</p>
+      </li>)    
        return [<h5>USB 3 ports:</h5>, output]       
      }
      if (attributeName === "Touch ID in keyboard" ) {  
       output = found.items.map((each) => 
-      <li className = "liTouchCart__new" onClick={this.chooseTouchId}><p>{each.value}</p></li>)    
+      <li className = "liTouchCart__new" onClick={this.pickTouchId} key={each.value}>
+         <p>{each.value}</p>
+      </li>)    
        return [<h5>Touch ID:</h5>, output]       
      }
     }
@@ -202,7 +218,7 @@ import Ruble from './SVG/ruble-sign.svg';
          image.src =  imageArray[imgIndex];
          rightArrow.style.display = 'none'
       }
-      //imageArray[imgIndex+1] ? image.src =  imageArray[imgIndex+1] : image.src =  imageArray[0];
+   
    }
    
     //Handle the click on the left arrow on the image
@@ -217,7 +233,80 @@ import Ruble from './SVG/ruble-sign.svg';
       } else {
          image.src =  imageArray[imgIndex];
       }
-     // imageArray[imgIndex-1] ? image.src =  imageArray[imgIndex-1] : image.src =  imageArray[0];
+     
+   }
+
+   //Choose attributes in the big cart - Size
+   pickSize=(e)=>{
+       //Visual representation of choosing an attribute
+      let classToAdd = "liSizeCart__new__clicked";
+     // let sizeClicked = e.target.textContent; //Size number or letter
+      let allSizes = this.allListItems.current.querySelectorAll('li')
+      allSizes.forEach((size)=> {
+         if(size.getAttribute("class") === this.onceClickedSize ) {
+            size.classList.remove(classToAdd)
+        } else if (size === e.target.parentNode) {
+            size.classList.add(classToAdd)
+        }
+      })
+   
+     
+   }
+
+   //Choose attributes in the big cart - Capacity
+   pickCapacity=(e)=>{
+      //Visual representation of choosing an attribute
+      let allSizes = this.allListItems.current.querySelectorAll('li')
+      let classToAdd = "liCapacityCart__new__clicked";
+      allSizes.forEach((capacity)=> {
+         if(capacity.getAttribute("class") === this.onceClickedCapacity ) {
+            capacity.classList.remove(classToAdd)
+        } else if (capacity === e.target.parentNode) {
+            capacity.classList.add(classToAdd)
+        }
+      })
+   }
+
+   //Choose attributes in the big cart - Color
+   pickColor=(e)=>{
+      //Visual representation of choosing an attribute
+      let allSizes = this.allListItems.current.querySelectorAll('li')
+      let classToAdd = "liColorCart__new__clicked";
+      allSizes.forEach((color)=> {
+         if(color.getAttribute("class") === this.onceClickedColor ) {
+            color.classList.remove(classToAdd)
+        } else if (color === e.target.parentNode) {
+            color.classList.add(classToAdd)
+        }
+      })
+   }
+
+   //Choose attributes in the big cart - USB port
+   pickUsb=(e)=>{
+      //Visual representation of choosing an attribute
+      let allSizes = this.allListItems.current.querySelectorAll('li')
+      let classToAdd = "liUSBCart__new__clicked";
+      allSizes.forEach((usb)=> {
+         if(usb.getAttribute("class") === this.onceClickedUsb ) {
+            usb.classList.remove(classToAdd)
+        } else if (usb === e.target.parentNode) {
+            usb.classList.add(classToAdd)
+        }
+      })
+   }
+
+   //Choose attributes in the big cart - Touch ID
+   pickTouchId=(e)=>{
+      //Visual representation of choosing an attribute
+      let allSizes = this.allListItems.current.querySelectorAll('li')
+      let classToAdd = "liTouchCart__new__clicked";
+      allSizes.forEach((touch)=> {
+         if(touch.getAttribute("class") === this.onceClickedTouch ) {
+            touch.classList.remove(classToAdd)
+        } else if (touch === e.target.parentNode) {
+            touch.classList.add(classToAdd)
+        }
+      })
    }
     
     render() {
@@ -226,11 +315,14 @@ import Ruble from './SVG/ruble-sign.svg';
                 <div className = "bigCartItem__name">
                     
                       <div className="bigCol1">
+                      <span className = "bigCart-remove-alt" id = {this.props.item.uKey} onClick = {this.removeItem}>
+                         <img src = {Close} alt="close icon"></img>
+                       </span>
                          <h3>{this.props.item.brand}</h3>
                          <h4>{this.props.item.name}</h4>
                              {this.setThePrice()}                 
                          
-                         <ul> 
+                         <ul ref = {this.allListItems}> 
                            {this.displayAttributes()} 
                          </ul>
                       </div>
