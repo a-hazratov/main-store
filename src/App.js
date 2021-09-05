@@ -60,7 +60,6 @@ const itemCategories = gql`
   //Setting currency for the whole app
    setCurrency=(money)=>{
       let elem = money;
-      console.log("SetCurrency function is running")
       setTimeout(() => {
          this.setState({
               currency: elem

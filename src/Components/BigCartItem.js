@@ -1,13 +1,13 @@
 import React, { PureComponent } from 'react';
 import './ComStyles/BigCartItemStyle.css';
-import Plus from './SVG/plus-square.svg';
-import Minus from './SVG/minus-square.svg'; 
+import Plus from './SVG/one-plus-sign.svg';
+import Minus from './SVG/one-minus-sign.svg'; 
 import Close from './SVG/close-sign.svg';
-import Dollar from './SVG/dollar-sign.svg';
-import AusDollar from './SVG/dollar-sign.svg';
-import Pound from './SVG/pound-sign.svg';
-import Yen from './SVG/yen-sign.svg';
-import Ruble from './SVG/ruble-sign.svg';
+//import Dollar from './SVG/dollar-sign.svg';
+//import AusDollar from './SVG/dollar-sign.svg';
+//import Pound from './SVG/pound-sign.svg';
+//import Yen from './SVG/yen-sign.svg';
+//import Ruble from './SVG/ruble-sign.svg';
 
 
  class BigCartItem extends PureComponent {
@@ -24,11 +24,11 @@ import Ruble from './SVG/ruble-sign.svg';
      this.onceClickedTouch = "liTouchCart__new liTouchCart__new__clicked";
      this.onceClickedColor = "liColorCart__new liColorCart__new__clicked"
      this.currencySign= {
-      USD : Dollar,
-      RUB : Ruble,
-      JPY : Yen,
-      GBP : Pound,
-      AUD : AusDollar
+      USD : '\u0024',
+      RUB : '\u20BD',
+      JPY : '\u00A5',
+      GBP : '\u00A3',
+      AUD : '\u0024'
      }
      this.state = {
        cart: [],
@@ -126,7 +126,7 @@ import Ruble from './SVG/ruble-sign.svg';
             for(let symbol in currencyItems) {
                if(symbol === this.props.currency) {
                   return (<p className = "bigCartItem__price">
-                          <img src = {currencyItems[symbol]} alt="money"></img>
+                           {currencyItems[symbol]}
                            {each.amount}</p>)
                }
             }

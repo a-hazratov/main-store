@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import './ComStyles/SaleItemStyle.css';
 import Cart from './SVG/emptyCart.png';
 import Dollar from './SVG/dollar-sign.svg';
@@ -9,7 +10,7 @@ import Yen from './SVG/yen-sign.svg';
 import Ruble from './SVG/ruble-sign.svg';
 
 
-export default class SaleItem extends PureComponent {
+ class SaleItem extends PureComponent {
     constructor (props) {
         super(props);
         this.cartStorage = 'cart';
@@ -32,7 +33,11 @@ export default class SaleItem extends PureComponent {
     //Places a layer on top of an item that is not in stock
     outOfStock=()=>{
         if(!this.props.inStock) {
-            return (<div className = "outOfStockLayer"><p>out of stock</p></div>)
+            return (
+                <Link to = {`/product/${this.props.item.id}`} >
+                   <div className = "outOfStockLayer"><p>out of stock</p></div>
+                </Link>
+            )
         }
     }
     // Display the price in the product card
@@ -59,32 +64,34 @@ export default class SaleItem extends PureComponent {
     //Add to cart when the round green cart is clicked
       addItemToCart=(e)=>{
           e.preventDefault()
-          if(!localStorage[this.cartStorage]) {
-            localStorage[this.cartStorage] = JSON.stringify([]);          
-          }
+          if(this.props.item.attributes.length === 0) {
+            
+              if(!localStorage[this.cartStorage]) {
+                 localStorage[this.cartStorage] = JSON.stringify([]);          
+              }
 
-          let cartArray = JSON.parse(localStorage[this.cartStorage]);
+              let cartArray = JSON.parse(localStorage[this.cartStorage]);
 
-          let currentProductObj = {};
-          currentProductObj.id = this.props.item.id;
-          currentProductObj.name = this.props.item.name; 
-          currentProductObj.brand = this.props.item.brand;
-          currentProductObj.uKey = this.props.item.name;
-          currentProductObj.quantity = 1;  
-          currentProductObj.attributesToPick = this.props.item.attributes;
-          currentProductObj.gallery = this.props.item.gallery;
-          currentProductObj.prices = this.props.item.prices;
+              let currentProductObj = {};
+              currentProductObj.id = this.props.item.id;
+              currentProductObj.name = this.props.item.name; 
+              currentProductObj.brand = this.props.item.brand;
+              currentProductObj.uKey = this.props.item.name;
+              currentProductObj.quantity = 1;  
+              currentProductObj.attributesToPick = this.props.item.attributes;
+              currentProductObj.gallery = this.props.item.gallery;
+              currentProductObj.prices = this.props.item.prices;
 
-          //Cannot generate a unique key (there are no attributes yet)
-          let name = this.props.item.name;
+             //Cannot generate a unique key (there are no attributes yet)
+             let name = this.props.item.name;
           
-         //  Adding products to cartArray or increment quantity
-          if(cartArray.length === 0) {
-              cartArray.push(currentProductObj)
-          } else if(cartArray.length !== 0) {
-              if(!cartArray.find(item => item.name === name)) {
+             //  Adding products to cartArray or increment quantity
+             if(cartArray.length === 0) {
+                cartArray.push(currentProductObj)
+             } else if(cartArray.length !== 0) {
+                if(!cartArray.find(item => item.name === name)) {
                     cartArray.push(currentProductObj)
-              }else if(cartArray.find(item => item.name === name)) (     
+                }else if(cartArray.find(item => item.name === name)) (     
                   cartArray.forEach((each)=> {
                      if(each.name === name && each.uKey === name) {
                           each.quantity += 1   
@@ -92,13 +99,16 @@ export default class SaleItem extends PureComponent {
                         cartArray.push(currentProductObj)
                       }
                   })
-              )
-            }
+                )
+             }
             
-          //End of adding products to cartArray or increment quantity
-          localStorage[this.cartStorage] = JSON.stringify(cartArray)
-          this.props.numberOfItems(cartArray)
-          alert("Your item has been added to the cart");
+             //End of adding products to cartArray or increment quantity
+             localStorage[this.cartStorage] = JSON.stringify(cartArray)
+             this.props.numberOfItems(cartArray)
+         } else if (this.props.item.attributes.length > 0) {
+            
+            this.props.history.push(`/product/${this.props.item.id}`) 
+        }
       }
 
 
@@ -135,4 +145,7 @@ export default class SaleItem extends PureComponent {
     }
 }
 
-/** <p style = {{fontFamily: "Raleway"}}>{this.displayPrice()}</p> */
+export default withRouter(SaleItem);
+/**<Link to = {`/product/${this.props.item.id}`} >
+               <div className = "outOfStockLayer"><p>out of stock</p></div>
+            </Link>   */

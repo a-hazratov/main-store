@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import './ComStyles/CartItemStyle.css'
-import Plus from './SVG/plus-square.svg'
-import Minus from './SVG/minus-square.svg'
+import Plus from './SVG/one-plus-sign.svg'
+import Minus from './SVG/one-minus-sign.svg'
 
 
 
@@ -99,7 +99,7 @@ import Minus from './SVG/minus-square.svg'
                         <div className="col1">
                           <h4>{this.props.item.brand}</h4>
                           <h5>{this.props.item.name}</h5>
-                          <p className = "cartItem__price"><img src = {this.props.moneySign} alt="money"></img>{this.setThePrice()}</p>                      
+                          <p className = "cartItem__price">{this.props.moneySign} {this.setThePrice()}</p>                      
                            
                            <ul className="attrList">
                             {this.setTheAttributes()}

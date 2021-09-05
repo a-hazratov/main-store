@@ -126,6 +126,12 @@ a:hover {
 .prodDetails__prodInfo__attr {
   height: auto;
 }
+
+.attrBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
 .prodDetails__prodInfo__attr h4 {
   margin-bottom: 5px;
   font-family: "Roboto condensed";
@@ -141,7 +147,7 @@ a:hover {
 }
 
 .prodDetails__prodInfo__size:not(:first-of-type) {
-  margin-left: 10px;
+  margin-left: 7px;
 }
 
 .prodDetails__prodInfo__usb {
@@ -160,10 +166,17 @@ a:hover {
 .prodDetails__prodInfo__usb h4 {
   margin-top: 11px;
   font-family: "Roboto condensed";
+  font-size: 18px;
+}
+.prodDetails__prodInfo__usb h3 {
+  margin-top: 11px;
+  font-family: "Source Sans Pro";
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .prodDetails__prodInfo__usb:not(:first-of-type) {
-  margin-left: 10px;
+  margin-left: 7px;
 }
 
 .prodDetails__prodInfo__touch {
@@ -180,12 +193,19 @@ a:hover {
 }
 
 .prodDetails__prodInfo__touch:not(:first-of-type) {
-  margin-left: 10px;
+  margin-left: 7px;
 }
 
 .prodDetails__prodInfo__touch h4 {
   margin-top: 11px;
   font-family: "Roboto condensed";
+  font-size: 18px;
+}
+.prodDetails__prodInfo__touch h3 {
+  margin-top: 11px;
+  font-family: "Source Sans Pro";
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .prodDetails__prodInfo__color {
@@ -198,7 +218,7 @@ a:hover {
 }
 
 .prodDetails__prodInfo__color:not(:first-of-type) {
-  margin-left: 10px;
+  margin-left: 7px;
 }
 
 .prodDetails__prodInfo__color p {
@@ -233,6 +253,14 @@ a:hover {
 .prodDetails__prodInfo__size h4 {
   margin-top: 11px;
   font-family: "Roboto condensed";
+  font-size: 18px;
+}
+
+.prodDetails__prodInfo__size h3 {
+  margin-top: 11px;
+  font-size: 16px;
+  font-family: "Source Sans Pro";
+  font-weight: 400;
 }
 
 .prodDetails__prodInfo__size:hover {
@@ -242,12 +270,6 @@ a:hover {
 .prodDetails__prodInfo__price h4 {
   line-height: 0.8rem;
   font-family: "Raleway", sans-serif;
-}
-
-.prodInfoPage__price img {
-  height: 16px;
-  width: 16px;
-  margin-bottom: -3px;
 }
 
 .prodDetails__prodInfo__price h4:not(:last-of-type) {
@@ -264,11 +286,28 @@ a:hover {
   margin-top: 20px;
   color: white;
 }
-.prodDetails__prodInfo__button button:hover {
+
+.prodDetails__prodInfo__button .outOfStock {
+  width: 100%;
+  height: 3.25em;
+  border: none;
+  /* background-color: #5ece7b;*/
+  background-color: #a1a5a3;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 20px;
+  color: white;
+}
+
+.prodInfoPage__price {
+  font-size: 18px;
+}
+
+.prodDetails__prodInfo__button .inStockButton:hover {
   cursor: pointer;
 }
 
-.prodDetails__prodInfo__button button:active {
+.prodDetails__prodInfo__button .inStockButton:active {
   box-shadow: 0px 4px 4px #a1a5a3;
 }
 

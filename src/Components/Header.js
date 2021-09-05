@@ -6,11 +6,11 @@ import './ComStyles/HeaderStyle.css'
 import CartItem from './CartItem'
 import Cart from './SVG/cart.svg'
 import Close from './SVG/close-sign.svg'
-import Dollar from './SVG/dollar-sign.svg'
-import AusDollar from './SVG/dollar-sign.svg'
-import Pound from './SVG/pound-sign.svg';
-import Yen from './SVG/yen-sign.svg'
-import Ruble from './SVG/ruble-sign.svg'
+//import Dollar from './SVG/dollar-sign.svg'
+//import AusDollar from './SVG/dollar-sign.svg'
+//import Pound from './SVG/pound-sign.svg';
+//import Yen from './SVG/yen-sign.svg'
+//import Ruble from './SVG/ruble-sign.svg'
 import DownArrow from './SVG/down-arrow.svg'
 import UpArrow from './SVG/up-arrow.svg'
 
@@ -58,13 +58,13 @@ const getProducts = gql`
            products: [],  
            arrowImg: DownArrow,
            moneyBoxOpen : true,
-           moneySign: Dollar,
+           moneySign: '\u0024',
            currencySign: {
-               USD : Dollar,
-               RUB : Ruble,
-               JPY : Yen,
-               GBP : Pound,
-               AUD : AusDollar
+            USD : '\u0024',
+            RUB : '\u20BD',
+            JPY : '\u00A5',
+            GBP : '\u00A3',
+            AUD : '\u0024'
            }
        }
    }
@@ -79,13 +79,11 @@ const getProducts = gql`
                products: [...this.props.data.category.products]
             })
              this.getDataFromStorage()    
-            }, 1000)
-        
+            }, 1000)  
         }
         catch(error) {
           console.log("This is error "+ error)
        }
-       
     }
 
     componentWillUnmount() {
@@ -250,7 +248,7 @@ const getProducts = gql`
                          <div className = "header__navbar__links">
                                 <div className="header__navbar__links__currency" ref={this.currencyBox} >
                                     <button className = "currency-button" id = "currency-button" ref={this.currencyButton} onClick={this.toggleCurrency}>
-                                        <img src = {moneySign} alt="USD"></img> 
+                                        <span className = "moneySign-nav"> {moneySign}</span> 
                                         <img className = "arrow" src = {arrowSrc} alt="downArrow"></img>
                                     </button>
                                    <div className = "select hiddenCurrency" ref = {this.currencySelect} onClick = {this.selectCurrency}>
@@ -288,7 +286,7 @@ const getProducts = gql`
                                                          numOfItems = {numOfItems} moneySign = {moneySign}/>
                                            })} {!this.state.cart && (<p>Your cart is empty</p>) }
                                             
-                                            <p className = "total">Total  <span><img src = {moneySign} alt="money"></img>{this.displayTotal()}</span></p>
+                                            <p className = "total">Total  <span>{moneySign} {this.displayTotal()}</span></p>
 
                                             <div className = "cart-content__button">
                                                <Link to = '/shopping-cart'>
@@ -312,17 +310,3 @@ const getProducts = gql`
 export default graphql(getProducts)(Header);
 
 
-/**<ul name="currency" id="currency" ref = {this.props.select} onChange={this.props.setCurrency}>
-                                     <li className = "selectItem" value="USD">USD</li>
-                                     <li className = "selectItem"  value="GBP">GBP</li>
-                                     <li className = "selectItem" value="AUD">AUD</li>
-                                     <li className = "selectItem" value="JPY">JPY</li>
-                                     <li className = "selectItem" value="RUB">RUB</li>
-                                   </ul>    */
-
-/**<div className="header__navbar__category__item">
-                               <Link to="/clothes">CLOTHES</Link>
-                            </div>
-                            <div className="header__navbar__category__item">
-                                <Link to="/tech">TECH</Link>
-                            </div>      */

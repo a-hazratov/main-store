@@ -2,22 +2,22 @@ import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom'
 import './LayoutStyles/BigCartStyle.css';
 import BigCartItem from '../Components/BigCartItem';
-import Dollar from '../Components/SVG/dollar-sign.svg';
-import AusDollar from '../Components/SVG/dollar-sign.svg';
-import Pound from '../Components/SVG/pound-sign.svg';
-import Yen from '../Components/SVG/yen-sign.svg';
-import Ruble from '../Components/SVG/ruble-sign.svg';
+//import Dollar from '../Components/SVG/dollar-sign.svg';
+//import AusDollar from '../Components/SVG/dollar-sign.svg';
+//import Pound from '../Components/SVG/pound-sign.svg';
+//import Yen from '../Components/SVG/yen-sign.svg';
+//import Ruble from '../Components/SVG/ruble-sign.svg';
 
  class BigCart extends PureComponent {
       constructor(props) {
           super(props);
           this.cart = "cart";
           this.currencySign= {
-            USD : Dollar,
-            RUB : Ruble,
-            JPY : Yen,
-            GBP : Pound,
-            AUD : AusDollar
+            USD : '\u0024',
+            RUB : '\u20BD',
+            JPY : '\u00A5',
+            GBP : '\u00A3',
+            AUD : '\u0024'
           }
           this.state = {
               cart: []
@@ -55,7 +55,7 @@ import Ruble from '../Components/SVG/ruble-sign.svg';
           }
     }
 
-     // Display total price in the small shopping cart
+     // Display total price in the shopping cart
     displayTotal=()=> {
       let currentCurrency = this.props.currency;
       let currentCart = this.state.cart ;
@@ -70,7 +70,7 @@ import Ruble from '../Components/SVG/ruble-sign.svg';
             }
           }
        }
-      return (<span><img src = {moneySymbol(currentCurrency)} alt="money"></img>{total.toFixed(2)}</span>)
+      return (<span>{moneySymbol(currentCurrency)}  {total.toFixed(2)}</span>)
    }
 
 
