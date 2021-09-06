@@ -27,10 +27,12 @@ const itemCategories = gql`
     class App extends PureComponent {
         constructor(props) {
           super(props)
+          this.cart = 'cart';
           this.state = {
               key: new Date(),
               currency: "USD",
               categories: [],
+              cart: [],
               clickedCategory: null
           }
         } 
@@ -45,15 +47,31 @@ const itemCategories = gql`
       
       componentDidMount() {
           this.getCategories() 
+          this.getDataFromStorage()
+         
       }
-  
+
+      componentDidUpdate() {
+        let cart;
+         cart = this.state.cart
+         this.numberOfItems(cart)
+      }
+  // Getting items from local storage
+      getDataFromStorage=()=> {  
+        console.log("Getting data from storage")
+        if(localStorage[this.cart]) {
+            this.setState({
+                cart: JSON.parse(localStorage.getItem(this.cart))
+            })
+        }  
+     }
 
   //Function that updates number of items in the cart, to be called in ProductDetails.js and Header.js components
    numberOfItems=(cartToUse) => {
     let number = 0
     let counter = document.querySelector(".counter")
     let smallCartCounter = document.querySelector(".smallCartCounter")
-    cartToUse.map((eact)=>number += eact.quantity)
+    cartToUse.map((each)=>number += each.quantity)
     return [counter.textContent= number, smallCartCounter.textContent = number+" items"]
    }
 

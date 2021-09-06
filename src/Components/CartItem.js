@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import './ComStyles/CartItemStyle.css'
 import Plus from './SVG/one-plus-sign.svg'
 import Minus from './SVG/one-minus-sign.svg'
+import Close from './SVG/close-sign.svg';
 
 
 
@@ -90,6 +91,31 @@ import Minus from './SVG/one-minus-sign.svg'
          this.props.numOfItems(cart)
        }, 0)
     }
+
+    //Remove a certain item from the local storage and the shopping cart
+   removeItem=()=>{
+      this.getDataFromStorage()
+      let cart;
+      let itemToRemoveId;
+      let indexOfItem;
+      document.addEventListener('click', function(e) {
+         itemToRemoveId = e.target.parentElement.getAttribute("id")
+      })
+
+      setTimeout(()=> {
+         cart = this.state.cart
+         cart.forEach((each, index)=> {
+           if(each.uKey === itemToRemoveId) {
+             indexOfItem =  index;  
+           }
+         })
+         cart.splice(indexOfItem, 1)
+         localStorage[this.cart] = JSON.stringify(cart)
+         this.props.getData()
+         this.props.numOfItems(cart)
+     
+     }, 0)
+  }
         
     render() {            
         return (
@@ -111,6 +137,9 @@ import Minus from './SVG/one-minus-sign.svg'
                            <span onClick = {this.decrementItem}><img src = {Minus} alt="decrement"></img></span>
                         </div>
                         <div className="col3">
+                        <span className = "cartOverlay-remove" id = {this.props.item.uKey} onClick = {this.removeItem}>         
+                             <img src = {Close} alt="close icon"></img>
+                        </span>
                           <img src = {this.props.item.gallery[0]} alt = "product"></img>
                         </div>
                   </div>

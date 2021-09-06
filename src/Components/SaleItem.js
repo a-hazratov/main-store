@@ -3,11 +3,7 @@ import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
 import './ComStyles/SaleItemStyle.css';
 import Cart from './SVG/emptyCart.png';
-import Dollar from './SVG/dollar-sign.svg';
-import AusDollar from './SVG/dollar-sign.svg';
-import Pound from './SVG/pound-sign.svg';
-import Yen from './SVG/yen-sign.svg';
-import Ruble from './SVG/ruble-sign.svg';
+
 
 
  class SaleItem extends PureComponent {
@@ -18,11 +14,11 @@ import Ruble from './SVG/ruble-sign.svg';
         this.cartGreen = React.createRef();
         this.layer = React.createRef();
         this.currencySign= {
-            USD : Dollar,
-            RUB : Ruble,
-            JPY : Yen,
-            GBP : Pound,
-            AUD : AusDollar
+            USD : '\u0024',
+            RUB : '\u20BD',
+            JPY : '\u00A5',
+            GBP : '\u00A3',
+            AUD : '\u0024'
            }
         this.state = {
            hovered: false 
@@ -50,8 +46,7 @@ import Ruble from './SVG/ruble-sign.svg';
                for(let symbol in currencyItems) {
                   if(symbol === this.props.currency) {
                      return (<p className = "saleItem__price" key={currentCurrency}>
-                             <img src = {currencyItems[symbol]} alt="money"></img>
-                              {each.amount}</p>)
+                             {currencyItems[symbol]} {each.amount}</p>)
                   }
                }
               
@@ -105,6 +100,7 @@ import Ruble from './SVG/ruble-sign.svg';
              //End of adding products to cartArray or increment quantity
              localStorage[this.cartStorage] = JSON.stringify(cartArray)
              this.props.numberOfItems(cartArray)
+             alert("Your item has been added to the cart")
          } else if (this.props.item.attributes.length > 0) {
             
             this.props.history.push(`/product/${this.props.item.id}`) 
@@ -146,6 +142,3 @@ import Ruble from './SVG/ruble-sign.svg';
 }
 
 export default withRouter(SaleItem);
-/**<Link to = {`/product/${this.props.item.id}`} >
-               <div className = "outOfStockLayer"><p>out of stock</p></div>
-            </Link>   */

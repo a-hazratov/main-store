@@ -2,11 +2,7 @@ import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom'
 import './LayoutStyles/BigCartStyle.css';
 import BigCartItem from '../Components/BigCartItem';
-//import Dollar from '../Components/SVG/dollar-sign.svg';
-//import AusDollar from '../Components/SVG/dollar-sign.svg';
-//import Pound from '../Components/SVG/pound-sign.svg';
-//import Yen from '../Components/SVG/yen-sign.svg';
-//import Ruble from '../Components/SVG/ruble-sign.svg';
+
 
  class BigCart extends PureComponent {
       constructor(props) {
@@ -61,15 +57,11 @@ import BigCartItem from '../Components/BigCartItem';
       let currentCart = this.state.cart ;
       let moneySymbol = this.setCurrencySign;
       let total = 0;
-      if(currentCart) {
-         for(let i = 0; i < currentCart.length; i++) {
-            for(let j =0; j < currentCart[i].prices.length; j++) {
-                if(currentCurrency === currentCart[i].prices[j].currency) {
-                    total = total + (currentCart[i].prices[j].amount * currentCart[i].quantity )
-                }
-            }
+       currentCart.map((each) => each.prices.forEach(price => {
+          if(currentCurrency === price.currency) {
+            total = total + (price.amount * each.quantity)
           }
-       }
+       }))
       return (<span>{moneySymbol(currentCurrency)}  {total.toFixed(2)}</span>)
    }
 

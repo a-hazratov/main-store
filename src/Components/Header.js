@@ -6,11 +6,6 @@ import './ComStyles/HeaderStyle.css'
 import CartItem from './CartItem'
 import Cart from './SVG/cart.svg'
 import Close from './SVG/close-sign.svg'
-//import Dollar from './SVG/dollar-sign.svg'
-//import AusDollar from './SVG/dollar-sign.svg'
-//import Pound from './SVG/pound-sign.svg';
-//import Yen from './SVG/yen-sign.svg'
-//import Ruble from './SVG/ruble-sign.svg'
 import DownArrow from './SVG/down-arrow.svg'
 import UpArrow from './SVG/up-arrow.svg'
 
@@ -152,7 +147,6 @@ const getProducts = gql`
     //Toggle currency button
     toggleCurrency=()=>{
        let select = this.currencySelect.current;
-       //select.classList.toggle('hiddenCurrency');
        if(this.state.moneyBoxOpen === false) {
            select.classList.add("hiddenCurrency")
            this.setState({
@@ -196,15 +190,11 @@ const getProducts = gql`
         let currentCurrency = this.props.currency;
         let currentCart = this.state.cart;
         let total = 0;
-        if(currentCart) {
-         for(let i = 0; i < currentCart.length; i++) {
-           for(let j =0; j < currentCart[i].prices.length; j++) {
-               if(currentCurrency === currentCart[i].prices[j].currency) {
-                   total = total + (currentCart[i].prices[j].amount * currentCart[i].quantity )
-               }
-           }
-         }
-        }
+        currentCart.map((each) => each.prices.forEach(price => {
+            if(currentCurrency === price.currency) {
+              total = total + (price.amount * each.quantity)
+            }
+         }))
          return [total.toFixed(2)]
        }
 

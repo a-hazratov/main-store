@@ -162,3 +162,19 @@
   height: 137px;
   object-fit: contain;
 }
+
+.cartOverlay-remove img {
+  width: 12px;
+  height: 12px;
+}
+
+.cartOverlay-remove {
+  width: 15px;
+  display: block;
+  float: right;
+  margin-bottom: 0;
+}
+
+.cartOverlay-remove:hover {
+  cursor: pointer;
+}

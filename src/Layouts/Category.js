@@ -37,6 +37,7 @@ const getProducts = gql`
         super(props);
         this.state = {
             productList: [],
+            category: null
         }
     }
     
@@ -49,25 +50,45 @@ const getProducts = gql`
     };
     
     componentDidMount() {
-        this.getData()   
+        this.getData() 
+       
     }
+
+    componentDidUpdate() {
+       this.getData();
+        if(!localStorage.getItem('category')) {
+           localStorage.setItem('category', this.props.clickedCategory)
+        } else if (localStorage.getItem('category') && this.props.clickedCategory !== null) {
+           localStorage.setItem('category', this.props.clickedCategory)
+        }
+        this.setState({
+            category: localStorage.getItem('category')
+        })
+      }
     
     render() {
-     
+        console.log(this.state.productList)
+       // console.log(this.props.clickedCategory)
         let currency = this.props.currency
         let numberOfItems = this.props.numberOfItems
+        let category = this.state.category
       
         return (
             <div>   
                 <div className = "mainLayout">
                  <h1>{this.props.clickedCategory}</h1>
-                    {this.state.productList.map((item) =>{
-                        if(item.category === this.props.clickedCategory) {
-                           return (<div className = "mainLayout__items" key = {item.id}>
-                                    <SaleItem item = {item}  inStock = {item.inStock} 
-                                    currency = {currency} numberOfItems = {numberOfItems}/>
-                                 </div>)
-                        } return null
+                    {this.state.productList.map((item) => {
+                              if(item.category === this.props.clickedCategory) {
+                                  return (<div className = "mainLayout__items" key = {item.id}>
+                                 <SaleItem item = {item}  inStock = {item.inStock} 
+                                 currency = {currency} numberOfItems = {numberOfItems}/>
+                              </div>)
+                     } else if(item.category === category) {
+                              return (<div className = "mainLayout__items" key = {item.id}>
+                                     <SaleItem item = {item}  inStock = {item.inStock} 
+                                       currency = {currency} numberOfItems = {numberOfItems}/>
+                                      </div>)
+                     }  return null
                     }
                     )}
                 </div>            
@@ -77,3 +98,4 @@ const getProducts = gql`
 }
 
 export default graphql(getProducts)(Category);
+

@@ -3,11 +3,7 @@ import './ComStyles/BigCartItemStyle.css';
 import Plus from './SVG/one-plus-sign.svg';
 import Minus from './SVG/one-minus-sign.svg'; 
 import Close from './SVG/close-sign.svg';
-//import Dollar from './SVG/dollar-sign.svg';
-//import AusDollar from './SVG/dollar-sign.svg';
-//import Pound from './SVG/pound-sign.svg';
-//import Yen from './SVG/yen-sign.svg';
-//import Ruble from './SVG/ruble-sign.svg';
+
 
 
  class BigCartItem extends PureComponent {
@@ -18,11 +14,6 @@ import Close from './SVG/close-sign.svg';
      this.rightArrow = React.createRef();
      this.leftArrow = React.createRef();
      this.allListItems = React.createRef();
-     this.onceClickedSize = "liSizeCart__new liSizeCart__new__clicked";
-     this.onceClickedCapacity = "liCapacityCart__new liCapacityCart__new__clicked";
-     this.onceClickedUsb = "liUSBCart__new liUSBCart__new__clicked";
-     this.onceClickedTouch = "liTouchCart__new liTouchCart__new__clicked";
-     this.onceClickedColor = "liColorCart__new liColorCart__new__clicked"
      this.currencySign= {
       USD : '\u0024',
       RUB : '\u20BD',
@@ -61,49 +52,7 @@ import Close from './SVG/close-sign.svg';
          
    }
 
-   // Set the attributes to products in the Big Cart, after adding products from the PLP
-    setNewAttributes=(attributeName)=>{
-      let output = null;
-      let item = this.props.item;
-      let attrArray = item.attributesToPick; //Getting an array of objects with attributes
-      let found = attrArray.find((each)=> each.name === attributeName)
-      if(attributeName === "Capacity") {
-         output = found.items.map((each) => 
-         <li className = "liCapacityCart__new" onClick={this.pickCapacity} ref = {this.capacity}>
-            <p>{each.value}</p>
-         </li>)    
-         return [output]          
-     }
-
-      if(attributeName === "Color") {
-         output = found.items.map((each) => 
-         <li className = "liColorCart__new" onClick={this.pickColor} style={{backgroundColor: each.value}} key={each.displayValue}>
-            <p>{each.displayValue}</p>
-         </li>)    
-          return [output]          
-      }
-      if(attributeName === "Size") {
-         output = found.items.map((each) => 
-         <li className = "liSizeCart__new" onClick={this.pickSize} key={each.value}>
-            <p>{each.value}</p>
-         </li>)    
-         return [ output]          
-     }
-     if (attributeName === "With USB 3 ports" ) {  
-      output = found.items.map((each) => 
-      <li className = "liUSBCart__new" onClick={this.pickUsb} key={each.value}>
-         <p>{each.value}</p>
-      </li>)    
-       return [<h5>USB 3 ports:</h5>, output]       
-     }
-     if (attributeName === "Touch ID in keyboard" ) {  
-      output = found.items.map((each) => 
-      <li className = "liTouchCart__new" onClick={this.pickTouchId} key={each.value}>
-         <p>{each.value}</p>
-      </li>)    
-       return [<h5>Touch ID:</h5>, output]       
-     }
-    }
+   
 
  //display attributes inside render
    displayAttributes=()=>{
@@ -111,9 +60,7 @@ import Close from './SVG/close-sign.svg';
          return ""
       } else if(this.props.item.attributes || this.props.item.attributesToPick){
            return  (this.props.item.attributes ? 
-                     this.setTheAttributes()  :  
-                     this.props.item.attributesToPick.map((each)=>
-                      this.setNewAttributes(each.name) ))
+                     this.setTheAttributes()  : null)
       }
    }
 
@@ -236,78 +183,9 @@ import Close from './SVG/close-sign.svg';
      
    }
 
-   //Choose attributes in the big cart - Size
-   pickSize=(e)=>{
-       //Visual representation of choosing an attribute
-      let classToAdd = "liSizeCart__new__clicked";
-     // let sizeClicked = e.target.textContent; //Size number or letter
-      let allSizes = this.allListItems.current.querySelectorAll('li')
-      allSizes.forEach((size)=> {
-         if(size.getAttribute("class") === this.onceClickedSize ) {
-            size.classList.remove(classToAdd)
-        } else if (size === e.target.parentNode) {
-            size.classList.add(classToAdd)
-        }
-      })
    
-     
-   }
 
-   //Choose attributes in the big cart - Capacity
-   pickCapacity=(e)=>{
-      //Visual representation of choosing an attribute
-      let allSizes = this.allListItems.current.querySelectorAll('li')
-      let classToAdd = "liCapacityCart__new__clicked";
-      allSizes.forEach((capacity)=> {
-         if(capacity.getAttribute("class") === this.onceClickedCapacity ) {
-            capacity.classList.remove(classToAdd)
-        } else if (capacity === e.target.parentNode) {
-            capacity.classList.add(classToAdd)
-        }
-      })
-   }
-
-   //Choose attributes in the big cart - Color
-   pickColor=(e)=>{
-      //Visual representation of choosing an attribute
-      let allSizes = this.allListItems.current.querySelectorAll('li')
-      let classToAdd = "liColorCart__new__clicked";
-      allSizes.forEach((color)=> {
-         if(color.getAttribute("class") === this.onceClickedColor ) {
-            color.classList.remove(classToAdd)
-        } else if (color === e.target.parentNode) {
-            color.classList.add(classToAdd)
-        }
-      })
-   }
-
-   //Choose attributes in the big cart - USB port
-   pickUsb=(e)=>{
-      //Visual representation of choosing an attribute
-      let allSizes = this.allListItems.current.querySelectorAll('li')
-      let classToAdd = "liUSBCart__new__clicked";
-      allSizes.forEach((usb)=> {
-         if(usb.getAttribute("class") === this.onceClickedUsb ) {
-            usb.classList.remove(classToAdd)
-        } else if (usb === e.target.parentNode) {
-            usb.classList.add(classToAdd)
-        }
-      })
-   }
-
-   //Choose attributes in the big cart - Touch ID
-   pickTouchId=(e)=>{
-      //Visual representation of choosing an attribute
-      let allSizes = this.allListItems.current.querySelectorAll('li')
-      let classToAdd = "liTouchCart__new__clicked";
-      allSizes.forEach((touch)=> {
-         if(touch.getAttribute("class") === this.onceClickedTouch ) {
-            touch.classList.remove(classToAdd)
-        } else if (touch === e.target.parentNode) {
-            touch.classList.add(classToAdd)
-        }
-      })
-   }
+  
     
     render() {
         return (

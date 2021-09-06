@@ -1,13 +1,6 @@
 import React, { PureComponent } from 'react'
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
-import Dollar from './SVG/dollar-sign.svg';
-import AusDollar from './SVG/dollar-sign.svg';
-import Pound from './SVG/pound-sign.svg';
-import Yen from './SVG/yen-sign.svg';
-import Ruble from './SVG/ruble-sign.svg';
-
-
 
 
 const getOneItem = gql`
@@ -33,10 +26,6 @@ const getOneItem = gql`
             }    
         }
     }`
-
-
-
-
 
 
 
@@ -124,18 +113,13 @@ class ProductDetails extends PureComponent {
             if(product.attributes.length !== 0) {
                 let prodAttributes = [];
                 let currCartAttributes = [];
-                for(let i = 0; i < product.attributes.length; i++) {
-                    if(product.attributes[i].name === "Color" || product.attributes[i].name === "Capacity" || product.attributes[i].name === "Size") {
-                    prodAttributes.push(product.attributes[i].name)
-                    }
-                }
+                product.attributes.map(each => prodAttributes.push(each.name))
                 if(!currentProductObj.attributes || currentProductObj.attributes.length === 0) {
                     alert("Please, select the attributes of the product")
                     return
                 } else if (currentProductObj.attributes || currentProductObj.attributes.length !== 0) {
-                    for(let j = 0; j < currentProductObj.attributes.length; j++) {
-                        currCartAttributes.push(currentProductObj.attributes[j].name)
-                    } 
+                   
+                    currentProductObj.attributes.map(each => currCartAttributes.push(each.name))
                     
                     if(this.checkForAttributes(currCartAttributes, prodAttributes)) {
                         localStorage[this.cartStorage] = JSON.stringify(cartArray)
@@ -393,9 +377,8 @@ class ProductDetails extends PureComponent {
     //Setting attributes and attribute names of the product 
      setAttribute=(attributeName)=> {
          
-        let output = null;
-        //let item = this.state.data.find((each) => each.id === this.props.match.params.id)
-           let item = this.state.data
+          let output = null;
+          let item = this.state.data
     
         
           let attrArray = item.attributes; //Getting an arry of objects with attributes 
@@ -425,13 +408,13 @@ class ProductDetails extends PureComponent {
             
                <div className = "prodDetails__prodInfo__usb" onClick={this.chooseUSB} key={each.value}><h3>{each.value}</h3></div>)    
              return [<h4>{attributeName}</h4>, <div className = "attrBox">{output}</div>]       
-        }
-        if (attributeName === "Touch ID in keyboard" ) {  
+          }
+           if (attributeName === "Touch ID in keyboard" ) {  
             output = found.items.map((each) =>
          
                 <div className = "prodDetails__prodInfo__touch" onClick={this.chooseTouchId} key={each.value}><h3>{each.value}</h3></div>)    
              return [<h4>{attributeName}</h4>, <div className = "attrBox">{output}</div>]       
-        }
+          }
       }
   
     
