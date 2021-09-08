@@ -16,7 +16,8 @@ import BigCartItem from '../Components/BigCartItem';
             AUD : '\u0024'
           }
           this.state = {
-              cart: []
+              cart: [],
+              updatedSmallCart: false
           }
       }
 
@@ -35,11 +36,9 @@ import BigCartItem from '../Components/BigCartItem';
     //Remove items from storage when checkout button is clicked
     removeFromStorage=()=> {
         localStorage.removeItem(this.cart);
-        let counter = document.querySelector(".counter");
-        let smallCartCounter = document.querySelector(".smallCartCounter");
-        counter.textContent = "0";
-        smallCartCounter.textContent = "";
+        this.props.numberOfItems(null)
     }
+    
 
    // Set the currency sign
     setCurrencySign=(currentVal)=>{

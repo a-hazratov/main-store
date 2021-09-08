@@ -61,7 +61,7 @@ class MainLayout extends PureComponent {
                     <h1>ALL ITEMS</h1>
 
                     {this.state.productList.length > 0 && (this.state.productList.map(item => (
-                        <div className = "mainLayout__items">
+                        <div className = "mainLayout__items" key = {item.id + item.name}>
                             <SaleItem item = {item} key = {item.id} inStock={item.inStock} 
                             currency = {currency} numberOfItems = {this.props.numberOfItems}/>
                         </div>

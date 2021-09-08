@@ -9,6 +9,7 @@ import Close from './SVG/close-sign.svg';
  class CartItem extends PureComponent {
     constructor(props) {
         super(props);
+        this.removeItemHere = React.createRef();
         this.cart = 'cart'
         this.state = {
              cart: []
@@ -30,12 +31,12 @@ import Close from './SVG/close-sign.svg';
         let attributes = this.props.item.attributes;
         if(this.props.item.hasOwnProperty('uKey')) {
             if(attributes) {
-               return attributes.map(each => each.name === "Size" ? <li className="liSize" key={each.value}>{each.value}</li> :
-                                             each.name === "Capacity" ? <li className="liCapacity" key={each.value}>{each.value}</li> :
+               return attributes.map(each => each.name === "Size" ? <li className="liSize" key={each.value + each.name}>{each.value}</li> :
+                                             each.name === "Capacity" ? <li className="liCapacity" key={each.value + each.name}>{each.value}</li> :
                                              each.name === "Color" ? <li className="liColor" style = {{backgroundColor: each.value}}
                                                                        key={each.value}></li>:
-                                             each.name === "With USB 3 ports" ? <li className="liUSB" key={each.value}>USB 3 ports:  {each.value}</li> :
-                                             each.name === "Touch ID in keyboard" ? <li className="liTouch" key={each.value}>Touch ID: {each.value}</li>: "")
+                                             each.name === "With USB 3 ports" ? <li className="liUSB" key={each.value + each.name}>USB 3 ports:  {each.value}</li> :
+                                             each.name === "Touch ID in keyboard" ? <li className="liTouch" key={each.value + each.name}>Touch ID: {each.value}</li>: "")
             }
         } else if(!this.props.item.hasOwnProperty('uKey')){
           let itemInCart = this.props.item;
@@ -93,19 +94,18 @@ import Close from './SVG/close-sign.svg';
     }
 
     //Remove a certain item from the local storage and the shopping cart
-   removeItem=()=>{
+   removeItem=(e)=>{
       this.getDataFromStorage()
       let cart;
-      let itemToRemoveId;
       let indexOfItem;
-      document.addEventListener('click', function(e) {
-         itemToRemoveId = e.target.parentElement.getAttribute("id")
-      })
-
+      let itemToRemoveId = e.target.parentElement.getAttribute('id')
+      console.log(itemToRemoveId)
+      
       setTimeout(()=> {
          cart = this.state.cart
          cart.forEach((each, index)=> {
            if(each.uKey === itemToRemoveId) {
+              console.log(each.uKey)
              indexOfItem =  index;  
            }
          })
@@ -137,7 +137,7 @@ import Close from './SVG/close-sign.svg';
                            <span onClick = {this.decrementItem}><img src = {Minus} alt="decrement"></img></span>
                         </div>
                         <div className="col3">
-                        <span className = "cartOverlay-remove" id = {this.props.item.uKey} onClick = {this.removeItem}>         
+                        <span className = "cartOverlay-remove" id = {this.props.item.uKey} ref = {this.removeItemHere} onClick = {this.removeItem}>         
                              <img src = {Close} alt="close icon"></img>
                         </span>
                           <img src = {this.props.item.gallery[0]} alt = "product"></img>

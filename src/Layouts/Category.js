@@ -67,8 +67,6 @@ const getProducts = gql`
       }
     
     render() {
-        console.log(this.state.productList)
-       // console.log(this.props.clickedCategory)
         let currency = this.props.currency
         let numberOfItems = this.props.numberOfItems
         let category = this.state.category
@@ -76,7 +74,7 @@ const getProducts = gql`
         return (
             <div>   
                 <div className = "mainLayout">
-                 <h1>{this.props.clickedCategory}</h1>
+                 <h1>{this.props.clickedCategory || category}</h1>
                     {this.state.productList.map((item) => {
                               if(item.category === this.props.clickedCategory) {
                                   return (<div className = "mainLayout__items" key = {item.id}>

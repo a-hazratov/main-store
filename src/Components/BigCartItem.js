@@ -14,6 +14,7 @@ import Close from './SVG/close-sign.svg';
      this.rightArrow = React.createRef();
      this.leftArrow = React.createRef();
      this.allListItems = React.createRef();
+     this.removeItemHere = React.createRef();
      this.currencySign= {
       USD : '\u0024',
       RUB : '\u20BD',
@@ -42,11 +43,11 @@ import Close from './SVG/close-sign.svg';
       if(this.props.item.hasOwnProperty('uKey')) {
          let attributes = this.props.item.attributes;
          if(attributes) {
-              return attributes.map(each => each.name === "Size" ? <li className="liSizeCart" key={each.value}>{each.value}</li> :
-                                            each.name === "Capacity" ? <li className="liCapacityCart" key={each.value}>{each.value}</li> :
+              return attributes.map(each => each.name === "Size" ? <li className="liSizeCart" key={each.value + each.name}>{each.value}</li> :
+                                            each.name === "Capacity" ? <li className="liCapacityCart" key={each.value + each.name}>{each.value}</li> :
                                             each.name === "Color" ? <li className="liColorCart" style = {{backgroundColor: each.value}} key={each.value}></li>:
-                                            each.name === "With USB 3 ports" ? <li className="liUSBCart" key={each.value}>USB 3 ports:  {each.value}</li> :
-                                            each.name === "Touch ID in keyboard" ? <li className="liTouchCart" key={each.value}>Touch ID: {each.value}</li>: "")
+                                            each.name === "With USB 3 ports" ? <li className="liUSBCart" key={each.value + each.name}>USB 3 ports:  {each.value}</li> :
+                                            each.name === "Touch ID in keyboard" ? <li className="liTouchCart" key={each.value + each.name}>Touch ID: {each.value}</li>: "")
          }
       } 
          
@@ -56,9 +57,9 @@ import Close from './SVG/close-sign.svg';
 
  //display attributes inside render
    displayAttributes=()=>{
-      if(!this.props.item.attributes && !this.props.item.attributesToPick) {
+      if(!this.props.item.attributes) {
          return ""
-      } else if(this.props.item.attributes || this.props.item.attributesToPick){
+      } else if(this.props.item.attributes){
            return  (this.props.item.attributes ? 
                      this.setTheAttributes()  : null)
       }
@@ -72,7 +73,7 @@ import Close from './SVG/close-sign.svg';
          if(each.currency === this.props.currency) {
             for(let symbol in currencyItems) {
                if(symbol === this.props.currency) {
-                  return (<p className = "bigCartItem__price">
+                  return (<p className = "bigCartItem__price" key={each.amount}>
                            {currencyItems[symbol]}
                            {each.amount}</p>)
                }
@@ -127,15 +128,11 @@ import Close from './SVG/close-sign.svg';
 
 
 //Remove a certain item from the local storage and the shopping cart
-   removeItem=()=>{
+   removeItem=(e)=>{
        this.getDataFromStorage()
        let cart;
-       let itemToRemoveId;
        let indexOfItem;
-       document.addEventListener('click', function(e) {
-          itemToRemoveId = e.target.parentElement.getAttribute("id")
-       })
-
+       let itemToRemoveId = e.target.parentElement.getAttribute('id');
        setTimeout(()=> {
           cart = this.state.cart
           cart.forEach((each, index)=> {
@@ -193,7 +190,7 @@ import Close from './SVG/close-sign.svg';
                 <div className = "bigCartItem__name">
                     
                       <div className="bigCol1">
-                      <span className = "bigCart-remove-alt" id = {this.props.item.uKey} onClick = {this.removeItem}>
+                      <span className = "bigCart-remove-alt" id = {this.props.item.uKey} ref = {this.removeItemHere} onClick = {this.removeItem}>
                          <img src = {Close} alt="close icon"></img>
                        </span>
                          <h3>{this.props.item.brand}</h3>
@@ -228,20 +225,3 @@ import Close from './SVG/close-sign.svg';
 
 export default BigCartItem
 
-/**{this.setTheAttributes()}
- * 
- *                            {this.props.item.attributes ? 
-                             this.props.item.attributes.map((each)=>
-                              this.setTheAttributes(each.name) ) :  
-                              this.props.item.attributesToPick.map((each)=>
-                              this.setTheAttributes(each.name) )} 
-                              
-                              
-                              if(!this.props.item.hasOwnProperty('uKey')) {
-         let itemInCart = this.props.item;
-         if(itemInCart.attributesToPick) {
-           return this.setNewAttributes(attrName)
-         }
-         
-      }
-  */

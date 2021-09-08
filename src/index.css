@@ -32,6 +32,7 @@ a:hover {
 .mainSection {
   padding: 2em;
   min-height: 100vh;
+  min-width: 100vw;
   padding-top: 80px;
 }
 
@@ -291,7 +292,6 @@ a:hover {
   width: 100%;
   height: 3.25em;
   border: none;
-  /* background-color: #5ece7b;*/
   background-color: #a1a5a3;
   font-size: 1rem;
   font-weight: 600;
@@ -320,19 +320,83 @@ a:hover {
 }
 
 @media (max-width: 64em) {
+  .mainSection {
+    width: 100vw;
+  }
   .prodDetails {
     width: 100vw;
     display: grid;
-    grid-template-columns: auto;
+    grid-template-columns: fit-content(95%);
     margin-left: auto;
     margin-right: auto;
   }
   .prodDetails__prodInfo__button button {
     width: 30%;
   }
+  .prodDetails__prodInfo__button .outOfStock {
+    width: 30%;
+  }
+  .desc {
+    width: 70%;
+  }
   .prodDetails__bigImg img {
     width: 28.125em;
     height: 21.9375em;
+  }
+  .prodDetails__sideImg {
+    display: flex;
+    justify-content: center;
+  }
+  .prodDetails__bigImg {
+    display: flex;
+    justify-content: center;
+  }
+  .prodDetails__prodInfo__title {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+  .prodDetails__prodInfo__title h2 {
+    align-self: center;
+  }
+  .prodDetails__prodInfo__title h3 {
+    align-self: center;
+  }
+  .prodDetails__prodInfo__attr {
+    display: flex;
+    flex-direction: column;
+  }
+  .prodDetails__prodInfo__attr h4 {
+    align-self: center;
+  }
+  .prodDetails__prodInfo__attr .attrBox {
+    align-self: center;
+  }
+  .prodDetails__prodInfo__price {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .prodDetails__prodInfo__price h4 {
+    align-self: center;
+    margin-bottom: 0;
+  }
+  .prodDetails__prodInfo__price p {
+    align-self: center;
+    margin-top: 10px;
+  }
+
+  .prodDetails__prodInfo__button {
+    display: flex;
+    flex-direction: column;
+  }
+  .prodDetails__prodInfo__button button {
+    align-self: center;
+  }
+  .prodDetails__prodInfo__button .desc {
+    align-self: center;
   }
 }
 

@@ -28,12 +28,14 @@ const itemCategories = gql`
         constructor(props) {
           super(props)
           this.cart = 'cart';
+         
           this.state = {
               key: new Date(),
               currency: "USD",
               categories: [],
               cart: [],
-              clickedCategory: null
+              clickedCategory: null,
+              counter: 0,
           }
         } 
   
@@ -48,31 +50,35 @@ const itemCategories = gql`
       componentDidMount() {
           this.getCategories() 
           this.getDataFromStorage()
-         
+          let cart;
+          setTimeout(() => {
+          cart = this.state.cart
+          this.numberOfItems(cart)
+          }, 500)  
       }
 
-      componentDidUpdate() {
-        let cart;
-         cart = this.state.cart
-         this.numberOfItems(cart)
-      }
   // Getting items from local storage
       getDataFromStorage=()=> {  
-        console.log("Getting data from storage")
         if(localStorage[this.cart]) {
             this.setState({
                 cart: JSON.parse(localStorage.getItem(this.cart))
             })
-        }  
+        } else { return null} 
      }
 
   //Function that updates number of items in the cart, to be called in ProductDetails.js and Header.js components
    numberOfItems=(cartToUse) => {
-    let number = 0
-    let counter = document.querySelector(".counter")
-    let smallCartCounter = document.querySelector(".smallCartCounter")
-    cartToUse.map((each)=>number += each.quantity)
-    return [counter.textContent= number, smallCartCounter.textContent = number+" items"]
+    let number = 0;
+    if(cartToUse) {
+          cartToUse.map((each)=>number += each.quantity)
+           this.setState({
+           counter: number
+           })
+    } else if (!cartToUse) {
+        this.setState({
+        counter: 0
+        })
+    }
    }
 
   //Setting currency for the whole app
@@ -87,24 +93,29 @@ const itemCategories = gql`
    
    //Determine which category was clicked inside Header component
     categoryClick=(e)=>{
-      let element =e.target.parentNode;
-      let category = element.getAttribute("id");
+       let element =e.target.parentNode;
+       let category = element.getAttribute("id");
       this.setState({
         clickedCategory: category
       })
     }
+
+    
+
 
   render() {
     let key = this.state.key.getTime()+1;
     let currency = this.state.currency;
     let categories = this.state.categories;
     let clickedCategory = this.state.clickedCategory;
-  
+    let counter = this.state.counter;
+ 
     return (
       <ApolloProvider client={client}>
        <Router>
         <Header key = {key} numberOfItems = {this.numberOfItems} currency = {currency} 
-          setCurrency = {this.setCurrency} categories = {categories} categoryClick={this.categoryClick}/>
+          setCurrency = {this.setCurrency} categories = {categories} categoryClick={this.categoryClick}
+           counter = {counter}/>
         <main className = "mainSection" ref={this.appMain}>
            <Route path = '/' render={(props)=> (<MainLayout {...props} currency = {currency} 
                                                   numberOfItems = {this.numberOfItems}/>)} exact/>

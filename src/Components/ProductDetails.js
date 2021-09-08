@@ -37,6 +37,13 @@ class ProductDetails extends PureComponent {
         this.onceClickedTouch = "prodDetails__prodInfo__touch clickedTouchBox";
         this.onceClickedSize = "prodDetails__prodInfo__size clickedSizeBox";  
         this.onceClickedColor = "prodDetails__prodInfo__color clickedColorBox";
+        this.allSizesList = React.createRef();
+        this.allCapacityList = React.createRef();
+        this.allColorsList = React.createRef();
+        this.allUsbList = React.createRef();
+        this.allTouchList = React.createRef();
+        this.allAttributes = React.createRef();
+        this.prodDetailsBigImg = React.createRef();
         this.currencySign= {
             USD : '\u0024',
             RUB : '\u20BD',
@@ -65,7 +72,6 @@ class ProductDetails extends PureComponent {
 
     //Add products to localStorage and the shopping cart
     addToCart =()=>{
-      // let product = this.state.data.find((each) => each.id === this.props.match.params.id)
          let product = this.state.data
         if(!localStorage[this.cartStorage]) {
             localStorage[this.cartStorage] = JSON.stringify([]);          
@@ -155,31 +161,31 @@ class ProductDetails extends PureComponent {
          }
 
         /**Remove styles from clicked attributes on product page */
+        
          removeStyles=()=> {
-            let capacitySizeStyleRemove = document.querySelector(".clickedSizeBox");
-            let colorStyleToRemove = document.querySelector(".clickedColorBox");
-            let usbStyleToRemove = document.querySelector(".clickedUsbBox");
-            let touchStyleToRemove = document.querySelector(".clickedTouchBox");
-            if(capacitySizeStyleRemove) {
-                capacitySizeStyleRemove.classList.remove("clickedSizeBox");
-            }
-            if (colorStyleToRemove) {
-                colorStyleToRemove.classList.remove("clickedColorBox")
-            }  
-            if (usbStyleToRemove) {
-                usbStyleToRemove.classList.remove("clickedUsbBox")
-            }  
-            if (touchStyleToRemove) {
-                touchStyleToRemove.classList.remove("clickedTouchBox")
-            }  
+            let selectAll = this.allAttributes.current.querySelectorAll('div');
+            selectAll.forEach((each)=> {
+                if(each.getAttribute('class') === this.onceClickedSize) {
+                    each.classList.remove('clickedSizeBox')
+                }
+                if(each.getAttribute('class') === this.onceClickedColor) {
+                    each.classList.remove('clickedColorBox')
+                }
+                if(each.getAttribute('class') === this.onceClickedUsb) {
+                    each.classList.remove('clickedUsbBox')
+                }
+                if(each.getAttribute('class') === this.onceClickedTouch) {
+                    each.classList.remove('clickedTouchBox')
+                }
+            })
          }
 
        /*Choose capacity of a product*/
         chooseCapacity=(event)=>{ 
            //Setting indicators if size was clicked
            let onceClickedAttr = this.onceClickedSize
-           let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
-           allSizes.forEach((size)=> {
+           let allCapacityList = this.allCapacityList.current.querySelectorAll('div');
+           allCapacityList.forEach((size)=> {
               if(size.getAttribute("class") === onceClickedAttr ) {
                   size.classList.remove("clickedSizeBox")
               } else if (size === event.target.parentNode || size === event.target) {
@@ -217,8 +223,8 @@ class ProductDetails extends PureComponent {
         chooseUSB=(event)=>{ 
           //Setting indicators if size was clicked
           let onceClickedAttr = this.onceClickedUsb;
-          let allUsb = document.querySelectorAll(".prodDetails__prodInfo__usb")
-              allUsb.forEach((size)=> {
+          let allUsbList = this.allUsbList.current.querySelectorAll('div');
+              allUsbList.forEach((size)=> {
                  if(size.getAttribute("class") === onceClickedAttr ) {
                     size.classList.remove("clickedUsbBox")
                  } else if (size === event.target.parentNode || size === event.target) {
@@ -256,8 +262,8 @@ class ProductDetails extends PureComponent {
      chooseTouchId=(event)=>{ 
         //Setting indicators if size was clicked
         let onceClickedAttr = this.onceClickedTouch;
-        let allTouch = document.querySelectorAll(".prodDetails__prodInfo__touch")
-        allTouch.forEach((size)=> {
+        let allTouchList = this.allTouchList.current.querySelectorAll('div');
+        allTouchList.forEach((size)=> {
            if(size.getAttribute("class") === onceClickedAttr ) {
                size.classList.remove("clickedTouchBox")
            } else if (size === event.target.parentNode || size === event.target) {
@@ -294,11 +300,11 @@ class ProductDetails extends PureComponent {
 
     /** Choose size of the product */
        chooseSize=(event)=>{ 
-       console.log(event.target)
         //Setting indicators if size was clicked
         let onceClickedAttr = this.onceClickedSize
-        let allSizes = document.querySelectorAll(".prodDetails__prodInfo__size")
-         allSizes.forEach((size)=> {
+        let allSizesList = this.allSizesList.current.querySelectorAll('div');
+        
+         allSizesList.forEach((size)=> {
             if(size.getAttribute("class") === onceClickedAttr ) {
                 size.classList.remove("clickedSizeBox")
             } else if (size === event.target.parentNode || size === event.target) {
@@ -339,8 +345,8 @@ class ProductDetails extends PureComponent {
      chooseColor=(event)=>{
         let onceClickedAttr = this.onceClickedColor
         let clickedColor = event.target.style.backgroundColor;
-        let allBoxes = document.querySelectorAll('.prodDetails__prodInfo__color')
-             allBoxes.forEach((box)=> {
+        let allColorsList = this.allColorsList.current.querySelectorAll('div');
+             allColorsList.forEach((box)=> {
             if(box.getAttribute("class") === onceClickedAttr) {
                 box.classList.remove('clickedColorBox')
             } else if (box === event.target || box === event.target.parentNode) {
@@ -376,44 +382,42 @@ class ProductDetails extends PureComponent {
     
     //Setting attributes and attribute names of the product 
      setAttribute=(attributeName)=> {
-         
           let output = null;
           let item = this.state.data
-    
         
           let attrArray = item.attributes; //Getting an arry of objects with attributes 
           let found = attrArray.find((each)=> each.name === attributeName)
          
           if(attributeName === "Capacity") {
-              output = found.items.map((each) => 
+              output = found.items.map((each, index) => 
               
-                 <div className = "prodDetails__prodInfo__size" onClick={this.chooseCapacity} key={each.value}><h3>{each.value}</h3></div>)    
-              return [<h4>{attributeName}</h4>, <div className = "attrBox">{output}</div>]          
+                 <div className = "prodDetails__prodInfo__size" onClick={this.chooseCapacity} key={index}><h3>{each.value}</h3></div>)    
+                      return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName} ref = {this.allCapacityList}>{output}</div>]          
           }
           if (attributeName === "Color") { 
               output = found.items.map((each) => 
               
               <div className = "prodDetails__prodInfo__color"  onClick={this.chooseColor} key={each.value} style={{backgroundColor: each.value}}>
                   <p>{each.displayValue}</p></div>)    
-               return [<h4>{attributeName}</h4>, <div className = "attrBox">{output}</div>]        
+                    return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName} ref = {this.allColorsList}>{output}</div>]        
           } 
           if (attributeName === "Size" ) {  
               output = found.items.map((each) => 
               
                  <div className = "prodDetails__prodInfo__size" onClick={this.chooseSize} key={each.value}><h3>{each.value}</h3></div>)    
-               return [<h4>{attributeName}</h4>, <div className = "attrBox">{output}</div>]       
+                   return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName} ref = {this.allSizesList}>{output}</div>]       
           }
           if (attributeName === "With USB 3 ports" ) {  
             output = found.items.map((each) => 
             
                <div className = "prodDetails__prodInfo__usb" onClick={this.chooseUSB} key={each.value}><h3>{each.value}</h3></div>)    
-             return [<h4>{attributeName}</h4>, <div className = "attrBox">{output}</div>]       
+                   return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName} ref = {this.allUsbList}>{output}</div>]       
           }
            if (attributeName === "Touch ID in keyboard" ) {  
             output = found.items.map((each) =>
          
                 <div className = "prodDetails__prodInfo__touch" onClick={this.chooseTouchId} key={each.value}><h3>{each.value}</h3></div>)    
-             return [<h4>{attributeName}</h4>, <div className = "attrBox">{output}</div>]       
+                   return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName}  ref = {this.allTouchList}>{output}</div>]       
           }
       }
   
@@ -454,7 +458,7 @@ class ProductDetails extends PureComponent {
       //Replaces the big img with the clicked side img 
      changeImg=(e)=> {
         let clickedImg = e.target.src
-        let newPlace = document.querySelector(".prodDetails__bigImg img")
+         let newPlace = this.prodDetailsBigImg.current;
         newPlace.src = clickedImg
      }
 
@@ -471,15 +475,15 @@ class ProductDetails extends PureComponent {
             <div className = "prodDetails">
                 
                 {this.setImages()}
-                <div className = "prodDetails__bigImg">
-                    <img src = {item.gallery[0]} alt = {item.category}/>
+                <div className = "prodDetails__bigImg" >
+                    <img src = {item.gallery[0]} alt = {item.category} ref = {this.prodDetailsBigImg}/>
                 </div>
                 <div className = "prodDetails__prodInfo">
                     <div className = "prodDetails__prodInfo__title">
                         <h2>{item.brand}</h2>
                         <h3>{item.name}</h3>
                     </div>
-                    <div className = "prodDetails__prodInfo__attr"> 
+                    <div className = "prodDetails__prodInfo__attr" ref = {this.allAttributes}> 
                        {item.attributes.map((each)=> this.setAttribute(each.name) )}   
                     </div>
                     <div className = "prodDetails__prodInfo__price">
@@ -493,7 +497,7 @@ class ProductDetails extends PureComponent {
                           <button type="button" className = "inStockButton" onClick={this.addToCart}>ADD TO CART</button>
                         ) : <button type="button" className = "outOfStock">OUT OF STOCK</button>}
                         
-                        <div className="desc   " dangerouslySetInnerHTML={{__html: item.description}}></div>
+                        <div className="desc" dangerouslySetInnerHTML={{__html: item.description}}></div>
                     </div>
                 </div> 
             </div>

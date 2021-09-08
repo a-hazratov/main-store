@@ -45,11 +45,13 @@ const getProducts = gql`
        this.currencyButton = React.createRef();
        this.currencySelect = React.createRef();
        this.arrow = React.createRef();
-       this.currencyBox = React.createRef()
+       this.currencyBox = React.createRef();
+      
         this.cart = 'cart';
        this.state = {
            isOpen: false,
-           cart: JSON.parse(localStorage.getItem(this.cart)),
+          // cart: JSON.parse(localStorage.getItem(this.cart)),
+           cart: [],
            products: [],  
            arrowImg: DownArrow,
            moneyBoxOpen : true,
@@ -68,18 +70,15 @@ const getProducts = gql`
 
    componentDidMount() {
       document.addEventListener('mousedown', this.currencyBoxOutside)
-        try {
-           setTimeout(() => {
-            this.setState({
-               products: [...this.props.data.category.products]
-            })
-             this.getDataFromStorage()    
-            }, 1000)  
-        }
-        catch(error) {
-          console.log("This is error "+ error)
-       }
+      setTimeout(() => {
+        this.setState({
+            products: [...this.props.data.category.products]
+         })
+          this.getDataFromStorage();  
+         
+      }, 1000)
     }
+
 
     componentWillUnmount() {
         document.removeEventListener('mousedown', this.currencyBoxOutside);
@@ -137,10 +136,7 @@ const getProducts = gql`
     removeFromStorage=()=> {
         localStorage.removeItem(this.cart)
         this.toggleCart()
-        let counter = document.querySelector(".counter");
-        let smallCartCounter = document.querySelector(".smallCartCounter");
-        counter.textContent = "0";
-        smallCartCounter.textContent = "";
+        this.props.numberOfItems(null)
     }
 
     
@@ -223,8 +219,8 @@ const getProducts = gql`
                                <Link to="/">ALL ITEMS</Link>
                            </div>
                             {this.props.categories.map((each)=>(
-                                 <div className="header__navbar__category__item" key={each.name} id={each.name}>
-                                    <Link to= {`/${each.name}`}  onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
+                                 <div className="header__navbar__category__item" key={each.name} id={each.name} >
+                                    <Link to= {`/${each.name}`} onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
                                  </div>
                             ))}
 
@@ -263,12 +259,12 @@ const getProducts = gql`
                             
                                 <div className ="header__navbar__links__cartLogo">
                                     <img src= {Cart} alt="Shopping cart" onClick={this.toggleCart} ref={this.cartIcon}></img>
-                                    <span className="counter">0</span>
+                                    <span className="counter">{this.props.counter}</span>
                                 </div>
                                 <div className = "cart-small" ref={this.cartSmall}>
                                 
                                         <div className = "cart-content" ref = {this.cartSmallInner}>
-                                           <h3>My Bag <span className="smallCartCounter"></span></h3>
+                                           <h3>My Bag <span className="smallCartCounter">{this.props.counter} items</span></h3>
                                            <span className = "cart-content__close" onClick = {this.toggleCart}><img src = {Close} alt="close icon"></img></span>
                                            {this.state.cart && this.state.cart.map(function(item) { 
                                               return <CartItem key={item.id+item.uKey} item={item} id = {item.id} 

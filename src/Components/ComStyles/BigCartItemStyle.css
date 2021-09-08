@@ -18,6 +18,12 @@
   margin-bottom: 0;
 }
 
+.bigCol1 p {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Raleway", sans-serif;
+}
+
 .bigCartItem__price img {
   width: 16px;
   height: 16px;
@@ -214,10 +220,10 @@
 
 @media (max-width: 64em) {
   .big-cart {
-    width: 100%;
+    width: 100vw;
   }
   .bigCartItem__name {
-    width: 100%;
+    width: 100vw;
   }
 
   .bigCart-rightArrow {
@@ -272,23 +278,45 @@
   .bigCartItem__name {
     display: flex;
     width: auto;
-    flex-direction: column;
+    flex-direction: column-reverse;
     align-items: center;
     justify-content: center;
     padding: 3px;
   }
   .bigCol1 {
-    width: 100%;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+  }
+
+  .bigCol1 span {
+    align-self: flex-end;
+    margin-right: 10px;
+  }
+  .bigCol1 h3,
+  p {
+    align-self: center;
+  }
+  .bigCartItem__price {
+    margin: 0;
+  }
+  .bigCol1 h4 {
+    align-self: center;
   }
   .bigCol1 ul {
-    width: 100%;
-    padding-left: 0;
-    bottom: 0;
+    align-self: center;
+    height: fit-content;
+    width: 100vw;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: center;
   }
+
+  .bigCol1 ul li {
+    align-self: center;
+  }
+
   .bigCol1 h3,
   h4 {
     font-size: 24px;
@@ -304,11 +332,11 @@
     text-align: right;
   }
   .bigCol2 {
-    width: 100%;
+    width: 100vw;
     height: 50px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
   }
   .bigCol2 span {

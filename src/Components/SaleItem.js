@@ -102,7 +102,6 @@ import Cart from './SVG/emptyCart.png';
              this.props.numberOfItems(cartArray)
              alert("Your item has been added to the cart")
          } else if (this.props.item.attributes.length > 0) {
-            
             this.props.history.push(`/product/${this.props.item.id}`) 
         }
       }
