@@ -40,28 +40,18 @@ import BigCartItem from '../Components/BigCartItem';
     }
     
 
-   // Set the currency sign
-    setCurrencySign=(currentVal)=>{
-       let currencyItems = this.currencySign;
-          for(let symbol in currencyItems) {
-              if(symbol === currentVal) {
-                 return currencyItems[symbol]
-              }
-          }
-    }
 
      // Display total price in the shopping cart
     displayTotal=()=> {
       let currentCurrency = this.props.currency;
-      let currentCart = this.state.cart ;
-      let moneySymbol = this.setCurrencySign;
+      let currentCart = this.state.cart;
       let total = 0;
        currentCart.map((each) => each.prices.forEach(price => {
           if(currentCurrency === price.currency) {
             total = total + (price.amount * each.quantity)
           }
        }))
-      return (<span>{moneySymbol(currentCurrency)}  {total.toFixed(2)}</span>)
+      return (<span>{this.currencySign[currentCurrency]}  {total.toFixed(2)}</span>)
    }
 
 

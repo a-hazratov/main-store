@@ -150,6 +150,54 @@ a:hover {
 .prodDetails__prodInfo__size:not(:first-of-type) {
   margin-left: 7px;
 }
+.prodDetails__prodInfo__size h4 {
+  margin-top: 11px;
+  font-family: "Roboto condensed";
+  font-size: 18px;
+}
+
+.prodDetails__prodInfo__size h3 {
+  margin-top: 11px;
+  font-size: 16px;
+  font-family: "Source Sans Pro";
+  font-weight: 400;
+}
+
+.prodDetails__prodInfo__size:hover {
+  cursor: pointer;
+}
+
+.clickedSizeBox {
+  background-color: black;
+  color: white;
+  width: 3.9375em;
+  height: 2.8125em;
+  border: 1px solid black;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.clickedSizeBox:not(:first-of-type) {
+  margin-left: 7px;
+}
+
+.clickedSizeBox h4 {
+  margin-top: 11px;
+  font-family: "Roboto condensed";
+  font-size: 18px;
+}
+
+.clickedSizeBox h3 {
+  margin-top: 11px;
+  font-size: 16px;
+  font-family: "Source Sans Pro";
+  font-weight: 400;
+}
+
+.clickedSizeBox:hover {
+  cursor: pointer;
+}
 
 .prodDetails__prodInfo__usb {
   width: 3.9375em;
@@ -177,6 +225,35 @@ a:hover {
 }
 
 .prodDetails__prodInfo__usb:not(:first-of-type) {
+  margin-left: 7px;
+}
+.clickedUsbBox {
+  background-color: black;
+  color: white;
+  width: 3.9375em;
+  height: 2.8125em;
+  border: 1px solid black;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 0;
+}
+.clickedUsbBox:hover {
+  cursor: pointer;
+}
+
+.clickedUsbBox h4 {
+  margin-top: 11px;
+  font-family: "Roboto condensed";
+  font-size: 18px;
+}
+.clickedUsbBox h3 {
+  margin-top: 11px;
+  font-family: "Source Sans Pro";
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.clickedUsbBox:not(:first-of-type) {
   margin-left: 7px;
 }
 
@@ -208,6 +285,35 @@ a:hover {
   font-size: 16px;
   font-weight: 400;
 }
+.clickedTouchBox {
+  background-color: black;
+  color: white;
+  width: 3.9375em;
+  height: 2.8125em;
+  border: 1px solid black;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 0;
+}
+.clickedTouchBox:hover {
+  cursor: pointer;
+}
+
+.clickedTouchBox:not(:first-of-type) {
+  margin-left: 7px;
+}
+
+.clickedTouchBox h4 {
+  margin-top: 11px;
+  font-family: "Roboto condensed";
+  font-size: 18px;
+}
+.clickedTouchBox h3 {
+  margin-top: 11px;
+  font-family: "Source Sans Pro";
+  font-size: 16px;
+  font-weight: 400;
+}
 
 .prodDetails__prodInfo__color {
   width: 3.9375em;
@@ -231,40 +337,23 @@ a:hover {
   cursor: pointer;
 }
 
-.clickedSizeBox {
-  background-color: black;
-  color: white;
-}
-
-.clickedUsbBox {
-  background-color: black;
-  color: white;
-}
-
-.clickedTouchBox {
-  background-color: black;
-  color: white;
-}
-
 .clickedColorBox {
+  width: 3.9375em;
+  height: 2.8125em;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 0;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border: 3px solid red !important;
 }
-
-.prodDetails__prodInfo__size h4 {
-  margin-top: 11px;
-  font-family: "Roboto condensed";
-  font-size: 18px;
+.clickedColorBox:not(:first-of-type) {
+  margin-left: 7px;
 }
-
-.prodDetails__prodInfo__size h3 {
-  margin-top: 11px;
-  font-size: 16px;
-  font-family: "Source Sans Pro";
-  font-weight: 400;
+.clickedColorBox p {
+  font-size: 0.3rem;
+  opacity: 0;
 }
-
-.prodDetails__prodInfo__size:hover {
+.clickedColorBox:hover {
   cursor: pointer;
 }
 

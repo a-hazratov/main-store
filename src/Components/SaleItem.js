@@ -10,9 +10,6 @@ import Cart from './SVG/emptyCart.png';
     constructor (props) {
         super(props);
         this.cartStorage = 'cart';
-        this.productCard = React.createRef();
-        this.cartGreen = React.createRef();
-        this.layer = React.createRef();
         this.currencySign= {
             USD : '\u0024',
             RUB : '\u20BD',
@@ -42,14 +39,9 @@ import Cart from './SVG/emptyCart.png';
         let currentCart = this.props.item;
         let currencyItems = this.currencySign;
         return currentCart.prices.map((each)=> {    
-            if(each.currency === currentCurrency) {
-               for(let symbol in currencyItems) {
-                  if(symbol === this.props.currency) {
-                     return (<p className = "saleItem__price" key={currentCurrency}>
-                             {currencyItems[symbol]} {each.amount}</p>)
-                  }
-               }
-              
+            if(each.currency === currentCurrency) { 
+               return (<p className = "saleItem__price" key={currentCurrency}>
+                      {currencyItems[currentCurrency]} {each.amount}</p>)
             }
            return null
           })
@@ -112,15 +104,15 @@ import Cart from './SVG/emptyCart.png';
 
         return (
             <div className = "productCard" 
-                  onMouseOver={()=>this.setState({hovered:true})}
-                  onMouseOut={()=>this.setState({hovered:false})}>
+                onMouseOver={()=>this.setState({hovered:true})}
+                onMouseOut={()=>this.setState({hovered:false})}>
                {this.outOfStock()}
                 <Link to = {`/product/${this.props.item.id}`} >
                     <div>
                         <img src = {this.props.item.gallery[0]} alt = "sale product"/>
                         {this.props.item.inStock ? (
                             <div className = "roundCart" style={{display: `${this.state.hovered ? "block" : "none"}`}}
-                            ref={this.cartGreen} onClick={this.addItemToCart} >
+                             onClick={this.addItemToCart} >
                            <img src = {Cart} alt = "small cart" />
                         </div>
                         ) : null}

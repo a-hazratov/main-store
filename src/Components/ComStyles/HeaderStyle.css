@@ -149,10 +149,15 @@
   min-height: 100%;
   height: 100vh;
   background-color: rgba(57, 55, 72, 0.22);
-  display: block;
   top: 80px;
   display: none;
   margin-right: -20px;
+}
+.isOpen {
+  display: block;
+}
+.isClosed {
+  display: none;
 }
 
 .cart-content {
@@ -306,7 +311,12 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba(139, 138, 138, 0.5);
+  }
+
+  .isOpen {
     display: block;
+  }
+  .isClosed {
     display: none;
   }
 

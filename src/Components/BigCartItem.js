@@ -10,11 +10,7 @@ import Close from './SVG/close-sign.svg';
    constructor(props) {
      super(props)
      this.cart = "cart";
-     this.cartImage = React.createRef();
-     this.rightArrow = React.createRef();
-     this.leftArrow = React.createRef();
-     this.allListItems = React.createRef();
-     this.removeItemHere = React.createRef();
+   
      this.currencySign= {
       USD : '\u0024',
       RUB : '\u20BD',
@@ -24,6 +20,8 @@ import Close from './SVG/close-sign.svg';
      }
      this.state = {
        cart: [],
+       imgSrc: this.props.item.gallery[0],
+       imageIndex: 0
      }
    }
 
@@ -70,15 +68,9 @@ import Close from './SVG/close-sign.svg';
       let currencyItems = this.currencySign;
       let prices = this.props.item.prices;
        return prices.map((each)=> {    
-         if(each.currency === this.props.currency) {
-            for(let symbol in currencyItems) {
-               if(symbol === this.props.currency) {
-                  return (<p className = "bigCartItem__price" key={each.amount}>
-                           {currencyItems[symbol]}
-                           {each.amount}</p>)
-               }
-            }
-           
+         if(each.currency === this.props.currency) {   
+            return (<p className = "bigCartItem__price" key={each.amount}>
+                   {currencyItems[this.props.currency]}  {each.amount}</p>)
          }
         return null
        })
@@ -150,34 +142,37 @@ import Close from './SVG/close-sign.svg';
 
    //Handle the click on the right arrow on the image
    handleRightArrow=()=>{
-      let image = this.cartImage.current;
       let imageArray = this.props.item.gallery;
-      let rightArrow = this.rightArrow.current;
-      let leftArrow = this.leftArrow.current;
-      let imgIndex = imageArray.indexOf(image.src);
-      if(imageArray[imgIndex+1]) {
-         image.src =  imageArray[imgIndex+1]
-         leftArrow.style.display = 'block'
+      let index = this.state.imageIndex
+      if(imageArray[index+1]) {
+         this.setState({
+            imgSrc: imageArray[index+1],
+            imageIndex: index+1
+         })
+        
       } else {
-         image.src =  imageArray[imgIndex];
-         rightArrow.style.display = 'none'
+         this.setState({
+            imgSrc: imageArray[index],
+            imageIndex: index
+         })
       }
-   
    }
    
     //Handle the click on the left arrow on the image
    handleLeftArrow=()=>{
-      let image = this.cartImage.current;
       let imageArray = this.props.item.gallery;
-      let rightArrow = this.rightArrow.current;
-      let imgIndex = imageArray.indexOf(image.src);
-      if(imageArray[imgIndex-1]) {
-         image.src =  imageArray[imgIndex-1]
-         rightArrow.style.display = 'block'
+     let index = this.state.imageIndex;
+      if(imageArray[index-1]) {
+         this.setState({
+            imgSrc: imageArray[index-1],
+            imageIndex: index-1
+         })
       } else {
-         image.src =  imageArray[imgIndex];
+         this.setState({
+            imgSrc: imageArray[index],
+            imageIndex: index
+         })
       }
-     
    }
 
    
@@ -190,14 +185,14 @@ import Close from './SVG/close-sign.svg';
                 <div className = "bigCartItem__name">
                     
                       <div className="bigCol1">
-                      <span className = "bigCart-remove-alt" id = {this.props.item.uKey} ref = {this.removeItemHere} onClick = {this.removeItem}>
+                      <span className = "bigCart-remove-alt" id = {this.props.item.uKey} onClick = {this.removeItem}>
                          <img src = {Close} alt="close icon"></img>
                        </span>
                          <h3>{this.props.item.brand}</h3>
                          <h4>{this.props.item.name}</h4>
                              {this.setThePrice()}                 
                          
-                         <ul ref = {this.allListItems}> 
+                         <ul> 
                            {this.displayAttributes()} 
                          </ul>
                       </div>
@@ -208,14 +203,12 @@ import Close from './SVG/close-sign.svg';
                       </div>
                       <div className="bigCol3">
                          <span className = "bigCart-remove" id = {this.props.item.uKey} onClick = {this.removeItem}><img src = {Close} alt="close icon"></img></span>
-                         <img src={this.props.item.gallery[0]} alt = "product" ref={this.cartImage}></img>
+                         <img src={this.state.imgSrc} alt = "product"></img>
                          
                         { this.props.item.gallery.length > 1 ? (<span className="bigCart-leftArrow" 
-                                                                onClick={this.handleLeftArrow} 
-                                                                 ref={this.leftArrow}>&#10096;</span>) : null}
+                                                                onClick={this.handleLeftArrow}>&#10096;</span>) : null}
                         { this.props.item.gallery.length > 1 ? (<span className="bigCart-rightArrow"
-                                                                 onClick={this.handleRightArrow}
-                                                                 ref={this.rightArrow}>&#10097;</span>): null }
+                                                                 onClick={this.handleRightArrow}>&#10097;</span>): null }
                       </div>
                 </div> 
             </div>

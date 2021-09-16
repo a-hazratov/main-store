@@ -9,7 +9,6 @@ import Close from './SVG/close-sign.svg';
  class CartItem extends PureComponent {
     constructor(props) {
         super(props);
-        this.removeItemHere = React.createRef();
         this.cart = 'cart'
         this.state = {
              cart: []
@@ -99,7 +98,6 @@ import Close from './SVG/close-sign.svg';
       let cart;
       let indexOfItem;
       let itemToRemoveId = e.target.parentElement.getAttribute('id')
-      console.log(itemToRemoveId)
       
       setTimeout(()=> {
          cart = this.state.cart
@@ -137,7 +135,7 @@ import Close from './SVG/close-sign.svg';
                            <span onClick = {this.decrementItem}><img src = {Minus} alt="decrement"></img></span>
                         </div>
                         <div className="col3">
-                        <span className = "cartOverlay-remove" id = {this.props.item.uKey} ref = {this.removeItemHere} onClick = {this.removeItem}>         
+                        <span className = "cartOverlay-remove" id = {this.props.item.uKey} onClick = {this.removeItem}>         
                              <img src = {Close} alt="close icon"></img>
                         </span>
                           <img src = {this.props.item.gallery[0]} alt = "product"></img>

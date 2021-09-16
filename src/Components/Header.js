@@ -38,23 +38,16 @@ const getProducts = gql`
  class Header extends PureComponent {
    constructor(props) {
        super(props)
-       this.cartSmall = React.createRef();
        this.cartSmallInner = React.createRef();
-       this.cartIcon = React.createRef();
-       this.headerMain = React.createRef();
-       this.currencyButton = React.createRef();
-       this.currencySelect = React.createRef();
-       this.arrow = React.createRef();
        this.currencyBox = React.createRef();
       
         this.cart = 'cart';
        this.state = {
-           isOpen: false,
-          // cart: JSON.parse(localStorage.getItem(this.cart)),
+           isOpen: false, //small shopping cart icon toggle
            cart: [],
            products: [],  
            arrowImg: DownArrow,
-           moneyBoxOpen : true,
+           moneyBoxOpen : false, //currency toggle
            moneySign: '\u0024',
            currencySign: {
             USD : '\u0024',
@@ -86,40 +79,32 @@ const getProducts = gql`
     
     //Handle the click outside of currency dropdown
     currencyBoxOutside=(event)=>{
-        if(this.currencyBox.current && !this.currencyBox.current.contains(event.target) && !this.state.moneyBoxOpen === true) {
+        if(!this.currencyBox.current.contains(event.target) && this.state.moneyBoxOpen === true) {
                this.toggleCurrency()
         
         }
     }
 
     // Close the small cart overlay when the click occures outside the cart 
-    handleClickOutside=()=>{
-       this.headerMain.current.addEventListener('click', (event)=> {
-           if(this.state.isOpen && !this.cartSmallInner.current.contains(event.target)) {
-               this.toggleCart()
-           } 
-       })
-    
+    handleClickOutside=(event)=>{
+       if(this.state.isOpen && !this.cartSmallInner.current.contains(event.target)) {
+        this.toggleCart()
+       } 
     }
   
     
     toggleCart=()=> {
             if(this.state.isOpen === false) {
-                this.cartSmall.current.style.display = "block";
                 this.setState({
                     isOpen: true,
                     cart: []
                 })
-    
-    
             } else if (this.state.isOpen === true) {
-                this.cartSmall.current.style.display = "none";
                 this.setState({
                     isOpen: false
                 })
             }
-            this.getDataFromStorage()  
-           
+            this.getDataFromStorage(); 
     }
 
     
@@ -142,47 +127,36 @@ const getProducts = gql`
     
     //Toggle currency button
     toggleCurrency=()=>{
-       let select = this.currencySelect.current;
        if(this.state.moneyBoxOpen === false) {
-           select.classList.add("hiddenCurrency")
            this.setState({
-               arrowImg: DownArrow,
+               arrowImg: UpArrow,
                moneyBoxOpen: true
            })
        }else if(this.state.moneyBoxOpen === true) {
-           select.classList.remove('hiddenCurrency')
            this.setState({
-            arrowImg: UpArrow,
+            arrowImg: DownArrow,
             moneyBoxOpen: false
         })
        }
     }
 
     //Select currency from the dropdown
-    selectCurrency=()=>{
-        let currencyBox = this.currencySelect.current;
+    selectCurrency=(event)=>{
         let currencyItems = this.state.currencySign;
-        
-        currencyBox.addEventListener('click', (event)=>{
-            
-            if(event.target.tagName === "INPUT" || "LABEL" ) {
-
-                for(let symbol in currencyItems) {
-                    if(symbol === event.target.value) {
-                        this.setState({
-                            moneySign: currencyItems[symbol]
-                        })
-                    }
-                }
-
-               this.props.setCurrency(event.target.value)
-               this.toggleCurrency()
-            }
-        }) 
+        let currencySymbols = Object.keys(currencyItems)
+        if(event.target.tagName === "INPUT" || "LABEL" ) {
+            currencySymbols.forEach((each)=> each === event.target.value ?
+              this.setState({
+                  moneySign: currencyItems[each],
+                  moneyBoxOpen: false, //closing the currency box after selecting one currency
+                  arrowImg: DownArrow    
+            }) : null)
+             this.props.setCurrency(event.target.value)
+          }
     }
 
     // Display total price in the small shopping cart
-    displayTotal=()=> {
+     displayTotal=()=> {
         let currentCurrency = this.props.currency;
         let currentCart = this.state.cart;
         let total = 0;
@@ -213,7 +187,7 @@ const getProducts = gql`
            
             <div>
                 <div className="header" >
-                    <nav className = "header__navbar" ref={this.headerMain} onClick={this.handleClickOutside}>
+                    <nav className = "header__navbar"  onClick={(event)=>this.handleClickOutside(event)}>
                        <div className="header__navbar__category">
                            <div className="header__navbar__category__item">
                                <Link to="/">ALL ITEMS</Link>
@@ -233,11 +207,13 @@ const getProducts = gql`
 
                          <div className = "header__navbar__links">
                                 <div className="header__navbar__links__currency" ref={this.currencyBox} >
-                                    <button className = "currency-button" id = "currency-button" ref={this.currencyButton} onClick={this.toggleCurrency}>
+                                    <button className = "currency-button" id = "currency-button" onClick={this.toggleCurrency}>
                                         <span className = "moneySign-nav"> {moneySign}</span> 
                                         <img className = "arrow" src = {arrowSrc} alt="downArrow"></img>
                                     </button>
-                                   <div className = "select hiddenCurrency" ref = {this.currencySelect} onClick = {this.selectCurrency}>
+                                   <div className = {!this.state.moneyBoxOpen ? "select hiddenCurrency" : "select"} 
+                                        onClick = {(event)=>this.selectCurrency(event)} ref={this.currencySelect}>
+
                                        <label className = "select-option" htmlFor="USD">&#36; USD</label>
                                        <input className = "select-item" id="USD" type="radio" name="currency" value="USD"/>
 
@@ -258,10 +234,10 @@ const getProducts = gql`
 
                             
                                 <div className ="header__navbar__links__cartLogo">
-                                    <img src= {Cart} alt="Shopping cart" onClick={this.toggleCart} ref={this.cartIcon}></img>
+                                    <img src= {Cart} alt="Shopping cart" onClick={this.toggleCart}></img>
                                     <span className="counter">{this.props.counter}</span>
                                 </div>
-                                <div className = "cart-small" ref={this.cartSmall}>
+                                <div className = {!this.state.isOpen ? "cart-small isClosed" : "cart-small isOpen"}>
                                 
                                         <div className = "cart-content" ref = {this.cartSmallInner}>
                                            <h3>My Bag <span className="smallCartCounter">{this.props.counter} items</span></h3>
