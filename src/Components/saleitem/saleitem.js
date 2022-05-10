@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
-import './ComStyles/SaleItemStyle.css';
-import Cart from './SVG/emptyCart.png';
+import styles from './saleitem.module.css';
+import Cart from '../SVG/emptyCart.png';
 
 
 
@@ -28,7 +28,7 @@ import Cart from './SVG/emptyCart.png';
         if(!this.props.inStock) {
             return (
                 <Link to = {`/product/${this.props.item.id}`} >
-                   <div className = "outOfStockLayer"><p>out of stock</p></div>
+                   <div className = {styles.outOfStockLayer}><p>out of stock</p></div>
                 </Link>
             )
         }
@@ -40,7 +40,7 @@ import Cart from './SVG/emptyCart.png';
         let currencyItems = this.currencySign;
         return currentCart.prices.map((each)=> {    
             if(each.currency === currentCurrency) { 
-               return (<p className = "saleItem__price" key={currentCurrency}>
+               return (<p className = {styles.saleItem__price} key={currentCurrency}>
                       {currencyItems[currentCurrency]} {each.amount}</p>)
             }
            return null
@@ -103,7 +103,7 @@ import Cart from './SVG/emptyCart.png';
     render() { 
 
         return (
-            <div className = "productCard" 
+            <div className = {styles.productCard} 
                 onMouseOver={()=>this.setState({hovered:true})}
                 onMouseOut={()=>this.setState({hovered:false})}>
                {this.outOfStock()}
@@ -111,7 +111,7 @@ import Cart from './SVG/emptyCart.png';
                     <div>
                         <img src = {this.props.item.gallery[0]} alt = "sale product"/>
                         {this.props.item.inStock ? (
-                            <div className = "roundCart" style={{display: `${this.state.hovered ? "block" : "none"}`}}
+                            <div className = {styles.roundCart} style={{display: `${this.state.hovered ? "block" : "none"}`}}
                              onClick={this.addItemToCart} >
                            <img src = {Cart} alt = "small cart" />
                         </div>
@@ -120,7 +120,7 @@ import Cart from './SVG/emptyCart.png';
 
                     </div>
 
-                    <div className = "productCard__bottom">
+                    <div className = {styles.productCard__bottom}>
                         
                         <p><span>{this.props.item.brand}</span> {this.props.item.name}</p>
                         {this.displayPrice()}

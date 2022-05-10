@@ -1,0 +1,187 @@
+.cartItem__name {
+    margin-top: -10px;
+    padding-top: 0;
+    display: grid;
+    margin-right: auto;
+    margin-left: auto;
+    grid-template-columns: 1fr 2em 1fr;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    width: 293px;
+  }
+  
+  .cartItem__price {
+    font-size: 0.8rem;
+    font-family: "Raleway", sans-serif;
+  }
+  
+  .col1 {
+    margin-top: 0;
+    height: 137px;
+    margin-top: 20px;
+    text-align: left;
+    padding-bottom: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .cartItem__price {
+    align-self: flex-start;
+  }
+  
+  .col1 h4 {
+    margin-top: -20px;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: 300;
+  }
+  .col1 h5 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 300;
+  }
+  
+  .col1 p {
+    margin-top: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .col1 p img {
+    width: 16px;
+    height: 16px;
+    margin-bottom: -3px;
+  }
+  
+  .col1 ul {
+    padding-left: 0;
+    margin-bottom: 5px;
+    position: absolute;
+    line-height: normal;
+    font-size: 16px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .liSize {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 3px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    border: 0.7px black solid;
+    text-align: center;
+    padding-top: 3px;
+    font-family: "Raleway", sans-serif;
+    background-color: black;
+    color: white;
+  }
+  
+  .liCapacity {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    padding-top: 0;
+    font-family: "Raleway", sans-serif;
+  }
+  
+  .liColor {
+    display: inline-block;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: 3px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    border: 0.7px black solid;
+    padding-top: 3px;
+    text-align: left;
+  }
+  
+  .liUSB {
+    font-size: 12px;
+    font-family: "Raleway", sans-serif;
+    list-style: none;
+    margin-bottom: 0;
+    margin-top: 0;
+    margin-left: 5px;
+  }
+  
+  .liTouch {
+    font-size: 12px;
+    font-family: "Raleway", sans-serif;
+    list-style: none;
+    margin-left: 5px;
+    margin-bottom: 2px;
+    margin-top: 3px;
+  }
+  
+  .col2 {
+    margin-top: 0;
+    height: 137px;
+    margin-top: 20px;
+  }
+  
+  .col2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .col2 span:not(:last-child) {
+    margin-bottom: 15px;
+  }
+  
+  .col2 span:nth-child(3) {
+    margin-top: 10px;
+  }
+  .col2 span img {
+    width: 20px;
+    height: 20px;
+    border: 1px black solid;
+  }
+  
+  .col2 span {
+    font-size: 20px;
+  }
+  
+  .col3 {
+    margin-top: 0;
+    height: 137px;
+    margin-top: 20px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  .col3 img {
+    width: 105px;
+    height: 137px;
+    object-fit: contain;
+  }
+  
+  .cartOverlay_remove img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .cartOverlay_remove {
+    width: 20px;
+    display: block;
+    float: right;
+    margin-bottom: 0;
+  }
+  
+  .cartOverlay_remove:hover {
+    cursor: pointer;
+  }
+  

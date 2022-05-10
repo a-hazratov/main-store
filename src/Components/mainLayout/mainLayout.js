@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import SaleItem from '../Components/SaleItem';
+import SaleItem from '../saleitem';
+import styles from './mainLayout.module.css';
 import { gql } from "apollo-boost";
 import { graphql} from 'react-apollo';
 
@@ -57,11 +58,11 @@ class MainLayout extends PureComponent {
         return (
            
              <div>
-                  <div className = "mainLayout">
+                  <div className = {styles.mainLayout}>
                     <h1>ALL ITEMS</h1>
 
                     {this.state.productList.length > 0 && (this.state.productList.map(item => (
-                        <div className = "mainLayout__items" key = {item.id + item.name}>
+                        <div className = {styles.mainLayout__items} key = {item.id + item.name}>
                             <SaleItem item = {item} key = {item.id} inStock={item.inStock} 
                             currency = {currency} numberOfItems = {this.props.numberOfItems}/>
                         </div>

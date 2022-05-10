@@ -1,11 +1,11 @@
 import React, { PureComponent } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import Header from './Components/Header';
-import Footer from './Components/Footer';
-import MainLayout from './Layouts/MainLayout';
-import ProductDetails from './Components/ProductDetails';
-import BigCart from './Layouts/BigCart';
-import Category from './Layouts/Category';
+import Header from './Components/header';
+import Footer from './Components/footer';
+import MainLayout from './Components/mainLayout/index';
+import ProductDetails from './Components/product-details';
+import BigCart from './Components/bigCart';
+import Category from './Components/category';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import {ApolloProvider} from 'react-apollo';
 import { gql } from "apollo-boost";

@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import './ComStyles/BigCartItemStyle.css';
-import Plus from './SVG/one-plus-sign.svg';
-import Minus from './SVG/one-minus-sign.svg'; 
-import Close from './SVG/close-sign.svg';
+import styles from './bigCartItem.module.css';
+import Plus from '../SVG/one-plus-sign.svg';
+import Minus from '../SVG/one-minus-sign.svg'; 
+import Close from '../SVG/close-sign.svg';
 
 
 
@@ -41,11 +41,11 @@ import Close from './SVG/close-sign.svg';
       if(this.props.item.hasOwnProperty('uKey')) {
          let attributes = this.props.item.attributes;
          if(attributes) {
-              return attributes.map(each => each.name === "Size" ? <li className="liSizeCart" key={each.value + each.name}>{each.value}</li> :
-                                            each.name === "Capacity" ? <li className="liCapacityCart" key={each.value + each.name}>{each.value}</li> :
-                                            each.name === "Color" ? <li className="liColorCart" style = {{backgroundColor: each.value}} key={each.value}></li>:
-                                            each.name === "With USB 3 ports" ? <li className="liUSBCart" key={each.value + each.name}>USB 3 ports:  {each.value}</li> :
-                                            each.name === "Touch ID in keyboard" ? <li className="liTouchCart" key={each.value + each.name}>Touch ID: {each.value}</li>: "")
+              return attributes.map(each => each.name === "Size" ? <li className={styles.liSizeCart} key={each.value + each.name}>{each.value}</li> :
+                                            each.name === "Capacity" ? <li className={styles.liCapacityCart} key={each.value + each.name}>{each.value}</li> :
+                                            each.name === "Color" ? <li className={styles.liColorCart} style = {{backgroundColor: each.value}} key={each.value}></li>:
+                                            each.name === "With USB 3 ports" ? <li className={styles.liUSBCart} key={each.value + each.name}>USB 3 ports:  {each.value}</li> :
+                                            each.name === "Touch ID in keyboard" ? <li className={styles.liTouchCart} key={each.value + each.name}>Touch ID: {each.value}</li>: "")
          }
       } 
          
@@ -69,7 +69,7 @@ import Close from './SVG/close-sign.svg';
       let prices = this.props.item.prices;
        return prices.map((each)=> {    
          if(each.currency === this.props.currency) {   
-            return (<p className = "bigCartItem__price" key={each.amount}>
+            return (<p className = {styles.bigCartItem__price} key={each.amount}>
                    {currencyItems[this.props.currency]}  {each.amount}</p>)
          }
         return null
@@ -181,11 +181,11 @@ import Close from './SVG/close-sign.svg';
     
     render() {
         return (
-            <div className = "big-cart">
-                <div className = "bigCartItem__name">
+            <div className = {styles.big_cart}>
+                <div className = {styles.bigCartItem__name}>
                     
-                      <div className="bigCol1">
-                      <span className = "bigCart-remove-alt" id = {this.props.item.uKey} onClick = {this.removeItem}>
+                      <div className={styles.bigCol1}>
+                      <span className = {styles.bigCart_remove_alt} id = {this.props.item.uKey} onClick = {this.removeItem}>
                          <img src = {Close} alt="close icon"></img>
                        </span>
                          <h3>{this.props.item.brand}</h3>
@@ -196,18 +196,18 @@ import Close from './SVG/close-sign.svg';
                            {this.displayAttributes()} 
                          </ul>
                       </div>
-                      <div className="bigCol2">
+                      <div className={styles.bigCol2}>
                         <span onClick={this.incrementItem}><img src = {Plus} alt="increment"></img></span>
-                         <span className="quantity">{this.props.item.quantity}</span>
+                         <span className={styles.quantity}>{this.props.item.quantity}</span>
                          <span onClick={this.decrementItem}><img src = {Minus} alt="decrement"></img></span>
                       </div>
-                      <div className="bigCol3">
-                         <span className = "bigCart-remove" id = {this.props.item.uKey} onClick = {this.removeItem}><img src = {Close} alt="close icon"></img></span>
+                      <div className={styles.bigCol3}>
+                         <span className = {styles.bigCart_remove} id = {this.props.item.uKey} onClick = {this.removeItem}><img src = {Close} alt="close icon"></img></span>
                          <img src={this.state.imgSrc} alt = "product"></img>
                          
-                        { this.props.item.gallery.length > 1 ? (<span className="bigCart-leftArrow" 
+                        { this.props.item.gallery.length > 1 ? (<span className={styles.bigCart_leftArrow} 
                                                                 onClick={this.handleLeftArrow}>&#10096;</span>) : null}
-                        { this.props.item.gallery.length > 1 ? (<span className="bigCart-rightArrow"
+                        { this.props.item.gallery.length > 1 ? (<span className={styles.bigCart_rightArrow}
                                                                  onClick={this.handleRightArrow}>&#10097;</span>): null }
                       </div>
                 </div> 

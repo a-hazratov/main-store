@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import {Link} from 'react-router-dom'
-import './LayoutStyles/BigCartStyle.css';
-import BigCartItem from '../Components/BigCartItem';
+import styles from './bigCart.module.css';
+import BigCartItem from '../bigcartitem';
 
 
  class BigCart extends PureComponent {
@@ -63,9 +63,9 @@ import BigCartItem from '../Components/BigCartItem';
                 
         
         return (
-          <div className = "main-cart-container"> 
-            <div className ="main-cart">
-                <div className = "main-cart__name">
+          <div className = {styles.main_cart_container}> 
+            <div className ={styles.main_cart}>
+                <div className = {styles.main_cart__name}>
                    <h2>Cart</h2>
                 </div>
                 {cart && cart.map(function(item) { 
@@ -74,12 +74,12 @@ import BigCartItem from '../Components/BigCartItem';
                     getData = {getData} numOfItems = {numOfItems}/>
                 })}
                   
-                  <div className = "bigCartTotal">
+                  <div className = {styles.bigCartTotal}>
                      <p>Total:  {this.displayTotal()}  </p>
                   </div>
-                 <div className = "bigCart-content__button">
+                 <div className = {styles.bigCart_content__button}>
                    <Link to = '/'>
-                      <button type="button" className= "bigCheckOut" onClick = {this.removeFromStorage}>CHECK OUT</button>
+                      <button type="button" className= {styles.bigCheckOut} onClick = {this.removeFromStorage}>CHECK OUT</button>
                    </Link>
                  </div>                            
             

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import styles from './product-details.module.css';
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
 
@@ -96,10 +97,10 @@ class ProductDetails extends PureComponent {
                if(attr) {
                    let filtered = attr.filter(item => item.name === name)
                     if(filtered[0].activeClass === index ) {
-                        return "clickedSizeBox"
+                        return `${styles.clickedSizeBox}`
                     } else  {
                        
-                        return "prodDetails__prodInfo__size"
+                        return `${styles.prodDetails__prodInfo__size}`
                     }
                }
         }
@@ -110,10 +111,10 @@ class ProductDetails extends PureComponent {
             if(attr) {
                 let filtered = attr.filter(item => item.name === name)
                  if(filtered[0].activeClass === index ) {
-                     return "clickedColorBox"
+                     return `${styles.clickedColorBox}`
                  } else  {
                     
-                     return "prodDetails__prodInfo__color"
+                     return `${styles.prodDetails__prodInfo__color}`
                  }
             }
         }
@@ -123,10 +124,10 @@ class ProductDetails extends PureComponent {
             if(attr) {
                 let filtered = attr.filter(item => item.name === name)
                  if(filtered[0].activeClass === index ) {
-                     return "clickedUsbBox"
+                     return `${styles.clickedUsbBox}`
                  } else  {
                     
-                     return "prodDetails__prodInfo__usb"
+                     return `${styles.prodDetails__prodInfo__usb}`
                  }
             }
         }
@@ -137,10 +138,10 @@ class ProductDetails extends PureComponent {
             if(attr) {
                 let filtered = attr.filter(item => item.name === name)
                  if(filtered[0].activeClass === index ) {
-                     return "clickedTouchBox"
+                     return `${styles.clickedTouchBox}`
                  } else  {
                     
-                     return "prodDetails__prodInfo__touch"
+                     return `${styles.prodDetails__prodInfo__touch}`
                  }
             }
         }
@@ -427,33 +428,33 @@ class ProductDetails extends PureComponent {
                 output = found.items.map((each, index) => 
                 
                    <div className = {this.setSizeClass(index, attributeName)}  onClick={(event)=>this.chooseCapacity(event,index, attributeName)} key={index}><h3>{each.value}</h3></div>)    
-                        return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName}>{output}</div>]          
+                        return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]          
             }
             if (attributeName === "Color") { 
                 output = found.items.map((each, index) => 
                 
                 <div className = {this.setColorClass(index, attributeName)}  onClick={(event)=>this.chooseColor(event, index, attributeName)} key={each.value} style={{backgroundColor: each.value}}>
                     <p>{each.displayValue}</p></div>)    
-                      return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName}>{output}</div>]        
+                      return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]        
             } 
             if (attributeName === "Size" ) {  
                 output = found.items.map((each, index) => 
                    
                    <div className = {this.setSizeClass(index, attributeName)} 
                     onClick={(event)=>this.chooseSize(event,index, attributeName)} id = {index} key={each.value}><h3>{each.value}</h3></div>)    
-                     return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName}>{output}</div>]       
+                     return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             }
             if (attributeName === "With USB 3 ports" ) {  
               output = found.items.map((each, index) => 
               
                  <div className = {this.setUsbClass(index, attributeName)} onClick={(event)=>this.chooseUSB(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>)    
-                     return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName}>{output}</div>]       
+                     return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             }
              if (attributeName === "Touch ID in keyboard" ) {  
               output = found.items.map((each, index) =>
            
                   <div className = {this.setTouchClass(index, attributeName)} onClick={(event)=>this.chooseTouchId(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>)    
-                     return [<h4>{attributeName}</h4>, <div className = "attrBox" key = {attributeName}>{output}</div>]       
+                     return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             } 
       }
 
@@ -466,7 +467,7 @@ class ProductDetails extends PureComponent {
         let currencyItems = this.currencySign;
         return currentCart.prices.map((each)=> {    
             if(each.currency === currentCurrency) {
-               return (<p className = "prodInfoPage__price" key={currentCurrency}>
+               return (<p className = {styles.prodInfoPage__price} key={currentCurrency}>
                {currencyItems[currentCurrency]}  {each.amount}</p>)  
             }
            return null
@@ -479,7 +480,7 @@ class ProductDetails extends PureComponent {
         let item = this.state.data;
         if (item.gallery.length > 0) {    
             return (
-              <div className = "prodDetails__sideImg">
+              <div className = {styles.prodDetails__sideImg}>
                {item.gallery.map((each, index)=>{
                 return <img src = {each} key = {each} alt = "smyh" onClick={()=>this.changeImg(index)}/>
                })}
@@ -507,38 +508,38 @@ class ProductDetails extends PureComponent {
     render() {
       let item = this.state.data; 
       if(!item){
-        return (<div className = "prodDetails"></div>)
+        return (<div className = {styles.prodDetails}></div>)
       }
 
                   
         return (
             
-            <div className = "prodDetails">
+            <div className = {styles.prodDetails}>
                 
                 {this.setImages()}
-                <div className = "prodDetails__bigImg" >
+                <div className = {styles.prodDetails__bigImg} >
                     <img src = {!this.state.imageSrc ? item.gallery[0] : this.state.imageSrc} alt = {item.category}/>
                 </div>
-                <div className = "prodDetails__prodInfo">
-                    <div className = "prodDetails__prodInfo__title">
+                <div className = {styles.prodDetails__prodInfo}>
+                    <div className = {styles.prodDetails__prodInfo__title}>
                         <h2>{item.brand}</h2>
                         <h3>{item.name}</h3>
                     </div>
-                    <div className = "prodDetails__prodInfo__attr"> 
+                    <div className = {styles.prodDetails__prodInfo__attr}> 
                        {item.attributes.map((each)=> this.setAttribute(each.name) )}   
                     </div>
-                    <div className = "prodDetails__prodInfo__price">
+                    <div className = {styles.prodDetails__prodInfo__price}>
                         <h4>Price: </h4>
                          {this.displayPrice()}
                     </div>
-                    <div className = "prodDetails__prodInfo__button">
+                    <div className = {styles.prodDetails__prodInfo__button}>
                         
 
                         {item.inStock ? (
-                          <button type="button" className = "inStockButton" onClick={this.addToCart}>ADD TO CART</button>
-                        ) : <button type="button" className = "outOfStock">OUT OF STOCK</button>}
+                          <button type="button" className = {styles.inStockButton} onClick={this.addToCart}>ADD TO CART</button>
+                        ) : <button type="button" className = {styles.outOfStock}>OUT OF STOCK</button>}
                         
-                        <div className="desc" dangerouslySetInnerHTML={{__html: item.description}}></div>
+                        <div className={styles.desc} dangerouslySetInnerHTML={{__html: item.description}}></div>
                     </div>
                 </div> 
             </div>

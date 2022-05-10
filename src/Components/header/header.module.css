@@ -61,7 +61,7 @@
   align-items: center;
 }
 
-.select-item {
+.select_item {
   display: none;
 }
 
@@ -87,18 +87,18 @@
   font-family: Raleway, serif;
 }
 
-.select-option:hover {
+.select_option:hover {
   font-weight: 600;
   cursor: pointer;
 }
-.currency-button {
+.currency_button {
   width: 114px;
   margin-right: -10px;
   border: none;
   background-color: #ffffff;
 }
 
-.moneySign-nav {
+.moneySign_nav {
   font-size: 20px;
 }
 
@@ -142,7 +142,7 @@
 }
 
 /*Styles  for shopping cart icon related stuff*/
-.cart-small {
+.cart_small {
   position: absolute;
   min-width: 100%;
   width: 100vw;
@@ -160,7 +160,7 @@
   display: none;
 }
 
-.cart-content {
+.cart_content {
   background-color: white;
   width: 20.3125em;
   min-height: 10em;
@@ -176,19 +176,19 @@
   z-index: 2;
 }
 
-.cart-content::-webkit-scrollbar {
+.cart_content::-webkit-scrollbar {
   width: 7px;
 }
 
-.cart-content::-webkit-scrollbar-track {
+.cart_content::-webkit-scrollbar-track {
   background-color: darkgrey;
 }
 
-.cart-content::-webkit-scrollbar-thumb {
+.cart_content::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
 }
 
-.cart-content h3 {
+.cart_content h3 {
   margin-left: 20px;
   display: inline-block;
   width: 150px;
@@ -231,7 +231,7 @@
   font-size: 0.8rem;
 }
 
-.cart-content__button button {
+.cart_content__button button {
   width: 8.75em;
   height: 2.6875em;
   font-size: 14px;
@@ -241,11 +241,11 @@
   margin-left: 7px;
 }
 
-.cart-content__button button {
+.cart_content__button button {
   cursor: pointer;
 }
 
-.cart-content__button button:active {
+.cart_content__button button:active {
   box-shadow: 0px 4px 4px #a1a5a3;
 }
 
@@ -255,27 +255,27 @@
   color: #ffffff;
 }
 
-.cart-content__button button:first-child {
+.cart_content__button button:first-child {
   border: 0.7px black solid;
   background-color: white;
 }
 
-.cart-content__button button {
+.cart_content__button button {
   display: inline-block;
   margin-left: 22px;
 }
 
-.cart-content__close img {
+.cart_content__close img {
   width: 20px;
   height: 20px;
 }
 
-.cart-content {
+.cart_content {
   display: flex;
   flex-direction: column;
 }
 
-.cart-content__close {
+.cart_content__close {
   width: 25px;
   display: block;
   align-self: flex-end;
@@ -302,7 +302,7 @@
 }
 
 @media (max-width: 64em) {
-  .cart-small {
+  .cart_small {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -320,7 +320,7 @@
     display: none;
   }
 
-  .cart-content__button a {
+  .cart_content__button a {
     display: inline-block;
     width: 8.75em;
   }

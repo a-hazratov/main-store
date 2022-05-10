@@ -1,0 +1,15 @@
+.mainLayout {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    min-height: 100vh;
+    margin-bottom: 20px;
+  }
+  
+  .mainLayout h1 {
+    width: 100%;
+    padding-left: 50px;
+    text-transform: uppercase;
+    font-family: "Raleway";
+  }

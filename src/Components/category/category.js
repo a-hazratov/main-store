@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import SaleItem from '../Components/SaleItem';
+import SaleItem from '../saleitem';
+import styles from './category.module.css';
 import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
 
@@ -73,16 +74,16 @@ const getProducts = gql`
       
         return (
             <div>   
-                <div className = "mainLayout">
+                <div className = {styles.mainLayout}>
                  <h1>{this.props.clickedCategory || category}</h1>
                     {this.state.productList.map((item) => {
                               if(item.category === this.props.clickedCategory) {
-                                  return (<div className = "mainLayout__items" key = {item.id}>
+                                  return (<div className = {styles.mainLayout__items} key = {item.id}>
                                  <SaleItem item = {item}  inStock = {item.inStock} 
                                  currency = {currency} numberOfItems = {numberOfItems}/>
                               </div>)
                      } else if(item.category === category) {
-                              return (<div className = "mainLayout__items" key = {item.id}>
+                              return (<div className = {styles.mainLayout__items} key = {item.id}>
                                      <SaleItem item = {item}  inStock = {item.inStock} 
                                        currency = {currency} numberOfItems = {numberOfItems}/>
                                       </div>)
