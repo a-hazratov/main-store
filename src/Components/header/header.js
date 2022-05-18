@@ -4,10 +4,12 @@ import { gql } from "apollo-boost";
 import {graphql} from 'react-apollo';
 import styles from './header.module.css'
 import CartItem from '../cartItem';
-import Cart from '../SVG/cart.svg'
-import Close from '../SVG/close-sign.svg'
-import DownArrow from '../SVG/down-arrow.svg'
-import UpArrow from '../SVG/up-arrow.svg'
+import Cart from '../SVG/cart.svg';
+import Close from '../SVG/close-sign.svg';
+import DownArrow from '../SVG/down-arrow.svg';
+import UpArrow from '../SVG/up-arrow.svg';
+import Hamburger from '../hamburger';
+import appContext from '../../Context/appContext';
 
 
 const getProducts = gql`
@@ -36,6 +38,7 @@ const getProducts = gql`
 }
 `
  class Header extends PureComponent {
+     static contextType = appContext;
    constructor(props) {
        super(props)
        this.cartSmallInner = React.createRef();
@@ -175,7 +178,9 @@ const getProducts = gql`
       let getData = this.getDataFromStorage;
       let numOfItems = this.props.numberOfItems
       let products = this.state.products;
-      let currency = this.props.currency;
+     // let currency = this.props.currency;
+      const { currency } = this.context.state;
+      console.log(currency)
       
 
 
@@ -188,19 +193,7 @@ const getProducts = gql`
             <div>
                 <div className={styles.header} >
                     <nav className = {styles.header__navbar}  onClick={(event)=>this.handleClickOutside(event)}>
-                       <div className= {styles.header__navbar__category}>
-                           <div className={styles.header__navbar__category__item}>
-                               <Link to="/">ALL ITEMS</Link>
-                           </div>
-                            {this.props.categories.map((each)=>(
-                                 <div className={styles.header__navbar__category__item} key={each.name} id={each.name} >
-                                    <Link to= {`/${each.name}`} onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
-                                 </div>
-                            ))}
-
-                                                
-                        </div>
-
+                         <Hamburger/>
                          <div className = {styles.header__navbar__bag}>
                              <Link to = "/"><img src="https://icons.iconarchive.com/icons/petalart/free-shopping/48/shopping-bag-icon.png" alt="Shopping bag"/></Link>
                          </div>
@@ -272,3 +265,16 @@ const getProducts = gql`
 export default graphql(getProducts)(Header);
 
 
+
+/**  <div className= {styles.header__navbar__category}>
+                           <div className={styles.header__navbar__category__item}>
+                               <Link to="/">ALL ITEMS</Link>
+                           </div>
+                            {this.props.categories.map((each)=>(
+                                 <div className={styles.header__navbar__category__item} key={each.name} id={each.name} >
+                                    <Link to= {`/${each.name}`} onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
+                                 </div>
+                            ))}
+
+                                                
+                        </div> */

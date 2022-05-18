@@ -386,7 +386,6 @@ class ProductDetails extends PureComponent {
        
         let clickedColor = event.target.style.backgroundColor;
         this.toggleClass(index, attr)
-       
          //Setting the chosen color for the shopping cart
          let currentProductObj = this.state.currentProduct;
         if(!currentProductObj.hasOwnProperty("attributes")) {
@@ -427,12 +426,12 @@ class ProductDetails extends PureComponent {
             if(attributeName === "Capacity") {
                 output = found.items.map((each, index) => 
                 
-                   <div className = {this.setSizeClass(index, attributeName)}  onClick={(event)=>this.chooseCapacity(event,index, attributeName)} key={index}><h3>{each.value}</h3></div>)    
+                   <div className = {this.setSizeClass(index, attributeName)}  onClick={(event)=>this.chooseCapacity(event,index, attributeName)} key={index}><h3>{each.value}</h3></div>)  
+                        
                         return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]          
             }
             if (attributeName === "Color") { 
                 output = found.items.map((each, index) => 
-                
                 <div className = {this.setColorClass(index, attributeName)}  onClick={(event)=>this.chooseColor(event, index, attributeName)} key={each.value} style={{backgroundColor: each.value}}>
                     <p>{each.displayValue}</p></div>)    
                       return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]        
@@ -506,6 +505,7 @@ class ProductDetails extends PureComponent {
 
    
     render() {
+        
       let item = this.state.data; 
       if(!item){
         return (<div className = {styles.prodDetails}></div>)

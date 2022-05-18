@@ -6,7 +6,9 @@ import MainLayout from './Components/mainLayout/index';
 import ProductDetails from './Components/product-details';
 import BigCart from './Components/bigCart';
 import Category from './Components/category';
+import Sidebar from './Components/sidebar';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
+import appContext from './Context/appContext';
 import {ApolloProvider} from 'react-apollo';
 import { gql } from "apollo-boost";
 import { graphql} from 'react-apollo';
@@ -24,7 +26,9 @@ const itemCategories = gql`
        }
      }
 `
+
     class App extends PureComponent {
+    
         constructor(props) {
           super(props)
           this.cart = 'cart';
@@ -36,6 +40,7 @@ const itemCategories = gql`
               cart: [],
               clickedCategory: null,
               counter: 0,
+              isOpen: false, // to toggle hamburger menu
           }
         } 
   
@@ -96,9 +101,18 @@ const itemCategories = gql`
        let element =e.target.parentNode;
        let category = element.getAttribute("id");
       this.setState({
-        clickedCategory: category
+        clickedCategory: category,
+        isOpen: !this.state.isOpen
       })
     }
+
+    //Toggles the hamburger menu in Hamburger component which is displayed inside Header
+    toggleHamburger=(event)=>{
+      console.log(event.target)
+      this.setState({
+          isOpen: !this.state.isOpen
+      })
+  }
 
     
 
@@ -113,26 +127,31 @@ const itemCategories = gql`
     return (
       <ApolloProvider client={client}>
        <Router>
-        <Header key = {key} numberOfItems = {this.numberOfItems} currency = {currency} 
-          setCurrency = {this.setCurrency} categories = {categories} categoryClick={this.categoryClick}
-           counter = {counter}/>
-        <main className = "mainSection" ref={this.appMain}>
-           <Route path = '/' render={(props)=> (<MainLayout {...props} currency = {currency} 
+         <appContext.Provider value = {{state: this.state, toggleHamburger: this.toggleHamburger}}>
+            <Header key = {key} numberOfItems = {this.numberOfItems} currency = {currency} 
+               setCurrency = {this.setCurrency} categories = {categories} categoryClick={this.categoryClick}
+               counter = {counter}/>
+            <main className = "mainSection" ref={this.appMain}>
+               <div className = "sidebar">
+                   <Sidebar categories = {categories} categoryClick={this.categoryClick}/>
+               </div>
+               <Route path = '/' render={(props)=> (<MainLayout {...props} currency = {currency} 
                                                   numberOfItems = {this.numberOfItems}/>)} exact/>
           
-           <Route path = '/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems} 
+                <Route path = '/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems} 
                                                             currency = {currency} />)}/>
-           <Route path = '/clothes/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency} 
+                <Route path = '/clothes/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency} 
                                                                    numberOfItems = {this.numberOfItems}/>)} />
-           <Route path = '/tech/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency}
+               <Route path = '/tech/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency}
                                                                    numberOfItems = {this.numberOfItems}/>)} />
-          <Route path = '/shopping-cart' render={(props)=> (<BigCart {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
+               <Route path = '/shopping-cart' render={(props)=> (<BigCart {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
            
-          {this.state.categories.map((item)=>(<Route path = {`/${item.name}`} key={item.name} render={(props)=> (<Category {...props} 
+               {this.state.categories.map((item)=>(<Route path = {`/${item.name}`} key={item.name} render={(props)=> (<Category {...props} 
                                                 currency = {currency} numberOfItems = {this.numberOfItems} 
                                                 clickedCategory = {clickedCategory}/>)}/>))}
-        </main>
-        <Footer/>
+            </main>
+            <Footer/>
+        </appContext.Provider>
       </Router>
     </ApolloProvider>
     )
@@ -147,4 +166,5 @@ export default graphql(itemCategories, {
   }
 })(App);
 
-
+//hamburgerOpen = {this.state.isOpen}
+//toggleHamburger = {this.toggleHamburger} 
