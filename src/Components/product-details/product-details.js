@@ -44,7 +44,15 @@ class ProductDetails extends PureComponent {
         this.state = {
             data: null,
             currentProduct: {},
-            imageSrc: null
+            imageSrc: null,
+            usbCheckbox: {
+                Yes: false,
+                No: false
+            },
+            touchCheckbox: {
+                Yes: false,
+                No: false
+            }
         }
     }
 
@@ -247,16 +255,21 @@ class ProductDetails extends PureComponent {
                     } return null
                 })
             }
+            let {usbCheckbox, touchCheckbox} = this.state;
+            Object.keys(usbCheckbox).map(each => usbCheckbox[each] = false)
+            Object.keys(touchCheckbox).map(each => touchCheckbox[each] = false)
             this.setState({
-                attributes: attr
+                attributes: attr,
+                usbCheckbox: {...usbCheckbox},
+                touchCheckbox: {...touchCheckbox}
             })
        }
 
        /*Choose capacity of a product*/
        chooseCapacity=(event, index, attr)=>{ 
-           //Setting visual indicators if size was clicked
+           //Setting visual indicators if capacity was clicked
            this.toggleClass(index, attr)
-            // setting the right size in the shopping cart
+            // setting the right capacity in the shopping cart
            let displayValue = event.target.textContent;
            let currentProductObj = this.state.currentProduct;
          
@@ -286,11 +299,12 @@ class ProductDetails extends PureComponent {
     /**Choose With USB 3 ports attribute */    
        chooseUSB=(event, index, attr)=>{ 
           //Setting indicators if size was clicked
-          this.toggleClass(index, attr)
+         // this.toggleClass(index, attr)
          // setting the right size in the shopping cart
-         let displayValue = event.target.textContent;
+         let displayValue = event.target.name;
+         console.log(displayValue)
          let currentProductObj = this.state.currentProduct;
-      
+         console.log(currentProductObj)
          if(!currentProductObj.hasOwnProperty("attributes")) {
             currentProductObj.attributes = [];
             currentProductObj.attributes.push({name: "With USB 3 ports", value: displayValue})
@@ -317,9 +331,9 @@ class ProductDetails extends PureComponent {
      /**Choose Touch ID in keyboard */
       chooseTouchId=(event, index, attr)=>{ 
         //Setting indicators if size was clicked
-        this.toggleClass(index, attr);
+       // this.toggleClass(index, attr);
          // setting the right size in the shopping cart
-        let displayValue = event.target.textContent;
+        let displayValue = event.target.name;
         let currentProductObj = this.state.currentProduct;
       
         if(!currentProductObj.hasOwnProperty("attributes")) {
@@ -420,7 +434,6 @@ class ProductDetails extends PureComponent {
         
           let attrArray = item.attributes; //Getting an arry of objects with attributes 
           let found = attrArray.find((each)=> each.name === attributeName);
-
       
            
             if(attributeName === "Capacity") {
@@ -438,21 +451,30 @@ class ProductDetails extends PureComponent {
             } 
             if (attributeName === "Size" ) {  
                 output = found.items.map((each, index) => 
-                   
                    <div className = {this.setSizeClass(index, attributeName)} 
-                    onClick={(event)=>this.chooseSize(event,index, attributeName)} id = {index} key={each.value}><h3>{each.value}</h3></div>)    
+                    onClick={(event)=>this.chooseSize(event,index, attributeName)} id = {index} key={each.value}><h3>{each.value}</h3></div>)
+                    
                      return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             }
             if (attributeName === "With USB 3 ports" ) {  
               output = found.items.map((each, index) => 
-              
-                 <div className = {this.setUsbClass(index, attributeName)} onClick={(event)=>this.chooseUSB(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>)    
+              <div className = {styles.checkbox} key = {index}>
+                 <label>{each.displayValue}</label>
+                 <input type ="checkbox"  value = {this.state.usbCheckbox[each.value]} checked = {this.state.usbCheckbox[each.value]} name= {each.value} onChange = {this.handleUsbCheckbox}/>
+              </div>
+                 /*<div className = {this.setUsbClass(index, attributeName)} onClick={(event)=>this.chooseUSB(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>*/
+                  )     
+                    
                      return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             }
              if (attributeName === "Touch ID in keyboard" ) {  
               output = found.items.map((each, index) =>
-           
-                  <div className = {this.setTouchClass(index, attributeName)} onClick={(event)=>this.chooseTouchId(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>)    
+                <div className = {styles.checkbox} key = {index}>
+                    <label>{each.displayValue}</label>
+                    <input type ="checkbox"  value = {this.state.touchCheckbox[each.value]} checked = {this.state.touchCheckbox[each.value]} name= {each.value} onChange = {this.handleTouchCheckbox}/>
+                </div>
+                 /* <div className = {this.setTouchClass(index, attributeName)} onClick={(event)=>this.chooseTouchId(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>*/
+                 )    
                      return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             } 
       }
@@ -501,6 +523,56 @@ class ProductDetails extends PureComponent {
              } return null
          })
         }
+     }
+
+     //applying handler to USB checkboxes
+     handleUsbCheckbox = (e) => {
+        let checkBoxObject = this.state.usbCheckbox;
+        let selectedBox = e.target.name;
+        if (checkBoxObject[selectedBox] === false) {
+           Object.keys(checkBoxObject).map(box => {
+               if(checkBoxObject[box] === true) {
+                   checkBoxObject[box] = false;
+                   this.setState({
+                    usbCheckbox: {...checkBoxObject}
+                })
+               }
+               return null
+           })
+            checkBoxObject[selectedBox] = true
+        } else if (checkBoxObject[selectedBox] === true) {
+            checkBoxObject[selectedBox] = false
+        }
+        this.setState({
+            usbCheckbox: {...checkBoxObject}
+        })
+        console.log(this.state.usbCheckbox)
+        this.chooseUSB(e)
+     }
+    
+      //applying handler to Touch ID checkboxes
+     handleTouchCheckbox = (e) => {
+        let checkBoxObject = this.state.touchCheckbox;
+        let selectedBox = e.target.name;
+        if (checkBoxObject[selectedBox] === false) {
+            Object.keys(checkBoxObject).map(box => {
+               if(checkBoxObject[box] === true) {
+                   checkBoxObject[box] = false;
+                   this.setState({
+                    touchCheckbox: {...checkBoxObject}
+                   })
+               }
+             return null
+            })
+            checkBoxObject[selectedBox] = true
+        } else if (checkBoxObject[selectedBox] === true) {
+            checkBoxObject[selectedBox] = false
+        }
+        this.setState({
+            touchCheckbox: {...checkBoxObject}
+        })
+        console.log(this.state.touchCheckbox)
+         this.chooseTouchId(e)
      }
 
    
@@ -557,3 +629,10 @@ export default graphql(getOneItem, {
     }
 })(ProductDetails);
 
+/*
+<div>
+    <label>{each.displayValue}</label>
+    <input type = "checkbox" checked = "false" value = {each.value} onChange = {this.someFunction}/>
+</div>
+
+*/

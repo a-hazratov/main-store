@@ -60,6 +60,16 @@
     flex-direction: row;
     justify-content: flex-start;
   }
+   
+  .checkbox {
+    align-items: baseline;
+  }
+  .checkbox input {
+    width: 1.5em;
+    height: 1.5em;
+    margin: 0.5em;
+  }
+
   .prodDetails__prodInfo__attr h4 {
     margin-bottom: 5px;
     font-family: "Roboto condensed";
