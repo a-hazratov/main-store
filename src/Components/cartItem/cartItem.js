@@ -103,7 +103,6 @@ import Close from '../SVG/close-sign.svg';
          cart = this.state.cart
          cart.forEach((each, index)=> {
            if(each.uKey === itemToRemoveId) {
-              console.log(each.uKey)
              indexOfItem =  index;  
            }
          })

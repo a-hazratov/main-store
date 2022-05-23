@@ -1,13 +1,13 @@
 .hamburger {
     position: relative;
-    display: none;
+    display: block;
     width: 3rem;
     cursor: pointer; 
     appearance: none;
     background: none;
     outline: none;
     border: none;
-    margin: 0 4rem 0 0.3rem;
+    margin: 0 2rem 0 0.3rem;
  }
  
  .hamburger .bar {
@@ -19,6 +19,17 @@
      transition: all 0.3s ease-in-out;
    }
 
+.hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active .bar:nth-child(1) {
+   transform: translateY(15px) rotate(45deg);
+}
+.hamburger.active .bar:nth-child(3) {
+   transform: translateY(-10px) rotate(-45deg);
+}
+
+/*
    @media (max-width: 64em) { 
     .hamburger {
        display: block;
@@ -33,4 +44,5 @@
        transform: translateY(-10px) rotate(-45deg);
    }
 }
+*/
 

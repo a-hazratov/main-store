@@ -44,7 +44,7 @@ const itemCategories = gql`
           }
         } 
   
-        getCategories() {
+      getCategories() {
           setTimeout(() => {
               this.setState({
                   categories: this.props.data.categories
@@ -107,8 +107,7 @@ const itemCategories = gql`
     }
 
     //Toggles the hamburger menu in Hamburger component which is displayed inside Header
-    toggleHamburger=(event)=>{
-      console.log(event.target)
+    toggleHamburger=()=>{
       this.setState({
           isOpen: !this.state.isOpen
       })
@@ -132,18 +131,15 @@ const itemCategories = gql`
                setCurrency = {this.setCurrency} categories = {categories} categoryClick={this.categoryClick}
                counter = {counter}/>
             <main className = "mainSection" ref={this.appMain}>
-               <div className = "sidebar">
-                   <Sidebar categories = {categories} categoryClick={this.categoryClick}/>
-               </div>
+
+              <Sidebar categories = {categories} categoryClick={this.categoryClick}/>
+               
                <Route path = '/' render={(props)=> (<MainLayout {...props} currency = {currency} 
                                                   numberOfItems = {this.numberOfItems}/>)} exact/>
           
                 <Route path = '/product/:id' render={(props)=> (<ProductDetails {...props} numberOfItems = {this.numberOfItems} 
                                                             currency = {currency} />)}/>
-                <Route path = '/clothes/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency} 
-                                                                   numberOfItems = {this.numberOfItems}/>)} />
-               <Route path = '/tech/product/:id' render={(props)=> (<ProductDetails {...props} currency = {currency}
-                                                                   numberOfItems = {this.numberOfItems}/>)} />
+               
                <Route path = '/shopping-cart' render={(props)=> (<BigCart {...props} currency = {currency} numberOfItems = {this.numberOfItems}/>)}/>
            
                {this.state.categories.map((item)=>(<Route path = {`/${item.name}`} key={item.name} render={(props)=> (<Category {...props} 
@@ -166,5 +162,3 @@ export default graphql(itemCategories, {
   }
 })(App);
 
-//hamburgerOpen = {this.state.isOpen}
-//toggleHamburger = {this.toggleHamburger} 

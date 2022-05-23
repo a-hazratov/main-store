@@ -178,9 +178,8 @@ const getProducts = gql`
       let getData = this.getDataFromStorage;
       let numOfItems = this.props.numberOfItems
       let products = this.state.products;
-     // let currency = this.props.currency;
       const { currency } = this.context.state;
-      console.log(currency)
+    
       
 
 
@@ -266,15 +265,3 @@ export default graphql(getProducts)(Header);
 
 
 
-/**  <div className= {styles.header__navbar__category}>
-                           <div className={styles.header__navbar__category__item}>
-                               <Link to="/">ALL ITEMS</Link>
-                           </div>
-                            {this.props.categories.map((each)=>(
-                                 <div className={styles.header__navbar__category__item} key={each.name} id={each.name} >
-                                    <Link to= {`/${each.name}`} onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
-                                 </div>
-                            ))}
-
-                                                
-                        </div> */

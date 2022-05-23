@@ -52,7 +52,9 @@ class ProductDetails extends PureComponent {
             touchCheckbox: {
                 Yes: false,
                 No: false
-            }
+            },
+            capacityOption: "",
+            sizeOption: ""
         }
     }
 
@@ -64,6 +66,7 @@ class ProductDetails extends PureComponent {
                  data: this.props.data.product  
             })
             this.setAttrClass();
+            this.setInitialValues();
         }, 1000)
       }
 
@@ -266,13 +269,10 @@ class ProductDetails extends PureComponent {
        }
 
        /*Choose capacity of a product*/
-       chooseCapacity=(event, index, attr)=>{ 
-           //Setting visual indicators if capacity was clicked
-           this.toggleClass(index, attr)
+       chooseCapacity=()=>{ 
             // setting the right capacity in the shopping cart
-           let displayValue = event.target.textContent;
+           let displayValue = this.state.capacityOption;
            let currentProductObj = this.state.currentProduct;
-         
            if(!currentProductObj.hasOwnProperty("attributes")) {
                currentProductObj.attributes = [];
                currentProductObj.attributes.push({name: "Capacity", value: displayValue})
@@ -297,7 +297,7 @@ class ProductDetails extends PureComponent {
        }
 
     /**Choose With USB 3 ports attribute */    
-       chooseUSB=(event, index, attr)=>{ 
+       chooseUSB=(event)=>{ 
           //Setting indicators if size was clicked
          // this.toggleClass(index, attr)
          // setting the right size in the shopping cart
@@ -330,8 +330,6 @@ class ProductDetails extends PureComponent {
 
      /**Choose Touch ID in keyboard */
       chooseTouchId=(event, index, attr)=>{ 
-        //Setting indicators if size was clicked
-       // this.toggleClass(index, attr);
          // setting the right size in the shopping cart
         let displayValue = event.target.name;
         let currentProductObj = this.state.currentProduct;
@@ -361,12 +359,9 @@ class ProductDetails extends PureComponent {
 
 
     /** Choose size of the product */
-      chooseSize=(event,index, attr)=>{ 
-        //Setting visual indicators if size was clicked
-        this.toggleClass(index, attr)
-        
+      chooseSize=()=>{ 
         // setting the right size in the shopping cart
-        let displayValue = event.target.textContent;
+        let displayValue = this.state.sizeOption;
         let currentProductObj = this.state.currentProduct;
         if(!currentProductObj.hasOwnProperty("attributes")) {
             currentProductObj.attributes = [];
@@ -392,12 +387,8 @@ class ProductDetails extends PureComponent {
       }
      
            
-
-
-
     /*Choose color of products*/
      chooseColor=(event, index, attr)=>{
-       
         let clickedColor = event.target.style.backgroundColor;
         this.toggleClass(index, attr)
          //Setting the chosen color for the shopping cart
@@ -425,23 +416,69 @@ class ProductDetails extends PureComponent {
         })   
      }
     
+    //set initial values in the state for some attributes
+    setInitialValues = () => {
+       let foundCapacity = this.getAttributesObject("Capacity");
+       let foundSize = this.getAttributesObject("Size");
+       if (foundCapacity && foundCapacity.name === "Capacity") {
+           this.setState({
+               capacityOption: foundCapacity.items[0].displayValue
+           })
+           setTimeout(()=> {
+            this.chooseCapacity()
+        }, 0)
+       }
 
+       if (foundSize && foundSize.name === "Size") {
+        this.setState({
+            sizeOption: foundSize.items[0].value
+        })
+        setTimeout(()=> {
+         this.chooseSize()
+     }, 0)
+    }
+       return
+    }
     
+    //set Capacity value in the state
+    setCapacity = (e) => {
+        this.setState({
+            capacityOption: e.target.value
+        })
+        setTimeout(()=> {
+            this.chooseCapacity()
+        }, 0)
+    }
+
+    // set Size value in the state
+     setSize = (e) => {
+        this.setState({
+            sizeOption: e.target.value
+        })
+        setTimeout(()=> {
+            this.chooseSize()
+        }, 0)
+
+     }
+
+    // Check for attributes
+    getAttributesObject = (attrName) => {
+        let item = this.state.data
+        let attrArray = item.attributes; //Getting an arry of objects with attributes 
+        
+        let found = attrArray.find((each)=> each.name === attrName);
+        return found;
+    }
     //Setting attributes and attribute names of the product 
      setAttribute=(attributeName)=> {
           let output = null;
-          let item = this.state.data
-        
-          let attrArray = item.attributes; //Getting an arry of objects with attributes 
-          let found = attrArray.find((each)=> each.name === attributeName);
-      
-           
+          let found = this.getAttributesObject(attributeName)
+         
             if(attributeName === "Capacity") {
                 output = found.items.map((each, index) => 
-                
-                   <div className = {this.setSizeClass(index, attributeName)}  onClick={(event)=>this.chooseCapacity(event,index, attributeName)} key={index}><h3>{each.value}</h3></div>)  
-                        
-                        return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]          
+                   <option value = {each.value} key={index}>{each.value}</option>)  
+                        return [<h4>{attributeName}</h4>, <select className = {styles.select} key = {attributeName} 
+                                value = {this.state.capacityOption} onChange = {this.setCapacity}>{output}</select>]          
             }
             if (attributeName === "Color") { 
                 output = found.items.map((each, index) => 
@@ -451,10 +488,9 @@ class ProductDetails extends PureComponent {
             } 
             if (attributeName === "Size" ) {  
                 output = found.items.map((each, index) => 
-                   <div className = {this.setSizeClass(index, attributeName)} 
-                    onClick={(event)=>this.chooseSize(event,index, attributeName)} id = {index} key={each.value}><h3>{each.value}</h3></div>)
-                    
-                     return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
+                <option value = {each.value} key={index}>{each.value}</option>)  
+                     return [<h4>{attributeName}</h4>, <select className = {styles.select} key = {attributeName} 
+                             value = {this.state.sizeOption} onChange = {this.setSize}>{output}</select>]      
             }
             if (attributeName === "With USB 3 ports" ) {  
               output = found.items.map((each, index) => 
@@ -462,8 +498,7 @@ class ProductDetails extends PureComponent {
                  <label>{each.displayValue}</label>
                  <input type ="checkbox"  value = {this.state.usbCheckbox[each.value]} checked = {this.state.usbCheckbox[each.value]} name= {each.value} onChange = {this.handleUsbCheckbox}/>
               </div>
-                 /*<div className = {this.setUsbClass(index, attributeName)} onClick={(event)=>this.chooseUSB(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>*/
-                  )     
+                 )     
                     
                      return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             }
@@ -473,8 +508,7 @@ class ProductDetails extends PureComponent {
                     <label>{each.displayValue}</label>
                     <input type ="checkbox"  value = {this.state.touchCheckbox[each.value]} checked = {this.state.touchCheckbox[each.value]} name= {each.value} onChange = {this.handleTouchCheckbox}/>
                 </div>
-                 /* <div className = {this.setTouchClass(index, attributeName)} onClick={(event)=>this.chooseTouchId(event, index, attributeName)} key={each.value}><h3>{each.value}</h3></div>*/
-                 )    
+                )    
                      return [<h4>{attributeName}</h4>, <div className = {styles.attrBox} key = {attributeName}>{output}</div>]       
             } 
       }
@@ -577,7 +611,7 @@ class ProductDetails extends PureComponent {
 
    
     render() {
-        
+     
       let item = this.state.data; 
       if(!item){
         return (<div className = {styles.prodDetails}></div>)
@@ -629,10 +663,6 @@ export default graphql(getOneItem, {
     }
 })(ProductDetails);
 
-/*
-<div>
-    <label>{each.displayValue}</label>
-    <input type = "checkbox" checked = "false" value = {each.value} onChange = {this.someFunction}/>
-</div>
 
-*/
+
+  

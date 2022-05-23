@@ -30,18 +30,3 @@ export default class Sidebar extends PureComponent {
     )
   }
 }
-
-/*
-<div className= {styles.header__navbar__category}>
-<div className={styles.header__navbar__category__item}>
-    <Link to="/">ALL ITEMS</Link>
-</div>
- {this.props.categories.map((each)=>(
-      <div className={styles.header__navbar__category__item} key={each.name} id={each.name} >
-         <Link to= {`/${each.name}`} onClick={this.props.categoryClick}>{each.name.toUpperCase()}</Link>
-      </div>
- ))}
-
-                     
-</div>
-*/

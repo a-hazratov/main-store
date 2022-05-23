@@ -56,7 +56,7 @@
 }
 
 .header__navbar__links {
-  width: 33%;
+  width: auto;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -93,8 +93,8 @@
   cursor: pointer;
 }
 .currency_button {
-  width: 114px;
-  margin-right: -10px;
+  width: 80px;
+  margin-right: 0;
   border: none;
   background-color: #ffffff;
 }
@@ -118,9 +118,7 @@
     padding: 22px 5px 22px 5px;
     justify-content: space-between;
   }
-  /*.header__navbar__bag {
-    display: none;
-  }*/
+ 
   .header__navbar__category {
     width: 70%;
     font-weight: 300;
@@ -129,7 +127,7 @@
   }
   .header__navbar__links {
     width: auto;
-    margin-right: 0;
+    margin-right: -5px;
     align-items: center;
     justify-content: center;
   }
@@ -211,7 +209,7 @@
 }
 
 .header__navbar__links__currency {
-  margin-right: 25px;
+  margin-right: -5px;
 }
 
 .header__navbar__links__cartLogo {

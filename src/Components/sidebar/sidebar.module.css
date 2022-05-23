@@ -6,11 +6,13 @@
     align-content: center;
     padding: auto 0;
     position: fixed; 
-    left: 0;  
-    box-shadow: 5px 0px 7px -3px rgb(194, 188, 188);
-    background-color: whitesmoke;
+    left: -100px;  
+    background-color: #C5C6D0;
     transition: 1s;
     z-index: 1;
+}
+.sidebar_main.open {
+    left: 0;
 }
 
 .sidebar_ul {
@@ -41,11 +43,3 @@
     color: #cf711f;
 }
 
-@media (max-width: 64em) { 
-    .sidebar_main {
-       left: -100px;
-    }
-    .sidebar_main.open {
-        left: 0;
-    }
-}

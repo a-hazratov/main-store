@@ -80,12 +80,12 @@ const getProducts = gql`
                               if(item.category === this.props.clickedCategory) {
                                   return (<div className = {styles.mainLayout__items} key = {item.id}>
                                  <SaleItem item = {item}  inStock = {item.inStock} 
-                                 currency = {currency} numberOfItems = {numberOfItems}/>
+                                 currency = {currency} numberOfItems = {numberOfItems} category = {item.category}/>
                               </div>)
                      } else if(item.category === category) {
                               return (<div className = {styles.mainLayout__items} key = {item.id}>
                                      <SaleItem item = {item}  inStock = {item.inStock} 
-                                       currency = {currency} numberOfItems = {numberOfItems}/>
+                                       currency = {currency} numberOfItems = {numberOfItems}  category = {item.category}/>
                                       </div>)
                      }  return null
                     }
